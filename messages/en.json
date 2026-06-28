@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "title": "Aidin Sahebi — Front-End Developer & UI Designer",
+    "description": "Portfolio of Aidin Sahebi — Front-End Developer & UI Designer specializing in React, Next.js, and modern web applications."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact",
+    "cv": "Download CV",
+    "brandTagline": "Front-End & UI Designer",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "hero": {
+    "badge": "Available for new projects",
+    "greeting": "Hi, I'm",
+    "title": "Front-End Developer & UI Designer",
+    "pitch": "I build modern, responsive, and user-friendly web applications with a focus on performance, maintainability, and clean design.",
+    "viewProjects": "View Projects",
+    "downloadCv": "Download CV"
+  },
+  "home": {
+    "locationTag": "Iran · Remote & On-site",
+    "projectsDelivered": "UI/UX projects delivered",
+    "liveWebsites": "Live websites launched",
+    "companies": "Companies worked with",
+    "yearsExperience": "Years of experience",
+    "featuredEyebrow": "Selected work",
+    "featuredSubtitle": "Featured projects from government, enterprise, and municipal platforms.",
+    "viewAllProjects": "View all projects",
+    "ctaTitle": "Let's build something great together",
+    "ctaSubtitle": "Open to frontend development, UI design, and product collaboration opportunities.",
+    "ctaButton": "Get in touch",
+    "servicesEyebrow": "What I do",
+    "servicesTitle": "Design, build, and ship digital products",
+    "servicesSubtitle": "From UI concepts to production-ready front-end — end to end.",
+    "services": {
+      "design": {
+        "title": "UI / UX Design",
+        "description": "Wireframes, prototypes, and polished interfaces for web platforms — especially government and enterprise products."
+      },
+      "development": {
+        "title": "Front-End Development",
+        "description": "Modern, responsive apps with React, Next.js, and scalable component architecture."
+      },
+      "systems": {
+        "title": "Design Systems & CMS",
+        "description": "Reusable UI systems and custom CMS front-ends like Spirit Portal at Niafam."
+      }
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "description": "Front-End Web Developer with experience in building modern, responsive, and user-friendly web applications. Skilled in UI Design and passionate about creating fast, clean, and reliable user experiences.",
+    "description2": "Proficient in React, Next.js, and JavaScript, with a strong focus on performance, maintainability, and scalability. Continuously learning and adapting to new technologies to deliver high-quality digital products and effective solutions to complex challenges.",
+    "summary": "Frontend Developer & UI Designer with several years of experience in designing and developing modern web applications and user interfaces.",
+    "highlight1": "Successfully delivered 30+ UI/UX projects for government websites, managing the entire process from design to frontend implementation.",
+    "highlight2": "Experienced in developing scalable frontend solutions and contributing to proprietary CMS platforms, including Spirit Portal at Niafam.",
+    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js."
+  },
+  "experience": {
+    "title": "Work Experience",
+    "present": "Present"
+  },
+  "skills": {
+    "title": "Skills",
+    "frontend": "Frontend",
+    "design": "Design",
+    "tools": "Tools & Other"
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "Projects",
+    "subtitle": "Case studies from government, enterprise, and municipal platforms I've designed and built.",
+    "visitSite": "Visit site",
+    "viewCaseStudy": "View case study",
+    "categories": {
+      "government": "Government",
+      "enterprise": "Enterprise",
+      "municipality": "Municipality",
+      "education": "Education"
+    }
+  },
+  "projectDetail": {
+    "backToProjects": "Back to projects",
+    "gallery": "Project gallery",
+    "galleryEmptyHint": "Add screenshots to public/projects/{slug}/ and list them in the gallery array for this project.",
+    "overview": "Overview",
+    "highlights": "Key highlights",
+    "role": "Role",
+    "year": "Year",
+    "technologies": "Technologies",
+    "livePreview": "Live preview",
+    "relatedProjects": "Related projects",
+    "relatedEyebrow": "More work"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's connect — reach out via email or social media.",
+    "email": "Email",
+    "availability": "Front-End Developer & UI Designer"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "tagline": "Designing and building modern web experiences with React, Next.js, and thoughtful UI craft.",
+    "navigation": "Navigation",
+    "connect": "Connect"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
+  "locale": {
+    "en": "English",
+    "fa": "فارسی"
+  },
+  "gaming": {
+    "enable": "Enable gaming mode",
+    "disable": "Disable gaming mode",
+    "player": "Player",
+    "modeActive": "Gaming mode active",
+    "controlsMove": "WASD / Arrows — move snake · Hold key to boost",
+    "controlsCollect": "Click orbs — collect XP · Open Arcade for mini-games",
+    "openArcade": "Arcade",
+    "exit": "Exit game",
+    "close": "Close",
+    "arcadeTitle": "AIDIN ARCADE",
+    "arcadeSubtitle": "Pick a mini-game and stack your score",
+    "backToMenu": "Back to menu",
+    "hot": "Hot",
+    "blasterTitle": "Neon Blaster",
+    "blasterDesc": "Fast space shooter — dodge, blast, survive the waves!",
+    "blasterHint": "A/D or ← → move · SPACE or W shoot · Destroy enemies!",
+    "blasterKill": "BOOM +35!",
+    "blasterWave": "WAVE CLEAR +100!",
+    "blasterHit": "HIT! -1 life",
+    "blasterMiss": "BREACH! -1 life",
+    "gameOver": "GAME OVER",
+    "wave": "Wave",
+    "kills": "Kills",
+    "lives": "Lives",
+    "starsTitle": "Star Catcher",
+    "starsDesc": "Click falling stars before they disappear",
+    "snakeBurn": "SELF BURN! -1 life",
+    "snakeHint": "Use WASD or arrow keys",
+    "starsHint": "Click the falling stars fast!",
+    "retry": "Play again",
+    "starCaught": "+20 STAR!",
+    "orbCollected": "+{points} XP",
+    "collectOrb": "Collect orb",
+    "catchStar": "Catch star",
+    "linkBonus": "+30 NAV BONUS!",
+    "timeLeft": "Time",
+    "timeUp": "TIME UP!"
+  }
+}

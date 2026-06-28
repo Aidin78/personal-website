@@ -1,0 +1,159 @@
+{
+  "metadata": {
+    "title": "آیدین صاحبی — توسعه‌دهنده فرانت‌اند و طراح UI",
+    "description": "نمونه‌کار آیدین صاحبی — توسعه‌دهنده فرانت‌اند و طراح UI متخصص در React، Next.js و اپلیکیشن‌های وب مدرن."
+  },
+  "nav": {
+    "home": "خانه",
+    "about": "درباره من",
+    "experience": "سوابق کاری",
+    "skills": "مهارت‌ها",
+    "projects": "نمونه‌کارها",
+    "contact": "تماس",
+    "cv": "دانلود رزومه",
+    "brandTagline": "فرانت‌اند و طراح UI",
+    "menu": "منو",
+    "close": "بستن"
+  },
+  "hero": {
+    "badge": "آماده همکاری در پروژه‌های جدید",
+    "greeting": "سلام، من",
+    "title": "توسعه‌دهنده فرانت‌اند و طراح UI",
+    "pitch": "اپلیکیشن‌های وب مدرن، واکنش‌گرا و کاربرپسند می‌سازم با تمرکز بر عملکرد، نگهداری و طراحی تمیز.",
+    "viewProjects": "مشاهده نمونه‌کارها",
+    "downloadCv": "دانلود رزومه"
+  },
+  "home": {
+    "locationTag": "ایران · حضوری و ریموت",
+    "projectsDelivered": "پروژه UI/UX تحویل‌شده",
+    "liveWebsites": "وب‌سایت فعال",
+    "companies": "شرکت همکار",
+    "yearsExperience": "سال تجربه",
+    "featuredEyebrow": "کارهای منتخب",
+    "featuredSubtitle": "نمونه‌کارهایی از پلتفرم‌های دولتی، سازمانی و شهرداری.",
+    "viewAllProjects": "مشاهده همه پروژه‌ها",
+    "ctaTitle": "بیایید با هم چیز خوبی بسازیم",
+    "ctaSubtitle": "آماده همکاری در توسعه فرانت‌اند، طراحی UI و محصولات دیجیتال.",
+    "ctaButton": "ارتباط با من",
+    "servicesEyebrow": "کاری که انجام می‌دهم",
+    "servicesTitle": "طراحی، توسعه و تحویل محصولات دیجیتال",
+    "servicesSubtitle": "از UI و پروتوتایپ تا فرانت‌اند production-ready.",
+    "services": {
+      "design": {
+        "title": "طراحی UI / UX",
+        "description": "وایرفریم، پروتوتایپ و رابط کاربری برای پلتفرم‌های وب — به‌ویژه پروژه‌های دولتی و سازمانی."
+      },
+      "development": {
+        "title": "توسعه فرانت‌اند",
+        "description": "اپلیکیشن‌های مدرن و واکنش‌گرا با React، Next.js و معماری کامپوننت مقیاس‌پذیر."
+      },
+      "systems": {
+        "title": "Design System و CMS",
+        "description": "سیستم‌های UI قابل‌استفاده‌مجدد و فرانت‌اند CMS اختصاصی مانند Spirit Portal در Niafam."
+      }
+    }
+  },
+  "about": {
+    "title": "درباره من",
+    "description": "Front-End Web Developer with experience in building modern, responsive, and user-friendly web applications. Skilled in UI Design and passionate about creating fast, clean, and reliable user experiences.",
+    "description2": "Proficient in React, Next.js, and JavaScript, with a strong focus on performance, maintainability, and scalability. Continuously learning and adapting to new technologies to deliver high-quality digital products and effective solutions to complex challenges.",
+    "summary": "Frontend Developer & UI Designer with several years of experience in designing and developing modern web applications and user interfaces.",
+    "highlight1": "Successfully delivered 30+ UI/UX projects for government websites, managing the entire process from design to frontend implementation.",
+    "highlight2": "Experienced in developing scalable frontend solutions and contributing to proprietary CMS platforms, including Spirit Portal at Niafam.",
+    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js."
+  },
+  "experience": {
+    "title": "سوابق کاری",
+    "present": "اکنون"
+  },
+  "skills": {
+    "title": "مهارت‌ها",
+    "frontend": "فرانت‌اند",
+    "design": "طراحی",
+    "tools": "ابزار و سایر"
+  },
+  "projects": {
+    "eyebrow": "نمونه‌کار",
+    "title": "نمونه‌کارها",
+    "subtitle": "مطالعات موردی از پلتفرم‌های دولتی، سازمانی و شهرداری که طراحی و توسعه داده‌ام.",
+    "visitSite": "مشاهده سایت",
+    "viewCaseStudy": "مشاهده جزئیات پروژه",
+    "categories": {
+      "government": "دولتی",
+      "enterprise": "سازمانی",
+      "municipality": "شهرداری",
+      "education": "آموزشی"
+    }
+  },
+  "projectDetail": {
+    "backToProjects": "بازگشت به پروژه‌ها",
+    "gallery": "گالری پروژه",
+    "galleryEmptyHint": "اسکرین‌شات‌ها را در public/projects/{slug}/ قرار دهید و مسیر آن‌ها را در آرایه gallery پروژه اضافه کنید.",
+    "overview": "خلاصه",
+    "highlights": "نکات کلیدی",
+    "role": "نقش",
+    "year": "سال",
+    "technologies": "تکنولوژی‌ها",
+    "livePreview": "مشاهده سایت",
+    "relatedProjects": "پروژه‌های مرتبط",
+    "relatedEyebrow": "کارهای بیشتر"
+  },
+  "contact": {
+    "title": "تماس",
+    "subtitle": "برای ارتباط از ایمیل یا شبکه‌های اجتماعی استفاده کنید.",
+    "email": "ایمیل",
+    "availability": "توسعه‌دهنده فرانت‌اند و طراح UI"
+  },
+  "footer": {
+    "rights": "تمامی حقوق محفوظ است.",
+    "tagline": "طراحی و ساخت تجربه‌های وب مدرن با React، Next.js و طراحی UI دقیق.",
+    "navigation": "ناوبری",
+    "connect": "ارتباط"
+  },
+  "theme": {
+    "light": "حالت روشن",
+    "dark": "حالت تاریک"
+  },
+  "locale": {
+    "en": "English",
+    "fa": "فارسی"
+  },
+  "gaming": {
+    "enable": "فعال‌سازی حالت گیم",
+    "disable": "غیرفعال‌سازی حالت گیم",
+    "player": "بازیکن",
+    "modeActive": "حالت گیم فعال است",
+    "controlsMove": "WASD / فلش‌ها — حرکت مار · نگه دار برای سرعت بیشتر",
+    "controlsCollect": "کلیک روی orbها — جمع XP · آرکید برای مini-game",
+    "openArcade": "آرکید",
+    "exit": "خروج",
+    "close": "بستن",
+    "arcadeTitle": "AIDIN ARCADE",
+    "arcadeSubtitle": "یک mini-game انتخاب کن و امتیاز بگیر",
+    "backToMenu": "بازگشت به منو",
+    "hot": "داغ",
+    "blasterTitle": "Neon Blaster",
+    "blasterDesc": "شوتер فضایی سریع — فرار بده، بزن، موج‌ها رو نابود کن!",
+    "blasterHint": "A/D یا ← → حرکت · SPACE یا W شلیک · دشمن‌ها رو نابود کن!",
+    "blasterKill": "انفجار +35!",
+    "blasterWave": "موج تمام +100!",
+    "blasterHit": "برخورد! -1 جان",
+    "blasterMiss": "نفوذ! -1 جان",
+    "gameOver": "بازی تمام شد",
+    "wave": "موج",
+    "kills": "کشت",
+    "lives": "جان",
+    "starsTitle": "Star Catcher",
+    "starsDesc": "ستاره‌های در حال سقوط را سریع کلیک کن",
+    "snakeBurn": "خودسوزی! -1 جان",
+    "starsHint": "ستاره‌ها را سریع کلیک کن!",
+    "retry": "دوباره بازی",
+    "starCaught": "+20 ستاره!",
+    "orbCollected": "+{points} XP",
+    "collectOrb": "جمع orb",
+    "catchStar": "گرفتن ستاره",
+    "linkBonus": "+30 امتیاز مسیر!",
+    "timeLeft": "زمان",
+    "timeUp": "تمام شد!"
+  }
+}
