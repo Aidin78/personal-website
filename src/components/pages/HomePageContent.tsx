@@ -59,7 +59,13 @@ export async function HomeHero() {
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
                 {t("greeting")}
               </p>
-              <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-6xl lg:text-[5.5rem]">
+              <h1
+                className={`font-display leading-[0.95] tracking-tight text-foreground ${
+                  locale === "fa"
+                    ? "text-4xl font-[950] sm:text-5xl lg:text-[4.25rem]"
+                    : "text-5xl font-bold sm:text-6xl lg:text-[5.5rem]"
+                }`}
+              >
                 {nameParts.map((part, index) => (
                   <span key={`${part}-${index}`} className={index === 0 ? "gradient-text" : ""}>
                     {part}{" "}
@@ -114,7 +120,7 @@ export async function HomeHero() {
                 width={900}
                 height={700}
                 priority
-                className="h-auto w-full object-cover"
+                className="h-auto w-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px]" />
             </div>

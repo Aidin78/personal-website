@@ -12,6 +12,11 @@ export const experience: ExperienceItem[] = [
     period: "1404 – Present",
   },
   {
+    company: "Talayedaran",
+    role: "Front-End Developer — Next.js",
+    period: "1404 – Present",
+  },
+  {
     company: "Niafam",
     role: "Frontend Developer & UI Designer",
     period: "1401 – 1404",

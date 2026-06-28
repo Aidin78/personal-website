@@ -5,8 +5,9 @@ export const profile = {
   },
   resumePath: "/CV-en.pdf",
   email: "",
-  avatarPath: "/images/profile.png",
+  avatarPath: "/images/profile-ai.png",
   heroImagePath: "/images/hero-visual.png",
+  portraitPath: "/images/profile-ai.png",
   social: {
     linkedin: "https://linkedin.com/in/aidin78",
     dribbble: "https://dribbble.com/aidin78",

@@ -56,7 +56,7 @@ export async function generateMetadata({
       description: t("description"),
       type: "website",
       locale: locale === "fa" ? "fa_IR" : "en_US",
-      images: ["/images/hero-visual.png"],
+      images: ["/images/profile-ai.png"],
     },
   };
 }

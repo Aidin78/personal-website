@@ -28,7 +28,7 @@ export async function AboutPageContent() {
             <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-accent/40 to-accent-secondary/40 blur-2xl" />
             <div className="relative overflow-hidden rounded-[2rem] border border-border">
               <Image
-                src={profile.avatarPath}
+                src={profile.portraitPath}
                 alt={displayName}
                 width={600}
                 height={720}
