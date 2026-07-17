@@ -186,18 +186,25 @@ export function GamingPlayer() {
       syncBoost();
     };
 
-    const onBlur = () => {
+    const clearHeld = () => {
       heldKeysRef.current.clear();
       setBoosting(false);
+    };
+
+    const onBlur = clearHeld;
+    const onVisibility = () => {
+      if (document.hidden) clearHeld();
     };
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", onBlur);
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [paused, dead, lives]);
 
@@ -207,7 +214,7 @@ export function GamingPlayer() {
     let timeoutId = 0;
 
     const step = () => {
-      if (burningRef.current || dead) return;
+      if (burningRef.current || dead || document.hidden) return;
 
       directionRef.current = pendingDirRef.current;
       setFacing(pendingDirRef.current);

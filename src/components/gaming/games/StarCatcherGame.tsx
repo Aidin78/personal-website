@@ -19,10 +19,12 @@ export function StarCatcherGame() {
   const [stars, setStars] = useState<Star[]>([]);
   const [timeLeft, setTimeLeft] = useState(30);
   const [active, setActive] = useState(true);
+  const [visible, setVisible] = useState(true);
   const activeRef = useRef(true);
+  const visibleRef = useRef(true);
 
   const spawnStar = useCallback(() => {
-    if (!activeRef.current) return;
+    if (!activeRef.current || !visibleRef.current) return;
     setStars((prev) => {
       if (prev.length >= 6) return prev;
       return [
@@ -46,7 +48,19 @@ export function StarCatcherGame() {
   }, [active]);
 
   useEffect(() => {
-    if (!active) return;
+    const onVisibility = () => {
+      const isVisible = !document.hidden;
+      visibleRef.current = isVisible;
+      setVisible(isVisible);
+    };
+
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!active || !visible) return;
 
     const spawnInterval = window.setInterval(spawnStar, 700);
     const initial = window.setTimeout(spawnStar, 200);
@@ -54,10 +68,10 @@ export function StarCatcherGame() {
       window.clearInterval(spawnInterval);
       window.clearTimeout(initial);
     };
-  }, [active, spawnStar]);
+  }, [active, visible, spawnStar]);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || !visible) return;
 
     const timer = window.setInterval(() => {
       setTimeLeft((prev) => {
@@ -71,7 +85,7 @@ export function StarCatcherGame() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [active]);
+  }, [active, visible]);
 
   const catchStar = (id: number) => {
     removeStar(id);
@@ -100,6 +114,7 @@ export function StarCatcherGame() {
               left: `${star.x}%`,
               animationDelay: `${star.delay}s`,
               animationDuration: `${star.duration}s`,
+              animationPlayState: visible ? "running" : "paused",
             }}
             onClick={() => catchStar(star.id)}
             onAnimationEnd={() => removeStar(star.id)}

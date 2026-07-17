@@ -151,14 +151,19 @@ export function NeonBlasterGame() {
     };
 
     const onBlur = clearKeys;
+    const onVisibility = () => {
+      if (document.hidden) clearKeys();
+    };
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", onBlur);
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
+      document.removeEventListener("visibilitychange", onVisibility);
       clearKeys();
     };
   }, []);
@@ -176,7 +181,7 @@ export function NeonBlasterGame() {
       const state = stateRef.current;
       frame++;
 
-      if (state.running) {
+      if (state.running && !document.hidden) {
         const moveSpeed = 4.8;
         if (state.keys.left) state.playerX -= moveSpeed;
         if (state.keys.right) state.playerX += moveSpeed;
