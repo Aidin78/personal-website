@@ -54,6 +54,21 @@
       }
     }
   },
+  "proof": {
+    "eyebrow": "Also online",
+    "title": "GitHub & Dribbble",
+    "subtitle": "Live code and design shots — proof beyond the case studies.",
+    "githubLabel": "Code",
+    "githubTitle": "Selected repositories",
+    "dribbbleLabel": "Design",
+    "dribbbleTitle": "Selected shots",
+    "viewGithub": "View GitHub",
+    "viewDribbble": "View Dribbble",
+    "openShot": "Open",
+    "noDescription": "No description provided.",
+    "stars": "{count} stars",
+    "language": "Language: {language}"
+  },
   "about": {
     "title": "About Me",
     "description": "Front-End Web Developer with experience in building modern, responsive, and user-friendly web applications. Skilled in UI Design and passionate about creating fast, clean, and reliable user experiences.",

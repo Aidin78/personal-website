@@ -1,6 +1,9 @@
 import type { LocalizedString } from "@/content/i18n";
 import { tContent, tContentList } from "@/content/i18n";
 
+/** Flip to true when real project screenshots / galleries are ready. */
+export const projectsEnabled = false;
+
 export type ProjectCategory =
   | "government"
   | "enterprise"

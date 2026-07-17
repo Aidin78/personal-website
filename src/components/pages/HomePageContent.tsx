@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getProfileName, profile } from "@/content/profile";
-import { getLocalizedFeaturedProjects } from "@/content/projects";
+import { getLocalizedFeaturedProjects, projectsEnabled } from "@/content/projects";
 import { services, techStack } from "@/content/home";
 import { stats } from "@/content/stats";
 import { Link } from "@/i18n/navigation";
@@ -21,6 +21,9 @@ import { Marquee } from "@/components/ui/Marquee";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 import { FeaturedProjectsShowcase } from "@/components/home/FeaturedProjectsShowcase";
 import { HeroFloatingElements } from "@/components/home/HeroFloatingElements";
+import { ProofShowcase } from "@/components/home/ProofShowcase";
+import { getPinnedRepos } from "@/lib/github";
+import { proof } from "@/content/proof";
 
 const serviceIcons = {
   palette: Palette,
@@ -92,13 +95,15 @@ export async function HomeHero() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/30 transition-transform hover:-translate-y-0.5"
-              >
-                {t("viewProjects")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {projectsEnabled ? (
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/30 transition-transform hover:-translate-y-0.5"
+                >
+                  {t("viewProjects")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : null}
               <a
                 href={profile.resumePath}
                 download
@@ -222,6 +227,8 @@ export async function HomeServices() {
 }
 
 export async function HomeFeaturedProjects() {
+  if (!projectsEnabled) return null;
+
   const t = await getTranslations("projects");
   const home = await getTranslations("home");
   const locale = await getLocale();
@@ -245,6 +252,24 @@ export async function HomeFeaturedProjects() {
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
+    </Section>
+  );
+}
+
+export async function HomeProof() {
+  if (!proof.enabled) return null;
+
+  const t = await getTranslations("proof");
+  const repos = await getPinnedRepos();
+
+  return (
+    <Section>
+      <SectionHeading
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        subtitle={t("subtitle")}
+      />
+      <ProofShowcase repos={repos} />
     </Section>
   );
 }
@@ -284,6 +309,7 @@ export async function HomePageContent() {
       <HomeStats />
       <HomeServices />
       <HomeFeaturedProjects />
+      <HomeProof />
       <HomeCta />
     </div>
   );

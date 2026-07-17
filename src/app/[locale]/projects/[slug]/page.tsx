@@ -5,6 +5,7 @@ import {
   getAllProjectSlugs,
   getLocalizedProjectBySlug,
   getProjectBySlug,
+  projectsEnabled,
 } from "@/content/projects";
 import { ProjectDetailContent } from "@/components/pages/ProjectDetailContent";
 
@@ -44,6 +45,8 @@ export async function generateMetadata({
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
+  if (!projectsEnabled) notFound();
+
   const { locale, slug } = await params;
   setRequestLocale(locale);
 

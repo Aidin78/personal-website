@@ -9,11 +9,12 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { GamingModeToggle } from "@/components/gaming/GamingModeToggle";
+import { projectsEnabled } from "@/content/projects";
 
 const navItems = [
   { href: "/", key: "home" as const },
   { href: "/about", key: "about" as const },
-  { href: "/projects", key: "projects" as const },
+  { href: "/projects", key: "projects" as const, requiresProjects: true },
   { href: "/contact", key: "contact" as const },
 ];
 
@@ -34,6 +35,9 @@ export function Header() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const displayName = getProfileName(locale);
+  const visibleNavItems = navItems.filter(
+    (item) => !("requiresProjects" in item && item.requiresProjects) || projectsEnabled,
+  );
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -127,7 +131,7 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-1 rounded-xl border border-border/80 bg-surface/80 p-1 lg:flex" aria-label={t("menu")}>
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <Link
@@ -205,7 +209,7 @@ export function Header() {
           </div>
 
           <nav className="flex flex-col gap-1 p-3">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <Link

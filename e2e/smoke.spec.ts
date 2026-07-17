@@ -6,17 +6,24 @@ test.describe("portfolio smoke", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("navigation").getByRole("link", { name: "Home" })).toBeVisible();
     await expect(page.getByRole("navigation").getByRole("link", { name: "About" })).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Projects" })).toBeVisible();
     await expect(page.getByRole("navigation").getByRole("link", { name: "Contact" })).toBeVisible();
   });
 
-  test("about, projects, and contact routes render", async ({ page }) => {
+  test("about and contact routes render; projects gated", async ({ page }) => {
     await page.goto("/en/about");
     await expect(page.getByRole("heading", { name: /Aidin|آیدین/i }).first()).toBeVisible();
 
-    await page.goto("/en/projects");
-    await expect(page.getByRole("heading").first()).toBeVisible();
-    await expect(page.locator('a[href*="/projects/"]').first()).toBeVisible();
+    const projectsResponse = await page.goto("/en/projects");
+    const projectsNav = page.getByRole("navigation").getByRole("link", { name: "Projects" });
+    const projectsVisible = (await projectsNav.count()) > 0;
+
+    if (projectsVisible) {
+      expect(projectsResponse?.ok()).toBeTruthy();
+      await expect(page.getByRole("heading").first()).toBeVisible();
+      await expect(page.locator('a[href*="/projects/"]').first()).toBeVisible();
+    } else {
+      await expect(page.getByRole("heading", { name: /not found/i })).toBeVisible();
+    }
 
     await page.goto("/en/contact");
     await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();

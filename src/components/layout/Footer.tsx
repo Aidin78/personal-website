@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { getProfileName, profile } from "@/content/profile";
+import { projectsEnabled } from "@/content/projects";
 import { Link } from "@/i18n/navigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 
@@ -33,9 +34,11 @@ export async function Footer() {
               <Link href="/about" className="transition-colors hover:text-accent">
                 {nav("about")}
               </Link>
-              <Link href="/projects" className="transition-colors hover:text-accent">
-                {nav("projects")}
-              </Link>
+              {projectsEnabled ? (
+                <Link href="/projects" className="transition-colors hover:text-accent">
+                  {nav("projects")}
+                </Link>
+              ) : null}
               <Link href="/contact" className="transition-colors hover:text-accent">
                 {nav("contact")}
               </Link>
