@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getProfileName, profile } from "@/content/profile";
-import { featuredProjects } from "@/content/projects";
+import { getLocalizedFeaturedProjects } from "@/content/projects";
 import { services, techStack } from "@/content/home";
 import { stats } from "@/content/stats";
 import { Link } from "@/i18n/navigation";
@@ -224,6 +224,8 @@ export async function HomeServices() {
 export async function HomeFeaturedProjects() {
   const t = await getTranslations("projects");
   const home = await getTranslations("home");
+  const locale = await getLocale();
+  const featured = getLocalizedFeaturedProjects(locale);
 
   return (
     <Section className="relative">
@@ -233,7 +235,7 @@ export async function HomeFeaturedProjects() {
         title={t("title")}
         subtitle={home("featuredSubtitle")}
       />
-      <FeaturedProjectsShowcase projects={featuredProjects} />
+      <FeaturedProjectsShowcase projects={featured} />
       <div className="mt-10 flex justify-center">
         <Link
           href="/projects"

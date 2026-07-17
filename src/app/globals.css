@@ -496,11 +496,24 @@ html[lang="fa"] {
   .animate-float-delay-3,
   .animate-float-delay-4,
   .marquee-mask > div,
-  .falling-capsule,
-  .gaming-star,
+  .falling-capsule {
+    animation: none !important;
+  }
+
+  .gaming-star {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: translateY(40px) !important;
+  }
+
   .gaming-orb {
     animation: none !important;
-    opacity: 0.25 !important;
+    opacity: 1 !important;
+  }
+
+  .gaming-scanlines {
+    animation: none !important;
+    opacity: 0.06;
   }
 }
 

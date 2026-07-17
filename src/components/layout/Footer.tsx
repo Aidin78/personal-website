@@ -50,7 +50,7 @@ export async function Footer() {
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-accent"
               >
-                GitHub
+                {t("github")}
               </a>
               <a
                 href={profile.social.linkedin}
@@ -58,7 +58,7 @@ export async function Footer() {
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-accent"
               >
-                LinkedIn
+                {t("linkedin")}
               </a>
               <a
                 href={profile.social.dribbble}
@@ -66,7 +66,7 @@ export async function Footer() {
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-accent"
               >
-                Dribbble
+                {t("dribbble")}
               </a>
               <a
                 href={profile.resumePath}

@@ -55,12 +55,12 @@
   },
   "about": {
     "title": "درباره من",
-    "description": "Front-End Web Developer with experience in building modern, responsive, and user-friendly web applications. Skilled in UI Design and passionate about creating fast, clean, and reliable user experiences.",
-    "description2": "Proficient in React, Next.js, and JavaScript, with a strong focus on performance, maintainability, and scalability. Continuously learning and adapting to new technologies to deliver high-quality digital products and effective solutions to complex challenges.",
-    "summary": "Frontend Developer & UI Designer with several years of experience in designing and developing modern web applications and user interfaces.",
-    "highlight1": "Successfully delivered 30+ UI/UX projects for government websites, managing the entire process from design to frontend implementation.",
-    "highlight2": "Experienced in developing scalable frontend solutions and contributing to proprietary CMS platforms, including Spirit Portal at Niafam.",
-    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js."
+    "description": "توسعه‌دهنده فرانت‌اند وب با تجربه ساخت اپلیکیشن‌های مدرن، واکنش‌گرا و کاربرپسند. در طراحی UI مهارت دارم و به خلق تجربه‌های سریع، تمیز و قابل‌اعتماد علاقه‌مندم.",
+    "description2": "مسلط به React، Next.js و JavaScript با تمرکز روی عملکرد، نگهداری‌پذیری و مقیاس‌پذیری. دائماً در حال یادگیری تکنولوژی‌های جدید هستم تا محصولات دیجیتال باکیفیت و راه‌حل‌های مؤثر برای چالش‌های پیچیده ارائه دهم.",
+    "summary": "توسعه‌دهنده فرانت‌اند و طراح UI با چند سال تجربه در طراحی و توسعه اپلیکیشن‌های وب مدرن و رابط کاربری.",
+    "highlight1": "تحویل موفق بیش از ۳۰ پروژه UI/UX برای وب‌سایت‌های دولتی؛ از طراحی تا پیاده‌سازی فرانت‌اند.",
+    "highlight2": "تجربه توسعه راه‌حل‌های فرانت‌اند مقیاس‌پذیر و مشارکت در پلتفرم‌های CMS اختصاصی مثل Spirit Portal در نیافام.",
+    "highlight3": "در حال حاضر روی سیستم‌های مدیریت مالی سازمانی با Next.js کار می‌کنم."
   },
   "experience": {
     "title": "سوابق کاری",
@@ -108,15 +108,27 @@
     "rights": "تمامی حقوق محفوظ است.",
     "tagline": "طراحی و ساخت تجربه‌های وب مدرن با React، Next.js و طراحی UI دقیق.",
     "navigation": "ناوبری",
-    "connect": "ارتباط"
+    "connect": "ارتباط",
+    "github": "گیت‌هاب",
+    "linkedin": "لینکدین",
+    "dribbble": "دریبل"
   },
   "theme": {
     "light": "حالت روشن",
-    "dark": "حالت تاریک"
+    "dark": "حالت تاریک",
+    "system": "تم سیستم"
   },
   "locale": {
     "en": "English",
-    "fa": "فارسی"
+    "fa": "فارسی",
+    "switchTo": "تغییر به {locale}"
+  },
+  "error": {
+    "eyebrow": "خطا",
+    "title": "مشکلی پیش آمد",
+    "description": "خطای غیرمنتظره‌ای رخ داد. می‌توانید دوباره تلاش کنید یا به خانه برگردید.",
+    "retry": "تلاش دوباره",
+    "home": "بازگشت به خانه"
   },
   "gaming": {
     "enable": "فعال‌سازی حالت گیم",
@@ -124,16 +136,17 @@
     "player": "بازیکن",
     "modeActive": "حالت گیم فعال است",
     "controlsMove": "WASD / فلش‌ها — حرکت مار · نگه دار برای سرعت بیشتر",
-    "controlsCollect": "کلیک روی orbها — جمع XP · آرکید برای مini-game",
+    "controlsCollect": "کلیک روی دایره‌ها — جمع XP · آرکید برای مینی‌گیم",
     "openArcade": "آرکید",
     "exit": "خروج",
     "close": "بستن",
     "arcadeTitle": "AIDIN ARCADE",
-    "arcadeSubtitle": "یک mini-game انتخاب کن و امتیاز بگیر",
+    "arcadeSubtitle": "یک مینی‌گیم انتخاب کن و امتیاز بگیر",
+    "blasterLivesNote": "بلاستر جان جدا دارد — قلب‌های HUD برای جلسه مار است.",
     "backToMenu": "بازگشت به منو",
     "hot": "داغ",
     "blasterTitle": "Neon Blaster",
-    "blasterDesc": "شوتер فضایی سریع — فرار بده، بزن، موج‌ها رو نابود کن!",
+    "blasterDesc": "شوتر فضایی سریع — فرار بده، بزن، موج‌ها رو نابود کن!",
     "blasterHint": "A/D یا ← → حرکت · SPACE یا W شلیک · دشمن‌ها رو نابود کن!",
     "blasterKill": "انفجار +35!",
     "blasterWave": "موج تمام +100!",
@@ -146,6 +159,7 @@
     "starsTitle": "Star Catcher",
     "starsDesc": "ستاره‌های در حال سقوط را سریع کلیک کن",
     "snakeBurn": "خودسوزی! -1 جان",
+    "snakeHint": "از WASD یا فلش‌ها استفاده کن",
     "starsHint": "ستاره‌ها را سریع کلیک کن!",
     "retry": "دوباره بازی",
     "starCaught": "+20 ستاره!",

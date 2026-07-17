@@ -83,7 +83,7 @@ export function GamingHUD() {
       </div>
 
       {toast ? (
-        <div className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-sm text-[#39ff14]">
+        <div className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-sm text-[#39ff14] rtl:translate-x-1/2">
           {toast}
         </div>
       ) : null}

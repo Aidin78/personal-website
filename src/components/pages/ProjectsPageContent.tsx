@@ -1,11 +1,13 @@
-import { getTranslations } from "next-intl/server";
-import { projects } from "@/content/projects";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getLocalizedProjects } from "@/content/projects";
 import { PageShell } from "@/components/ui/PageShell";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 
 export async function ProjectsPageContent() {
   const t = await getTranslations("projects");
+  const locale = await getLocale();
+  const projects = getLocalizedProjects(locale);
 
   return (
     <PageShell>

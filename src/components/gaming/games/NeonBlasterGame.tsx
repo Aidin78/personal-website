@@ -241,6 +241,8 @@ export function NeonBlasterGame() {
 
         const playerY = HEIGHT - PLAYER_H - 10;
         if (time > state.invincibleUntil) {
+          let hitThisFrame = false;
+
           for (const enemy of [...state.enemies]) {
             if (
               rectsOverlap(
@@ -257,6 +259,7 @@ export function NeonBlasterGame() {
               explode(state.playerX + PLAYER_W / 2, playerY + PLAYER_H / 2, 120);
               state.enemies = state.enemies.filter((e) => e.id !== enemy.id);
               loseLife();
+              hitThisFrame = true;
               if (livesRef.current > 0) {
                 state.invincibleUntil = time + 1600;
               }
@@ -265,14 +268,19 @@ export function NeonBlasterGame() {
             }
           }
 
-          const fallen = state.enemies.filter((e) => e.y > HEIGHT);
-          if (fallen.length > 0) {
-            state.enemies = state.enemies.filter((e) => e.y <= HEIGHT);
-            loseLife();
-            if (livesRef.current > 0) {
-              state.invincibleUntil = time + 1400;
+          // Only apply breach damage if we did not already take a hit this frame
+          if (!hitThisFrame) {
+            const fallen = state.enemies.filter((e) => e.y > HEIGHT);
+            if (fallen.length > 0) {
+              state.enemies = state.enemies.filter((e) => e.y <= HEIGHT);
+              loseLife();
+              if (livesRef.current > 0) {
+                state.invincibleUntil = time + 1400;
+              }
+              addScore(0, t("blasterMiss"));
             }
-            addScore(0, t("blasterMiss"));
+          } else {
+            state.enemies = state.enemies.filter((e) => e.y <= HEIGHT);
           }
         } else {
           state.enemies = state.enemies.filter((e) => e.y <= HEIGHT);

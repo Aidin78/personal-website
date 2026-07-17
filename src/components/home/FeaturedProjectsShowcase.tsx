@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import type { ProjectItem } from "@/content/projects";
+import type { LocalizedProject } from "@/content/projects";
 import { Link } from "@/i18n/navigation";
 
 type FeaturedProjectsShowcaseProps = {
-  projects: ProjectItem[];
+  projects: LocalizedProject[];
 };
 
-const categoryGradients: Record<ProjectItem["category"], string> = {
+const categoryGradients: Record<LocalizedProject["category"], string> = {
   government: "from-violet-600/90 via-indigo-700/70 to-transparent",
   enterprise: "from-sky-600/90 via-blue-700/70 to-transparent",
   municipality: "from-emerald-600/90 via-teal-700/70 to-transparent",
@@ -22,7 +22,7 @@ function ShowcaseCard({
   large = false,
   wide = false,
 }: {
-  project: ProjectItem;
+  project: LocalizedProject;
   visitLabel: string;
   categoryLabel: string;
   large?: boolean;

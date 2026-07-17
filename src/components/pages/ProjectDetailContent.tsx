@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Calendar, Layers, User } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Calendar, Layers, User } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import {
-  getProjectBySlug,
-  getRelatedProjects,
+  getLocalizedProjectBySlug,
+  getLocalizedRelatedProjects,
   type ProjectCategory,
 } from "@/content/projects";
 import { Link } from "@/i18n/navigation";
@@ -25,12 +25,14 @@ type ProjectDetailContentProps = {
 };
 
 export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
-  const project = getProjectBySlug(slug);
+  const locale = await getLocale();
+  const project = getLocalizedProjectBySlug(slug, locale);
   if (!project) notFound();
 
   const t = await getTranslations("projectDetail");
   const projectsT = await getTranslations("projects");
-  const related = getRelatedProjects(slug);
+  const related = getLocalizedRelatedProjects(slug, locale);
+  const BackIcon = locale === "fa" ? ArrowRight : ArrowLeft;
 
   return (
     <PageShell>
@@ -39,7 +41,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
           href="/projects"
           className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <BackIcon className="h-4 w-4" />
           {t("backToProjects")}
         </Link>
 

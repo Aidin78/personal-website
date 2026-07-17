@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 
@@ -20,9 +20,31 @@ const ORB_TTL_MAX = 6000;
 
 export function GamingCollectibles() {
   const t = useTranslations("gaming");
-  const { addScore, activeGame, growSnake, arcadeOpen, lives } = useGamingMode();
+  const {
+    activeGame,
+    arcadeOpen,
+    lives,
+    collectOrb,
+    registerOrbCollector,
+  } = useGamingMode();
   const [orbs, setOrbs] = useState<Orb[]>([]);
   const [now, setNow] = useState(() => Date.now());
+  const orbsRef = useRef(orbs);
+
+  useEffect(() => {
+    orbsRef.current = orbs;
+  }, [orbs]);
+
+  const removeOrb = useCallback((id: number) => {
+    if (!orbsRef.current.some((orb) => orb.id === id)) return false;
+    setOrbs((prev) => prev.filter((orb) => orb.id !== id));
+    return true;
+  }, []);
+
+  useEffect(() => {
+    registerOrbCollector(removeOrb);
+    return () => registerOrbCollector(null);
+  }, [registerOrbCollector, removeOrb]);
 
   const spawnOrb = useCallback(() => {
     const tones: Orb["tone"][] = ["green", "cyan", "pink"];
@@ -61,12 +83,10 @@ export function GamingCollectibles() {
     };
   }, [spawnOrb, activeGame, arcadeOpen, lives]);
 
-  const collect = (id: number, tone: Orb["tone"]) => {
+  const tryCollect = (id: number, tone: Orb["tone"]) => {
     if (lives === 0) return;
-    setOrbs((prev) => prev.filter((orb) => orb.id !== id));
     const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
-    addScore(points, t("orbCollected", { points }));
-    growSnake();
+    collectOrb(id, points, t("orbCollected", { points }));
   };
 
   if (lives === 0) return null;
@@ -83,6 +103,8 @@ export function GamingCollectibles() {
           <button
             key={orb.id}
             type="button"
+            data-orb-id={orb.id}
+            data-orb-tone={orb.tone}
             className={`gaming-orb gaming-orb-${orb.tone} pointer-events-auto absolute`}
             style={{
               left: `${orb.x}%`,
@@ -90,7 +112,7 @@ export function GamingCollectibles() {
               opacity: fade,
               transform: `translate(-50%, -50%) scale(${scale})`,
             }}
-            onClick={() => collect(orb.id, orb.tone)}
+            onClick={() => tryCollect(orb.id, orb.tone)}
             aria-label={t("collectOrb")}
           />
         );

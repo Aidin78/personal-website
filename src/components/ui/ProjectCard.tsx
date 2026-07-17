@@ -1,16 +1,16 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import type { ProjectItem } from "@/content/projects";
+import type { LocalizedProject } from "@/content/projects";
 import { Link } from "@/i18n/navigation";
 
 type ProjectCardProps = {
-  project: ProjectItem;
+  project: LocalizedProject;
   visitLabel: string;
   featured?: boolean;
   index?: number;
 };
 
-const categoryColors: Record<ProjectItem["category"], string> = {
+const categoryColors: Record<LocalizedProject["category"], string> = {
   government: "from-violet-600/80 to-indigo-900/80",
   enterprise: "from-sky-600/80 to-blue-900/80",
   municipality: "from-emerald-600/80 to-teal-900/80",

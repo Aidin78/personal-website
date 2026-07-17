@@ -108,15 +108,27 @@
     "rights": "All rights reserved.",
     "tagline": "Designing and building modern web experiences with React, Next.js, and thoughtful UI craft.",
     "navigation": "Navigation",
-    "connect": "Connect"
+    "connect": "Connect",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "dribbble": "Dribbble"
   },
   "theme": {
-    "light": "Light mode",
-    "dark": "Dark mode"
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode",
+    "system": "Switch to system theme"
   },
   "locale": {
     "en": "English",
-    "fa": "فارسی"
+    "fa": "فارسی",
+    "switchTo": "Switch to {locale}"
+  },
+  "error": {
+    "eyebrow": "Error",
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can retry or go back home.",
+    "retry": "Try again",
+    "home": "Back to home"
   },
   "gaming": {
     "enable": "Enable gaming mode",
@@ -130,6 +142,7 @@
     "close": "Close",
     "arcadeTitle": "AIDIN ARCADE",
     "arcadeSubtitle": "Pick a mini-game and stack your score",
+    "blasterLivesNote": "Blaster uses its own lives — HUD hearts are for the snake session.",
     "backToMenu": "Back to menu",
     "hot": "Hot",
     "blasterTitle": "Neon Blaster",

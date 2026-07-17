@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useId, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { NeonBlasterGame } from "@/components/gaming/games/NeonBlasterGame";
@@ -8,23 +9,77 @@ import { StarCatcherGame } from "@/components/gaming/games/StarCatcherGame";
 export function ArcadePanel() {
   const t = useTranslations("gaming");
   const { arcadeOpen, setArcadeOpen, activeGame, setActiveGame } = useGamingMode();
+  const titleId = useId();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!arcadeOpen) return;
+
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const focusTimer = window.setTimeout(() => closeRef.current?.focus(), 0);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !panelRef.current) return;
+
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", onKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [arcadeOpen]);
 
   if (!arcadeOpen) return null;
 
+  const closeArcade = () => {
+    setActiveGame(null);
+    setArcadeOpen(false);
+  };
+
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-      <div className="gaming-arcade w-full max-w-3xl overflow-hidden rounded-2xl border-2 border-[#39ff14]/40">
+    <div
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      onClick={closeArcade}
+    >
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="gaming-arcade w-full max-w-3xl overflow-hidden rounded-2xl border-2 border-[#39ff14]/40"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="flex items-center justify-between border-b border-[#39ff14]/30 bg-black/80 px-5 py-4">
           <div>
-            <p className="gaming-pixel text-sm text-[#39ff14]">{t("arcadeTitle")}</p>
+            <p id={titleId} className="gaming-pixel text-sm text-[#39ff14]">
+              {t("arcadeTitle")}
+            </p>
             <p className="mt-1 text-xs text-[#00f0ff]/80">{t("arcadeSubtitle")}</p>
+            <p className="mt-1 text-[10px] text-[#ffe600]/70">{t("blasterLivesNote")}</p>
           </div>
           <button
+            ref={closeRef}
             type="button"
-            onClick={() => {
-              setActiveGame(null);
-              setArcadeOpen(false);
-            }}
+            onClick={closeArcade}
             className="gaming-pixel text-xs text-[#ff3864]"
           >
             {t("close")}

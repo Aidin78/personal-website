@@ -3,6 +3,7 @@ export type SkillGroup = {
   items: string[];
 };
 
+/** Skill labels stay in English (tech names); category titles come from i18n messages. */
 export const skills: SkillGroup[] = [
   {
     category: "frontend",
@@ -21,7 +22,7 @@ export const skills: SkillGroup[] = [
       "UI/UX Design Principles",
       "Wireframing & Prototyping",
       "Figma, Adobe XD",
-      "Design & Implementation of UI/UX for 30+ Government Websites",
+      "UI/UX for 30+ Government Websites",
     ],
   },
   {
@@ -29,7 +30,7 @@ export const skills: SkillGroup[] = [
     items: [
       "Git (GitHub / GitLab)",
       "SQL",
-      "Experience in Developing Custom CMS (Spirit Portal – Niafam)",
+      "Custom CMS (Spirit Portal – Niafam)",
     ],
   },
 ];

@@ -84,8 +84,16 @@ function keyToDir(key: string): Dir | null {
 
 export function GamingPlayer() {
   const t = useTranslations("gaming");
-  const { activeGame, arcadeOpen, snakeLength, loseLife, addScore, resetSnake, lives } =
-    useGamingMode();
+  const {
+    activeGame,
+    arcadeOpen,
+    snakeLength,
+    loseLife,
+    addScore,
+    resetSnake,
+    lives,
+    collectOrb,
+  } = useGamingMode();
   const paused = activeGame !== null || arcadeOpen;
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
@@ -95,12 +103,21 @@ export function GamingPlayer() {
   const directionRef = useRef<Dir>("up");
   const pendingDirRef = useRef<Dir>("up");
   const burningRef = useRef(false);
+  const burnTimerRef = useRef<number | null>(null);
   const heldKeysRef = useRef(new Set<string>());
   const snakeLengthRef = useRef(snakeLength);
 
   useEffect(() => {
     snakeLengthRef.current = snakeLength;
   }, [snakeLength]);
+
+  useEffect(() => {
+    return () => {
+      if (burnTimerRef.current !== null) {
+        window.clearTimeout(burnTimerRef.current);
+      }
+    };
+  }, []);
 
   const resetSnakeState = useCallback(() => {
     setSegments(initSegments());
@@ -119,7 +136,11 @@ export function GamingPlayer() {
     loseLife();
     addScore(0, t("snakeBurn"));
 
-    window.setTimeout(() => {
+    if (burnTimerRef.current !== null) {
+      window.clearTimeout(burnTimerRef.current);
+    }
+    burnTimerRef.current = window.setTimeout(() => {
+      burnTimerRef.current = null;
       if (willDie) {
         setDead(true);
       } else {
@@ -223,8 +244,12 @@ export function GamingPlayer() {
     const head = segments[0];
     if (!head) return;
 
-    const orbs = document.querySelectorAll(".gaming-orb");
+    const orbs = document.querySelectorAll<HTMLElement>(".gaming-orb");
     orbs.forEach((orb) => {
+      const id = Number(orb.dataset.orbId);
+      const tone = orb.dataset.orbTone as "green" | "cyan" | "pink" | undefined;
+      if (!Number.isFinite(id) || !tone) return;
+
       const rect = orb.getBoundingClientRect();
       const headRect = {
         left: head.x,
@@ -238,10 +263,11 @@ export function GamingPlayer() {
         rect.top < headRect.bottom &&
         rect.bottom > headRect.top;
       if (overlap) {
-        (orb as HTMLButtonElement).click();
+        const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
+        collectOrb(id, points, t("orbCollected", { points }));
       }
     });
-  }, [segments, paused]);
+  }, [segments, paused, collectOrb, t]);
 
   if (paused) return null;
 

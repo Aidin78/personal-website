@@ -9,20 +9,37 @@ import { ArcadePanel } from "@/components/gaming/ArcadePanel";
 import { GamingLinkBonus } from "@/components/gaming/GamingLinkBonus";
 
 export function GamingLayer() {
-  const { isGaming, sessionId } = useGamingMode();
+  const {
+    isGaming,
+    sessionId,
+    arcadeOpen,
+    activeGame,
+    setArcadeOpen,
+    setActiveGame,
+    toggleGaming,
+  } = useGamingMode();
 
   useEffect(() => {
     if (!isGaming) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+
+      if (activeGame) {
+        setActiveGame(null);
+        return;
       }
+      if (arcadeOpen) {
+        setArcadeOpen(false);
+        return;
+      }
+      toggleGaming();
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isGaming]);
+  }, [isGaming, arcadeOpen, activeGame, setArcadeOpen, setActiveGame, toggleGaming]);
 
   if (!isGaming) return null;
 
@@ -31,8 +48,8 @@ export function GamingLayer() {
       <div aria-hidden className="gaming-crt" />
       <div aria-hidden className="gaming-scanlines" />
       <GamingHUD />
-      <GamingCollectibles key={sessionId} />
-      <GamingPlayer key={sessionId} />
+      <GamingCollectibles key={`collectibles-${sessionId}`} />
+      <GamingPlayer key={`player-${sessionId}`} />
       <ArcadePanel />
       <GamingLinkBonus />
     </>

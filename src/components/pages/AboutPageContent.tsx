@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { experience } from "@/content/experience";
+import { tContent } from "@/content/i18n";
 import { getProfileName, profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { PageShell } from "@/components/ui/PageShell";
@@ -69,9 +70,12 @@ export async function AboutPageContent() {
         />
         <div className="relative space-y-0">
           <div className="absolute start-4 top-0 hidden h-full w-px bg-border sm:block" />
-          {experience.map((item, index) => (
+          {experience.map((item, index) => {
+            const company = tContent(item.company, locale);
+            const role = tContent(item.role, locale);
+            return (
             <article
-              key={`${item.company}-${item.period}`}
+              key={`${company}-${item.period}`}
               className="relative grid gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
             >
               <div className="hidden sm:block">
@@ -84,9 +88,9 @@ export async function AboutPageContent() {
                       {String(index + 1).padStart(2, "0")}
                     </p>
                     <h3 className="mt-2 font-display text-2xl font-bold">
-                      {item.company}
+                      {company}
                     </h3>
-                    <p className="mt-1 text-muted">{item.role}</p>
+                    <p className="mt-1 text-muted">{role}</p>
                   </div>
                   <p className="rounded-full border border-border bg-surface px-3 py-1 text-sm text-muted">
                     {item.period.replace("Present", experienceT("present"))}
@@ -105,7 +109,8 @@ export async function AboutPageContent() {
                 ) : null}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </Section>
 

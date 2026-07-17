@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { getAllProjectSlugs, getProjectBySlug } from "@/content/projects";
+import {
+  getAllProjectSlugs,
+  getLocalizedProjectBySlug,
+  getProjectBySlug,
+} from "@/content/projects";
 import { ProjectDetailContent } from "@/components/pages/ProjectDetailContent";
 
 type ProjectDetailPageProps = {
@@ -18,7 +22,7 @@ export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getLocalizedProjectBySlug(slug, locale);
 
   if (!project) {
     return { title: "Project not found" };
