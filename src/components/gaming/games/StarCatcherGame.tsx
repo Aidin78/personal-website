@@ -22,6 +22,8 @@ export function StarCatcherGame() {
   const [visible, setVisible] = useState(true);
   const activeRef = useRef(true);
   const visibleRef = useRef(true);
+  const caughtRef = useRef(new Set<number>());
+  const despawnTimersRef = useRef(new Map<number, number>());
 
   const spawnStar = useCallback(() => {
     if (!activeRef.current || !visibleRef.current) return;
@@ -40,6 +42,11 @@ export function StarCatcherGame() {
   }, []);
 
   const removeStar = useCallback((id: number) => {
+    const timer = despawnTimersRef.current.get(id);
+    if (timer !== undefined) {
+      window.clearTimeout(timer);
+      despawnTimersRef.current.delete(id);
+    }
     setStars((prev) => prev.filter((star) => star.id !== id));
   }, []);
 
@@ -87,12 +94,52 @@ export function StarCatcherGame() {
     return () => window.clearInterval(timer);
   }, [active, visible]);
 
+  // Timer-based despawn so stars clear even when CSS animation is disabled
+  useEffect(() => {
+    const alive = new Set(stars.map((star) => star.id));
+
+    for (const star of stars) {
+      if (despawnTimersRef.current.has(star.id)) continue;
+      const timer = window.setTimeout(
+        () => {
+          despawnTimersRef.current.delete(star.id);
+          removeStar(star.id);
+        },
+        (star.delay + star.duration) * 1000,
+      );
+      despawnTimersRef.current.set(star.id, timer);
+    }
+
+    for (const [id, timer] of despawnTimersRef.current) {
+      if (alive.has(id)) continue;
+      window.clearTimeout(timer);
+      despawnTimersRef.current.delete(id);
+    }
+  }, [stars, removeStar]);
+
+  useEffect(() => {
+    const timers = despawnTimersRef.current;
+    return () => {
+      for (const timer of timers.values()) {
+        window.clearTimeout(timer);
+      }
+      timers.clear();
+    };
+  }, []);
+
   const catchStar = (id: number) => {
+    if (caughtRef.current.has(id)) return;
+    caughtRef.current.add(id);
     removeStar(id);
     addScore(20, t("starCaught"));
   };
 
   const restart = () => {
+    for (const timer of despawnTimersRef.current.values()) {
+      window.clearTimeout(timer);
+    }
+    despawnTimersRef.current.clear();
+    caughtRef.current.clear();
     setStars([]);
     setTimeLeft(30);
     activeRef.current = true;
@@ -117,7 +164,6 @@ export function StarCatcherGame() {
               animationPlayState: visible ? "running" : "paused",
             }}
             onClick={() => catchStar(star.id)}
-            onAnimationEnd={() => removeStar(star.id)}
             aria-label={t("catchStar")}
           />
         ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Crosshair, Heart, Trophy, Zap } from "lucide-react";
+import { useEffect, useId, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 
@@ -17,6 +18,44 @@ export function GamingHUD() {
     toggleGaming,
     restartSession,
   } = useGamingMode();
+  const gameOverTitleId = useId();
+  const retryRef = useRef<HTMLButtonElement>(null);
+  const gameOverPanelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (lives !== 0) return;
+
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const focusTimer = window.setTimeout(() => retryRef.current?.focus(), 0);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !gameOverPanelRef.current) return;
+
+      const focusable = gameOverPanelRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", onKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [lives]);
 
   return (
     <>
@@ -31,18 +70,19 @@ export function GamingHUD() {
 
           <div className="gaming-panel pointer-events-auto flex flex-wrap items-center gap-3 px-4 py-3">
             <div className="flex items-center gap-2 text-[#39ff14]">
-              <Zap className="h-4 w-4" />
+              <Zap className="h-4 w-4" aria-hidden />
               <span className="gaming-pixel text-sm">{score}</span>
             </div>
             <div className="flex items-center gap-2 text-[#00f0ff]">
-              <Trophy className="h-4 w-4" />
+              <Trophy className="h-4 w-4" aria-hidden />
               <span className="gaming-pixel text-sm">{highScore}</span>
             </div>
-            <div className="flex items-center gap-1 text-[#ff3864]">
+            <div className="flex items-center gap-1 text-[#ff3864]" aria-label={`${t("lives")}: ${lives}`}>
               {Array.from({ length: 3 }).map((_, index) => (
                 <Heart
                   key={index}
                   className={`h-4 w-4 ${index < lives ? "fill-current" : "opacity-25"}`}
+                  aria-hidden
                 />
               ))}
             </div>
@@ -68,7 +108,7 @@ export function GamingHUD() {
               onClick={() => setArcadeOpen(!arcadeOpen)}
               className="gaming-panel gaming-pixel flex items-center gap-2 px-4 py-3 text-xs text-[#39ff14] transition-transform hover:scale-105"
             >
-              <Crosshair className="h-4 w-4" />
+              <Crosshair className="h-4 w-4" aria-hidden />
               {t("openArcade")}
             </button>
             <button
@@ -83,16 +123,29 @@ export function GamingHUD() {
       </div>
 
       {toast ? (
-        <div className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-sm text-[#39ff14] rtl:translate-x-1/2">
+        <div
+          role="status"
+          aria-live="polite"
+          className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-sm text-[#39ff14] rtl:translate-x-1/2"
+        >
           {toast}
         </div>
       ) : null}
 
       {lives === 0 ? (
         <div className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="gaming-panel flex flex-col items-center gap-4 px-6 py-5 text-center">
-            <p className="gaming-pixel text-sm text-[#ff3864]">{t("gameOver")}</p>
+          <div
+            ref={gameOverPanelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={gameOverTitleId}
+            className="gaming-panel flex flex-col items-center gap-4 px-6 py-5 text-center"
+          >
+            <p id={gameOverTitleId} className="gaming-pixel text-sm text-[#ff3864]">
+              {t("gameOver")}
+            </p>
             <button
+              ref={retryRef}
               type="button"
               onClick={restartSession}
               className="gaming-pixel text-xs text-[#39ff14] transition-transform hover:scale-105"

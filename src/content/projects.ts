@@ -510,6 +510,12 @@ export const projects: ProjectItem[] = [
 ];
 
 export function localizeProject(project: ProjectItem, locale: string): LocalizedProject {
+  const jalaliYear = Number(project.year);
+  const year =
+    locale === "fa" || !Number.isFinite(jalaliYear)
+      ? project.year
+      : String(jalaliYear + 621);
+
   return {
     slug: project.slug,
     title: tContent(project.title, locale),
@@ -517,7 +523,7 @@ export function localizeProject(project: ProjectItem, locale: string): Localized
     description: tContent(project.description, locale),
     overview: tContent(project.overview, locale),
     role: tContent(project.role, locale),
-    year: project.year,
+    year,
     technologies: project.technologies,
     highlights: tContentList(project.highlights, locale),
     image: project.image,

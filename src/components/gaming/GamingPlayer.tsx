@@ -27,32 +27,51 @@ const OPPOSITE: Record<Dir, Dir> = {
   right: "left",
 };
 
+function snapCell(n: number) {
+  return Math.round(n / CELL) * CELL;
+}
+
 function getBounds() {
+  const minCol = Math.ceil(16 / CELL);
+  const maxCol = Math.floor((window.innerWidth - CELL - 16) / CELL);
+  const minRow = Math.ceil(16 / CELL);
+  const maxRow = Math.floor((window.innerHeight - CELL - 16) / CELL);
   return {
-    minX: 16,
-    maxX: window.innerWidth - CELL - 16,
-    minY: 16,
-    maxY: window.innerHeight - CELL - 16,
+    minX: minCol * CELL,
+    maxX: Math.max(minCol, maxCol) * CELL,
+    minY: minRow * CELL,
+    maxY: Math.max(minRow, maxRow) * CELL,
   };
 }
 
-function wrapHead(x: number, y: number): Point {
+function wrapHead(x: number, y: number): { point: Point; wrapped: boolean } {
   const { minX, maxX, minY, maxY } = getBounds();
   let nx = x;
   let ny = y;
+  let wrapped = false;
 
-  if (nx > maxX) nx = minX;
-  else if (nx < minX) nx = maxX;
+  if (nx > maxX) {
+    nx = minX;
+    wrapped = true;
+  } else if (nx < minX) {
+    nx = maxX;
+    wrapped = true;
+  }
 
-  if (ny > maxY) ny = minY;
-  else if (ny < minY) ny = maxY;
+  if (ny > maxY) {
+    ny = minY;
+    wrapped = true;
+  } else if (ny < minY) {
+    ny = maxY;
+    wrapped = true;
+  }
 
-  return { x: nx, y: ny };
+  return { point: { x: nx, y: ny }, wrapped };
 }
 
 function initSegments(): Point[] {
-  const x = 80;
-  const y = 120;
+  const x = snapCell(80);
+  const y = snapCell(120);
   return Array.from({ length: INITIAL_LENGTH }, (_, i) => ({
     x,
     y: y + i * CELL,
@@ -100,12 +119,14 @@ export function GamingPlayer() {
   const [burning, setBurning] = useState(false);
   const [dead, setDead] = useState(false);
   const [boosting, setBoosting] = useState(false);
+  const [wrapping, setWrapping] = useState(false);
   const directionRef = useRef<Dir>("up");
   const pendingDirRef = useRef<Dir>("up");
   const burningRef = useRef(false);
   const burnTimerRef = useRef<number | null>(null);
   const heldKeysRef = useRef(new Set<string>());
   const snakeLengthRef = useRef(snakeLength);
+  const wrapClearRef = useRef<number | null>(null);
 
   useEffect(() => {
     snakeLengthRef.current = snakeLength;
@@ -116,7 +137,21 @@ export function GamingPlayer() {
       if (burnTimerRef.current !== null) {
         window.clearTimeout(burnTimerRef.current);
       }
+      if (wrapClearRef.current !== null) {
+        window.clearTimeout(wrapClearRef.current);
+      }
     };
+  }, []);
+
+  const markWrapped = useCallback(() => {
+    setWrapping(true);
+    if (wrapClearRef.current !== null) {
+      window.clearTimeout(wrapClearRef.current);
+    }
+    wrapClearRef.current = window.setTimeout(() => {
+      wrapClearRef.current = null;
+      setWrapping(false);
+    }, 0);
   }, []);
 
   const resetSnakeState = useCallback(() => {
@@ -223,11 +258,18 @@ export function GamingPlayer() {
 
       setSegments((prev) => {
         const head = prev[0]!;
-        const nextHead = wrapHead(head.x + delta.x, head.y + delta.y);
+        const { point: nextHead, wrapped } = wrapHead(
+          head.x + delta.x,
+          head.y + delta.y,
+        );
 
         if (hitsSelf(nextHead, prev.slice(1))) {
           window.setTimeout(triggerBurn, 0);
           return prev;
+        }
+
+        if (wrapped) {
+          window.setTimeout(markWrapped, 0);
         }
 
         return [nextHead, ...prev].slice(0, length);
@@ -243,7 +285,7 @@ export function GamingPlayer() {
     timeoutId = window.setTimeout(loop, TICK);
 
     return () => window.clearTimeout(timeoutId);
-  }, [paused, lives, dead, triggerBurn]);
+  }, [paused, lives, dead, triggerBurn, markWrapped]);
 
   useEffect(() => {
     if (paused || burningRef.current) return;
@@ -280,7 +322,7 @@ export function GamingPlayer() {
 
   return (
     <div
-      className={`gaming-snake pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting && !paused ? " gaming-snake-boost" : ""}${dead || lives === 0 ? " gaming-snake-dead" : ""}`}
+      className={`gaming-snake pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting && !paused ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}${dead || lives === 0 ? " gaming-snake-dead" : ""}`}
       aria-hidden
     >
       {segments.map((seg, i) => {

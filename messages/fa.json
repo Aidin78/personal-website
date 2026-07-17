@@ -13,7 +13,8 @@
     "cv": "دانلود رزومه",
     "brandTagline": "فرانت‌اند و طراح UI",
     "menu": "منو",
-    "close": "بستن"
+    "close": "بستن",
+    "skipToContent": "پرش به محتوا"
   },
   "hero": {
     "badge": "آماده همکاری در پروژه‌های جدید",
@@ -37,7 +38,7 @@
     "ctaButton": "ارتباط با من",
     "servicesEyebrow": "کاری که انجام می‌دهم",
     "servicesTitle": "طراحی، توسعه و تحویل محصولات دیجیتال",
-    "servicesSubtitle": "از UI و پروتوتایپ تا فرانت‌اند production-ready.",
+    "servicesSubtitle": "از UI و پروتوتایپ تا فرانت‌اند آمادهٔ انتشار.",
     "services": {
       "design": {
         "title": "طراحی UI / UX",
@@ -48,8 +49,8 @@
         "description": "اپلیکیشن‌های مدرن و واکنش‌گرا با React، Next.js و معماری کامپوننت مقیاس‌پذیر."
       },
       "systems": {
-        "title": "Design System و CMS",
-        "description": "سیستم‌های UI قابل‌استفاده‌مجدد و فرانت‌اند CMS اختصاصی مانند Spirit Portal در Niafam."
+        "title": "سیستم طراحی و CMS",
+        "description": "سیستم‌های UI قابل‌استفاده‌مجدد و فرانت‌اند CMS اختصاصی مانند Spirit Portal در نیافام."
       }
     }
   },
@@ -100,7 +101,7 @@
   },
   "contact": {
     "title": "تماس",
-    "subtitle": "برای ارتباط از ایمیل یا شبکه‌های اجتماعی استفاده کنید.",
+    "subtitle": "برای ارتباط از شبکه‌های اجتماعی استفاده کنید.",
     "email": "ایمیل",
     "availability": "توسعه‌دهنده فرانت‌اند و طراح UI"
   },
@@ -114,9 +115,9 @@
     "dribbble": "دریبل"
   },
   "theme": {
-    "light": "حالت روشن",
-    "dark": "حالت تاریک",
-    "system": "تم سیستم"
+    "light": "تغییر به حالت روشن",
+    "dark": "تغییر به حالت تاریک",
+    "system": "تغییر به تم سیستم"
   },
   "locale": {
     "en": "English",
@@ -130,6 +131,18 @@
     "retry": "تلاش دوباره",
     "home": "بازگشت به خانه"
   },
+  "notFound": {
+    "eyebrow": "۴۰۴",
+    "title": "صفحه پیدا نشد",
+    "description": "صفحه‌ای که به دنبال آن هستید وجود ندارد یا جابه‌جا شده است.",
+    "home": "بازگشت به خانه"
+  },
+  "social": {
+    "linkedin": "لینکدین",
+    "dribbble": "دریبل",
+    "codepen": "کدپن",
+    "github": "گیت‌هاب"
+  },
   "gaming": {
     "enable": "فعال‌سازی حالت گیم",
     "disable": "غیرفعال‌سازی حالت گیم",
@@ -140,12 +153,12 @@
     "openArcade": "آرکید",
     "exit": "خروج",
     "close": "بستن",
-    "arcadeTitle": "AIDIN ARCADE",
+    "arcadeTitle": "آرکید آیدین",
     "arcadeSubtitle": "یک مینی‌گیم انتخاب کن و امتیاز بگیر",
     "blasterLivesNote": "بلاستر جان جدا دارد — قلب‌های HUD برای جلسه مار است.",
     "backToMenu": "بازگشت به منو",
     "hot": "داغ",
-    "blasterTitle": "Neon Blaster",
+    "blasterTitle": "نئون بلستر",
     "blasterDesc": "شوتر فضایی سریع — فرار بده، بزن، موج‌ها رو نابود کن!",
     "blasterHint": "A/D یا ← → حرکت · SPACE یا W شلیک · دشمن‌ها رو نابود کن!",
     "blasterKill": "انفجار +35!",
@@ -156,7 +169,7 @@
     "wave": "موج",
     "kills": "کشت",
     "lives": "جان",
-    "starsTitle": "Star Catcher",
+    "starsTitle": "ستاره بگیر",
     "starsDesc": "ستاره‌های در حال سقوط را سریع کلیک کن",
     "snakeBurn": "خودسوزی! -1 جان",
     "snakeHint": "از WASD یا فلش‌ها استفاده کن",
@@ -164,7 +177,7 @@
     "retry": "دوباره بازی",
     "starCaught": "+20 ستاره!",
     "orbCollected": "+{points} XP",
-    "collectOrb": "جمع orb",
+    "collectOrb": "جمع‌آوری گوی",
     "catchStar": "گرفتن ستاره",
     "linkBonus": "+30 امتیاز مسیر!",
     "timeLeft": "زمان",

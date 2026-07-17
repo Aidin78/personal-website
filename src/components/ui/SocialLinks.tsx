@@ -1,4 +1,7 @@
+"use client";
+
 import { Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { profile, type SocialKey } from "@/content/profile";
 
 function LinkedInIcon() {
@@ -51,6 +54,7 @@ export function SocialLinks({
   emailLabel = "Email",
   className = "",
 }: SocialLinksProps) {
+  const t = useTranslations("social");
   const socialEntries = Object.entries(profile.social) as [SocialKey, string][];
 
   return (
@@ -63,8 +67,8 @@ export function SocialLinks({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-surface text-muted transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-lg hover:shadow-accent/10"
-            aria-label={key}
+            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-surface text-muted transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-lg hover:shadow-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label={t(key)}
           >
             <Icon />
           </a>
@@ -73,9 +77,9 @@ export function SocialLinks({
       {showEmail && profile.email ? (
         <a
           href={`mailto:${profile.email}`}
-          className="inline-flex items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-accent"
+          className="inline-flex items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
-          <Mail className="h-4 w-4" />
+          <Mail className="h-4 w-4" aria-hidden />
           {emailLabel}
         </a>
       ) : null}

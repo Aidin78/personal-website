@@ -62,7 +62,7 @@ export async function HomeHero() {
               <h1
                 className={`font-display leading-[0.95] tracking-tight text-foreground ${
                   locale === "fa"
-                    ? "text-4xl font-[950] sm:text-5xl lg:text-[4.25rem]"
+                    ? "text-4xl font-black sm:text-5xl lg:text-[4.25rem]"
                     : "text-5xl font-bold sm:text-6xl lg:text-[5.5rem]"
                 }`}
               >

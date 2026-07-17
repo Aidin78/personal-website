@@ -29,7 +29,9 @@ export function GamingCollectibles() {
   } = useGamingMode();
   const [orbs, setOrbs] = useState<Orb[]>([]);
   const [now, setNow] = useState(() => Date.now());
+  const [visible, setVisible] = useState(true);
   const orbsRef = useRef(orbs);
+  const hiddenAtRef = useRef<number | null>(null);
 
   useEffect(() => {
     orbsRef.current = orbs;
@@ -46,7 +48,32 @@ export function GamingCollectibles() {
     return () => registerOrbCollector(null);
   }, [registerOrbCollector, removeOrb]);
 
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) {
+        hiddenAtRef.current = Date.now();
+        setVisible(false);
+        return;
+      }
+
+      const hiddenAt = hiddenAtRef.current;
+      if (hiddenAt !== null) {
+        const pausedFor = Date.now() - hiddenAt;
+        hiddenAtRef.current = null;
+        setOrbs((prev) =>
+          prev.map((orb) => ({ ...orb, spawnAt: orb.spawnAt + pausedFor })),
+        );
+      }
+      setVisible(true);
+    };
+
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
   const spawnOrb = useCallback(() => {
+    if (document.hidden) return;
     const tones: Orb["tone"][] = ["green", "cyan", "pink"];
     setOrbs((prev) => {
       if (prev.length >= 10) return prev;
@@ -63,7 +90,7 @@ export function GamingCollectibles() {
   }, []);
 
   useEffect(() => {
-    if (activeGame || arcadeOpen || lives === 0) return;
+    if (activeGame || arcadeOpen || lives === 0 || !visible) return;
 
     const tick = window.setInterval(() => {
       const currentNow = Date.now();
@@ -81,7 +108,7 @@ export function GamingCollectibles() {
       window.clearInterval(spawn);
       window.clearTimeout(initial);
     };
-  }, [spawnOrb, activeGame, arcadeOpen, lives]);
+  }, [spawnOrb, activeGame, arcadeOpen, lives, visible]);
 
   const tryCollect = (id: number, tone: Orb["tone"]) => {
     if (lives === 0) return;

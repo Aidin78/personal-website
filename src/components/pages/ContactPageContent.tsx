@@ -7,6 +7,7 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 
 export async function ContactPageContent() {
   const t = await getTranslations("contact");
+  const tSocial = await getTranslations("social");
   const locale = await getLocale();
   const displayName = getProfileName(locale);
 
@@ -37,17 +38,19 @@ export async function ContactPageContent() {
             <SectionHeading title={t("title")} subtitle={t("subtitle")} />
             <SocialLinks emailLabel={t("email")} className="mt-2" />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {Object.entries(profile.social).map(([key, href]) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-2xl border border-border bg-surface px-4 py-4 text-sm font-medium capitalize text-muted transition-colors hover:border-accent hover:text-accent"
-                >
-                  {key}
-                </a>
-              ))}
+              {(Object.entries(profile.social) as [keyof typeof profile.social, string][]).map(
+                ([key, href]) => (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-2xl border border-border bg-surface px-4 py-4 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  >
+                    {tSocial(key)}
+                  </a>
+                ),
+              )}
             </div>
           </div>
         </div>

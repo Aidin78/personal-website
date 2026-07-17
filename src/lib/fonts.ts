@@ -1,17 +1,8 @@
 import localFont from "next/font/local";
 
+/** Core weights only — enough for body, UI, and display without loading the full family. */
 export const yekanBakh = localFont({
   src: [
-    {
-      path: "../../public/fonts/YekanBakh-Thin.woff2",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/YekanBakh-Light.woff2",
-      weight: "300",
-      style: "normal",
-    },
     {
       path: "../../public/fonts/YekanBakh-Regular.woff2",
       weight: "400",
@@ -28,18 +19,8 @@ export const yekanBakh = localFont({
       style: "normal",
     },
     {
-      path: "../../public/fonts/YekanBakh-ExtraBold.woff2",
-      weight: "800",
-      style: "normal",
-    },
-    {
       path: "../../public/fonts/YekanBakh-Black.woff2",
       weight: "900",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/YekanBakh-ExtraBlack.woff2",
-      weight: "950",
       style: "normal",
     },
   ],

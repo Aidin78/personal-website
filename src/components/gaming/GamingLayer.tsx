@@ -7,6 +7,7 @@ import { GamingCollectibles } from "@/components/gaming/GamingCollectibles";
 import { GamingPlayer } from "@/components/gaming/GamingPlayer";
 import { ArcadePanel } from "@/components/gaming/ArcadePanel";
 import { GamingLinkBonus } from "@/components/gaming/GamingLinkBonus";
+import { GamingFontLoader } from "@/components/gaming/GamingFontLoader";
 
 export function GamingLayer() {
   const {
@@ -45,6 +46,7 @@ export function GamingLayer() {
 
   return (
     <>
+      <GamingFontLoader />
       <div aria-hidden className="gaming-crt" />
       <div aria-hidden className="gaming-scanlines" />
       <GamingHUD />

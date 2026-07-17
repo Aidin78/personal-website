@@ -232,7 +232,7 @@ export function NeonBlasterGame() {
               explode(enemy.x + ENEMY_W / 2, enemy.y + ENEMY_H / 2, enemy.hue);
               state.kills += 1;
               setKills(state.kills);
-              addScore(35);
+              addScore(35, t("blasterKill"));
 
               if (state.kills > 0 && state.kills % 8 === 0) {
                 state.wave += 1;

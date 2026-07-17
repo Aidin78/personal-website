@@ -13,7 +13,8 @@
     "cv": "Download CV",
     "brandTagline": "Front-End & UI Designer",
     "menu": "Menu",
-    "close": "Close"
+    "close": "Close",
+    "skipToContent": "Skip to content"
   },
   "hero": {
     "badge": "Available for new projects",
@@ -100,7 +101,7 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's connect — reach out via email or social media.",
+    "subtitle": "Let's connect — reach out via social media.",
     "email": "Email",
     "availability": "Front-End Developer & UI Designer"
   },
@@ -129,6 +130,18 @@
     "description": "An unexpected error occurred. You can retry or go back home.",
     "retry": "Try again",
     "home": "Back to home"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "home": "Back to home"
+  },
+  "social": {
+    "linkedin": "LinkedIn",
+    "dribbble": "Dribbble",
+    "codepen": "CodePen",
+    "github": "GitHub"
   },
   "gaming": {
     "enable": "Enable gaming mode",

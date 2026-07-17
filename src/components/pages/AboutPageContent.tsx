@@ -73,9 +73,10 @@ export async function AboutPageContent() {
           {experience.map((item, index) => {
             const company = tContent(item.company, locale);
             const role = tContent(item.role, locale);
+            const period = tContent(item.period, locale);
             return (
             <article
-              key={`${company}-${item.period}`}
+              key={`${company}-${period}`}
               className="relative grid gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
             >
               <div className="hidden sm:block">
@@ -93,7 +94,7 @@ export async function AboutPageContent() {
                     <p className="mt-1 text-muted">{role}</p>
                   </div>
                   <p className="rounded-full border border-border bg-surface px-3 py-1 text-sm text-muted">
-                    {item.period.replace("Present", experienceT("present"))}
+                    {period.replace("Present", experienceT("present"))}
                   </p>
                 </div>
                 {item.url ? (

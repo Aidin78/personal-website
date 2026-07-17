@@ -487,6 +487,10 @@ html[lang="fa"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .animated-grid-beam,
   .animated-grid-glow-1,
   .animated-grid-glow-2,
@@ -495,9 +499,20 @@ html[lang="fa"] {
   .animate-float-delay-2,
   .animate-float-delay-3,
   .animate-float-delay-4,
+  .animate-fade-up,
+  .animate-pulse-glow,
+  .animate-ping,
   .marquee-mask > div,
-  .falling-capsule {
+  .falling-capsule,
+  .gaming-toast,
+  .gaming-snake-burning .gaming-snake-head,
+  .gaming-snake-burning .gaming-snake-segment {
     animation: none !important;
+  }
+
+  .gaming-snake-head,
+  .gaming-snake-segment {
+    transition: none !important;
   }
 
   .gaming-star {
@@ -544,7 +559,7 @@ html.gaming-mode .glass-card {
 }
 
 .gaming-pixel {
-  font-family: var(--font-press-start), monospace;
+  font-family: "Press Start 2P", monospace;
   line-height: 1.6;
 }
 
@@ -666,6 +681,11 @@ html.gaming-mode .glass-card {
   position: absolute;
   border-radius: 3px;
   transition: left 0.07s linear, top 0.07s linear;
+}
+
+.gaming-snake-wrapping .gaming-snake-head,
+.gaming-snake-wrapping .gaming-snake-segment {
+  transition: none;
 }
 
 .gaming-snake-head {

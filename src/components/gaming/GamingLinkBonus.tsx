@@ -4,9 +4,19 @@ import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 
+function clearLinkBonuses() {
+  document.querySelectorAll<HTMLElement>("[data-gaming-bonus]").forEach((link) => {
+    delete link.dataset.gamingBonus;
+  });
+}
+
 export function GamingLinkBonus() {
   const t = useTranslations("gaming");
-  const { isGaming, addScore, arcadeOpen, activeGame } = useGamingMode();
+  const { isGaming, addScore, arcadeOpen, activeGame, sessionId } = useGamingMode();
+
+  useEffect(() => {
+    clearLinkBonuses();
+  }, [sessionId, isGaming]);
 
   useEffect(() => {
     if (!isGaming || arcadeOpen || activeGame) return;

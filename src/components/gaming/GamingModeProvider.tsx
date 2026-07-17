@@ -49,7 +49,8 @@ function getLevel(score: number) {
 
 function readStoredHighScore() {
   if (typeof window === "undefined") return 0;
-  return Number(localStorage.getItem(HIGH_SCORE_KEY) || 0);
+  const raw = Number(localStorage.getItem(HIGH_SCORE_KEY) || 0);
+  return Number.isFinite(raw) && raw >= 0 ? Math.floor(raw) : 0;
 }
 
 export function GamingModeProvider({ children }: { children: ReactNode }) {
@@ -66,6 +67,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const toastTimerRef = useRef<number | null>(null);
   const collectedOrbsRef = useRef(new Set<number>());
   const orbCollectorRef = useRef<((id: number) => boolean) | null>(null);
+  const scoreRef = useRef(0);
+  const highScoreRef = useRef(readStoredHighScore());
 
   useEffect(() => {
     localStorage.removeItem("aidin-portfolio-gaming");
@@ -100,15 +103,15 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const addScore = useCallback(
     (points: number, reason?: string) => {
       if (points !== 0) {
-        setScore((prev) => {
-          const next = prev + points;
-          setHighScore((high) => {
-            const updated = Math.max(high, next);
-            localStorage.setItem(HIGH_SCORE_KEY, String(updated));
-            return updated;
-          });
-          return next;
-        });
+        const next = scoreRef.current + points;
+        scoreRef.current = next;
+        setScore(next);
+
+        if (next > highScoreRef.current) {
+          highScoreRef.current = next;
+          setHighScore(next);
+          localStorage.setItem(HIGH_SCORE_KEY, String(next));
+        }
       }
       if (reason) showToast(reason);
     },
@@ -134,6 +137,7 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const resetSession = useCallback(() => {
     setArcadeOpen(false);
     setActiveGame(null);
+    scoreRef.current = 0;
     setScore(0);
     setLives(3);
     setSnakeLength(INITIAL_SNAKE_LENGTH);
@@ -146,6 +150,7 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     setSnakeLength(INITIAL_SNAKE_LENGTH);
     setArcadeOpen(false);
     setActiveGame(null);
+    scoreRef.current = 0;
     setScore(0);
     collectedOrbsRef.current.clear();
   }, []);

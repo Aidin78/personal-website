@@ -69,7 +69,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
               title={project.title}
               gallery={project.gallery}
               galleryLabel={t("gallery")}
-              emptyHint={t("galleryEmptyHint", { slug: project.slug })}
+              emptyHint=""
             />
 
             <div className="grid gap-6 md:grid-cols-2">

@@ -18,7 +18,6 @@ export function ArcadePanel() {
     if (!arcadeOpen) return;
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    const focusTimer = window.setTimeout(() => closeRef.current?.focus(), 0);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || !panelRef.current) return;
@@ -42,11 +41,24 @@ export function ArcadePanel() {
 
     document.addEventListener("keydown", onKeyDown);
     return () => {
-      window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", onKeyDown);
       previousFocusRef.current?.focus();
     };
   }, [arcadeOpen]);
+
+  useEffect(() => {
+    if (!arcadeOpen) return;
+
+    const focusTimer = window.setTimeout(() => {
+      if (activeGame) {
+        panelRef.current?.querySelector<HTMLElement>("button")?.focus();
+      } else {
+        closeRef.current?.focus();
+      }
+    }, 0);
+
+    return () => window.clearTimeout(focusTimer);
+  }, [arcadeOpen, activeGame]);
 
   if (!arcadeOpen) return null;
 

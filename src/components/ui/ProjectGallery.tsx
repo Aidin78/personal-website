@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Maximize2 } from "lucide-react";
 
 type ProjectGalleryProps = {
   cover: string;
@@ -19,20 +18,24 @@ export function ProjectGallery({
   galleryLabel,
   emptyHint,
 }: ProjectGalleryProps) {
-  const images = [cover, ...gallery.filter((item) => item !== cover)];
+  const extras = gallery.filter((item) => item !== cover);
+  const images = [cover, ...extras];
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = images[activeIndex] ?? cover;
+  const hasExtras = extras.length > 0;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h2 className="font-display text-2xl font-bold">{galleryLabel}</h2>
-        <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted">
-          {activeIndex + 1} / {images.length}
-        </span>
+        {hasExtras ? (
+          <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted">
+            {activeIndex + 1} / {images.length}
+          </span>
+        ) : null}
       </div>
 
-      <div className="group relative overflow-hidden rounded-[1.75rem] border border-border bg-surface-solid">
+      <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-surface-solid">
         <div className="relative aspect-[16/10] sm:aspect-[16/9]">
           <Image
             key={activeImage}
@@ -44,20 +47,19 @@ export function ProjectGallery({
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-          <div className="absolute end-4 top-4 rounded-full border border-white/20 bg-black/30 p-2 text-white backdrop-blur-md opacity-0 transition-opacity group-hover:opacity-100">
-            <Maximize2 className="h-4 w-4" />
-          </div>
         </div>
       </div>
 
-      {images.length > 1 ? (
+      {hasExtras ? (
         <div className="grid grid-cols-4 gap-3 sm:grid-cols-5 md:grid-cols-6">
           {images.map((image, index) => (
             <button
               key={`${image}-${index}`}
               type="button"
               onClick={() => setActiveIndex(index)}
-              className={`relative aspect-[4/3] overflow-hidden rounded-2xl border transition-all ${
+              aria-pressed={activeIndex === index}
+              aria-label={`${title} thumbnail ${index + 1}`}
+              className={`relative aspect-[4/3] overflow-hidden rounded-2xl border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 activeIndex === index
                   ? "border-accent ring-2 ring-accent/30"
                   : "border-border opacity-70 hover:opacity-100"
@@ -65,7 +67,7 @@ export function ProjectGallery({
             >
               <Image
                 src={image}
-                alt={`${title} thumbnail ${index + 1}`}
+                alt=""
                 fill
                 className="object-cover"
                 sizes="120px"
@@ -73,11 +75,11 @@ export function ProjectGallery({
             </button>
           ))}
         </div>
-      ) : (
+      ) : emptyHint ? (
         <p className="rounded-2xl border border-dashed border-border bg-surface px-4 py-3 text-sm text-muted">
           {emptyHint}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }
