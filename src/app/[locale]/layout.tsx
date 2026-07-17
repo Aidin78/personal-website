@@ -7,7 +7,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { yekanBakh } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { ThemeScript } from "@/components/providers/ThemeScript";
+import { themeScript } from "@/components/providers/theme";
 import { GamingModeProvider } from "@/components/gaming/GamingModeProvider";
 import { GamingLayer } from "@/components/gaming/GamingLayer";
 import { Header } from "@/components/layout/Header";
@@ -96,7 +96,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
-        <ThemeScript />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${fontClass} relative min-h-full antialiased`}>
         <ThemeProvider>

@@ -6,13 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import {
   applyTheme,
   getStoredTheme,
-  resolveTheme,
   themeStorageKey,
   type Theme,
 } from "@/components/providers/theme";
@@ -27,36 +26,65 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function readInitialTheme(): Theme {
-  if (typeof window === "undefined") return "system";
+const listeners = new Set<() => void>();
+
+function emitThemeChange() {
+  for (const listener of listeners) listener();
+}
+
+function subscribeTheme(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getThemeSnapshot(): Theme {
   return getStoredTheme();
 }
 
+function getServerThemeSnapshot(): Theme {
+  return "system";
+}
+
+function subscribeSystemTheme(listener: () => void) {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", listener);
+  return () => media.removeEventListener("change", listener);
+}
+
+function getSystemThemeSnapshot(): "light" | "dark" {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function getServerSystemThemeSnapshot(): "light" | "dark" {
+  return "light";
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(readInitialTheme);
-  const [systemTheme, setSystemTheme] = useState<"light" | "dark">(() =>
-    typeof window === "undefined" ? "light" : resolveTheme("system"),
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot,
+  );
+  const systemTheme = useSyncExternalStore(
+    subscribeSystemTheme,
+    getSystemThemeSnapshot,
+    getServerSystemThemeSnapshot,
   );
 
   const resolvedTheme = theme === "system" ? systemTheme : theme;
 
   useEffect(() => {
     applyTheme(theme);
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const syncSystemTheme = () => {
-      setSystemTheme(media.matches ? "dark" : "light");
-    };
-
-    syncSystemTheme();
-    media.addEventListener("change", syncSystemTheme);
-    return () => media.removeEventListener("change", syncSystemTheme);
-  }, [theme]);
+  }, [theme, systemTheme]);
 
   const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
     localStorage.setItem(themeStorageKey, next);
     applyTheme(next);
+    emitThemeChange();
   }, []);
 
   const value = useMemo(
