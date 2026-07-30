@@ -1,0 +1,11 @@
+# Apache helpers for static Next.js export on cPanel
+DirectoryIndex index.html
+
+# Redirect bare domain to default locale
+RewriteEngine On
+RewriteRule ^$ /en/ [R=302,L]
+
+# Prefer HTTPS when the host has a certificate
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

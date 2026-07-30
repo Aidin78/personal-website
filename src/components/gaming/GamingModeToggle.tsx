@@ -12,16 +12,19 @@ export function GamingModeToggle() {
     <button
       type="button"
       onClick={toggleGaming}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border transition-all sm:h-10 sm:w-10 ${
+      className={`inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border px-2.5 transition-all sm:h-10 sm:gap-2 sm:px-3 ${
         isGaming
           ? "gaming-toggle-active border-[#39ff14]/60 bg-[#39ff14]/15 text-[#39ff14] shadow-[0_0_20px_rgba(57,255,20,0.35)]"
-          : "border-border bg-surface text-muted hover:border-accent hover:text-accent"
+          : "gaming-toggle-idle border-[#39ff14]/45 bg-[#39ff14]/10 text-[#39ff14] shadow-[0_0_14px_rgba(57,255,20,0.2)] hover:border-[#39ff14]/70 hover:bg-[#39ff14]/18 hover:shadow-[0_0_22px_rgba(57,255,20,0.35)]"
       }`}
       aria-label={isGaming ? t("disable") : t("enable")}
       aria-pressed={isGaming}
       title={isGaming ? t("disable") : t("enable")}
     >
-      <Gamepad2 className="h-4 w-4" />
+      <Gamepad2 className="h-4 w-4 shrink-0" aria-hidden />
+      <span className="hidden text-xs font-semibold tracking-wide sm:inline">
+        {isGaming ? t("toggleOn") : t("toggleLabel")}
+      </span>
     </button>
   );
 }

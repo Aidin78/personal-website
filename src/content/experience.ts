@@ -9,18 +9,18 @@ export type ExperienceItem = {
 
 export const experience: ExperienceItem[] = [
   {
-    company: { en: "Reoweb Co", fa: "ریووب" },
-    role: {
-      en: "Front-End Developer",
-      fa: "توسعه‌دهنده فرانت‌اند",
-    },
-    period: { en: "2025 – Present", fa: "۱۴۰۴ – اکنون" },
-  },
-  {
     company: { en: "Talayedaran", fa: "طلایه‌داران" },
     role: {
       en: "Front-End Developer — Next.js",
       fa: "توسعه‌دهنده فرانت‌اند — Next.js",
+    },
+    period: { en: "2026 – Present", fa: "۱۴۰۵ – اکنون" },
+  },
+  {
+    company: { en: "Reoweb Co", fa: "ریووب" },
+    role: {
+      en: "Front-End Developer",
+      fa: "توسعه‌دهنده فرانت‌اند",
     },
     period: { en: "2025 – Present", fa: "۱۴۰۴ – اکنون" },
   },

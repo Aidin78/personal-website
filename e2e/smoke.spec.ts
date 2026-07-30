@@ -49,7 +49,7 @@ test.describe("portfolio smoke", () => {
 
   test("theme toggle cycles document theme class", async ({ page }) => {
     await page.goto("/en");
-    const toggle = page.getByRole("button", { name: /Switch to (light|dark|system)/i });
+    const toggle = page.getByRole("button", { name: /Switch to (light|dark)/i });
     await expect(toggle).toBeVisible();
 
     const beforeLabel = await toggle.getAttribute("aria-label");

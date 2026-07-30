@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ProjectsPageContent } from "@/components/pages/ProjectsPageContent";
 import { projectsEnabled } from "@/content/projects";
 
@@ -12,6 +12,10 @@ export async function generateMetadata({
   params,
 }: ProjectsPageProps): Promise<Metadata> {
   const { locale } = await params;
+  if (!projectsEnabled) {
+    return { title: "Projects" };
+  }
+
   const t = await getTranslations({ locale, namespace: "projects" });
 
   return {
@@ -21,10 +25,12 @@ export async function generateMetadata({
 }
 
 export default async function ProjectsPage({ params }: ProjectsPageProps) {
-  if (!projectsEnabled) notFound();
-
   const { locale } = await params;
   setRequestLocale(locale);
+
+  if (!projectsEnabled) {
+    redirect(`/${locale}`);
+  }
 
   return <ProjectsPageContent />;
 }

@@ -186,6 +186,20 @@ html[lang="fa"] {
   animation: pulse-glow 4s ease-in-out infinite;
 }
 
+@keyframes gaming-toggle-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(57, 255, 20, 0.4);
+  }
+}
+
+.gaming-toggle-idle {
+  animation: gaming-toggle-pulse 2.4s ease-in-out infinite;
+}
+
 .header-bar {
   position: relative;
   transition: box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
@@ -501,6 +515,7 @@ html[lang="fa"] {
   .animate-float-delay-4,
   .animate-fade-up,
   .animate-pulse-glow,
+  .gaming-toggle-idle,
   .animate-ping,
   .marquee-mask > div,
   .falling-capsule,

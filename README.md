@@ -8,13 +8,13 @@ Personal portfolio website for **Aidin Sahebi**, Front-End Developer & UI Design
 
 ## Live Demo
 
-Deploy to Vercel and set `NEXT_PUBLIC_SITE_URL` for correct Open Graph metadata.
+Production domain: [aidinsahebi.ir](https://aidinsahebi.ir). Set `NEXT_PUBLIC_SITE_URL` for correct Open Graph metadata and sitemap URLs.
 
 ## Features
 
 - **Multi-page layout** — Home, About, Projects, Project details, Contact
 - **Bilingual** — `/en` (default) and `/fa` with RTL support via [next-intl](https://next-intl.dev)
-- Dark mode — light / dark / system cycle via the theme toggle
+- Dark mode — light / dark toggle
 - Gaming mode — optional arcade overlay with snake game, collectibles, and mini-games (Neon Blaster, Star Catcher)
 - **Content-driven** — projects, experience, and skills live in typed TypeScript files
 - **Responsive** — mobile nav, bento project grid, animated homepage background
@@ -28,7 +28,7 @@ Deploy to Vercel and set `NEXT_PUBLIC_SITE_URL` for correct Open Graph metadata.
 | Language | TypeScript |
 | Styling | Tailwind CSS v4 |
 | i18n | next-intl |
-| Theme | Custom provider (light / dark / system) |
+| Theme | Custom provider (light / dark) |
 | Icons | Lucide React |
 | Fonts | Space Grotesk, DM Sans (EN) · Yekan Bakh (FA) · Press Start 2P (gaming HUD) |
 
@@ -99,17 +99,34 @@ aidin-resume/
 | `/en/projects/[slug]` | Project detail |
 | `/en/contact`, `/fa/contact` | Contact |
 
-## Deploy on Vercel
+## Deploy on cPanel (static export)
 
-1. Push the repo to GitHub
-2. Import the project in [Vercel](https://vercel.com)
-3. Set environment variable: `NEXT_PUBLIC_SITE_URL=https://your-domain.com`
-4. Deploy
+This project builds to a static `out/` folder suitable for shared hosting with File Manager.
+
+1. Set the public site URL (PowerShell example):
+
+```powershell
+Set-Content -Path .env.local -Value "NEXT_PUBLIC_SITE_URL=https://aidinsahebi.ir"
+```
+
+2. Build:
 
 ```bash
 npm run build
 ```
 
+3. In cPanel File Manager, open `public_html` for `aidinsahebi.ir`.
+4. Upload **the contents** of the `out/` folder (not the folder itself) — or zip `out/` contents, upload, and extract.
+5. Confirm DNS for `aidinsahebi.ir` points at the host, then open `https://aidinsahebi.ir/en/`.
+
+`public/.htaccess` is copied into `out/` and redirects `/` → `/en/`.
+
+### Deploy on Vercel (Node)
+
+1. Push the repo to GitHub
+2. Import the project in [Vercel](https://vercel.com)
+3. Set environment variable: `NEXT_PUBLIC_SITE_URL=https://aidinsahebi.ir`
+4. Note: current `next.config.ts` uses `output: "export"` for cPanel. For Vercel SSR you would remove that setting.
 ## Author
 
 **Aidin Sahebi** — Front-End Developer & UI Designer

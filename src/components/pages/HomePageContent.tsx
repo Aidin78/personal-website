@@ -278,26 +278,28 @@ export async function HomeCta() {
   const t = await getTranslations("home");
 
   return (
-    <Section className="pb-24">
-      <div className="modern-panel relative overflow-hidden rounded-[2rem] p-8 sm:p-12">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent-secondary/10" />
-        <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div className="space-y-3">
-            <h2 className="font-display text-3xl font-bold sm:text-4xl">
-              {t("ctaTitle")}
-            </h2>
-            <p className="max-w-2xl text-muted">{t("ctaSubtitle")}</p>
+    <section className="pt-8 pb-24 sm:pt-12">
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <div className="modern-panel relative overflow-hidden rounded-[2rem] p-8 sm:p-12">
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent-secondary/10" />
+          <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="space-y-3">
+              <h2 className="font-display text-3xl font-bold sm:text-4xl">
+                {t("ctaTitle")}
+              </h2>
+              <p className="max-w-2xl text-muted">{t("ctaSubtitle")}</p>
+            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+            >
+              {t("ctaButton")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
-          >
-            {t("ctaButton")}
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
-    </Section>
+    </section>
   );
 }
 

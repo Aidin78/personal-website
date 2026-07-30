@@ -20,7 +20,7 @@ export type { Theme };
 
 type ThemeContextValue = {
   theme: Theme;
-  resolvedTheme: "light" | "dark";
+  resolvedTheme: Theme;
   setTheme: (theme: Theme) => void;
 };
 
@@ -44,23 +44,7 @@ function getThemeSnapshot(): Theme {
 }
 
 function getServerThemeSnapshot(): Theme {
-  return "system";
-}
-
-function subscribeSystemTheme(listener: () => void) {
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  media.addEventListener("change", listener);
-  return () => media.removeEventListener("change", listener);
-}
-
-function getSystemThemeSnapshot(): "light" | "dark" {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
-function getServerSystemThemeSnapshot(): "light" | "dark" {
-  return "light";
+  return "dark";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -69,17 +53,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     getThemeSnapshot,
     getServerThemeSnapshot,
   );
-  const systemTheme = useSyncExternalStore(
-    subscribeSystemTheme,
-    getSystemThemeSnapshot,
-    getServerSystemThemeSnapshot,
-  );
-
-  const resolvedTheme = theme === "system" ? systemTheme : theme;
 
   useEffect(() => {
     applyTheme(theme);
-  }, [theme, systemTheme]);
+  }, [theme]);
 
   const setTheme = useCallback((next: Theme) => {
     localStorage.setItem(themeStorageKey, next);
@@ -88,8 +65,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ theme, resolvedTheme, setTheme }),
-    [theme, resolvedTheme, setTheme],
+    () => ({ theme, resolvedTheme: theme, setTheme }),
+    [theme, setTheme],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

@@ -131,8 +131,7 @@
   },
   "theme": {
     "light": "Switch to light mode",
-    "dark": "Switch to dark mode",
-    "system": "Switch to system theme"
+    "dark": "Switch to dark mode"
   },
   "locale": {
     "en": "English",
@@ -161,6 +160,8 @@
   "gaming": {
     "enable": "Enable gaming mode",
     "disable": "Disable gaming mode",
+    "toggleLabel": "Play",
+    "toggleOn": "Playing",
     "player": "Player",
     "modeActive": "Gaming mode active",
     "controlsMove": "WASD / Arrows — move snake · Hold key to boost",

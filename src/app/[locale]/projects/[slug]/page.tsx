@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   getAllProjectSlugs,
   getLocalizedProjectBySlug,
@@ -14,6 +14,11 @@ type ProjectDetailPageProps = {
 };
 
 export function generateStaticParams() {
+  // Static export forbids an empty generateStaticParams result.
+  if (!projectsEnabled) {
+    return ["en", "fa"].map((locale) => ({ locale, slug: "unavailable" }));
+  }
+
   return getAllProjectSlugs().flatMap((slug) =>
     ["en", "fa"].map((locale) => ({ locale, slug })),
   );
@@ -23,6 +28,10 @@ export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
+  if (!projectsEnabled) {
+    return { title: "Project not found" };
+  }
+
   const project = getLocalizedProjectBySlug(slug, locale);
 
   if (!project) {
@@ -45,10 +54,12 @@ export async function generateMetadata({
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
-  if (!projectsEnabled) notFound();
-
   const { locale, slug } = await params;
   setRequestLocale(locale);
+
+  if (!projectsEnabled) {
+    redirect(`/${locale}`);
+  }
 
   if (!getProjectBySlug(slug)) {
     notFound();

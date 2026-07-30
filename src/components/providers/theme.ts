@@ -1,27 +1,24 @@
 const STORAGE_KEY = "theme";
 
-export type Theme = "light" | "dark" | "system";
+export type Theme = "light" | "dark";
 
-export const themeScript = `(function(){try{var d=document.documentElement,t=localStorage.getItem("${STORAGE_KEY}")||"system",r=t;if(t==="system"){r=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}d.classList.toggle("dark",r==="dark");d.style.colorScheme=r}catch(e){}})();`;
+export const themeScript = `(function(){try{var d=document.documentElement,t=localStorage.getItem("${STORAGE_KEY}")||"dark";if(t==="system"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(t!=="light"&&t!=="dark"){t="dark"}d.classList.toggle("dark",t==="dark");d.style.colorScheme=t}catch(e){}})();`;
 
 export function getStoredTheme(): Theme {
-  if (typeof window === "undefined") return "system";
+  if (typeof window === "undefined") return "dark";
   const value = localStorage.getItem(STORAGE_KEY);
-  if (value === "light" || value === "dark" || value === "system") return value;
-  return "system";
-}
-
-export function resolveTheme(theme: Theme): "light" | "dark" {
-  if (theme === "system") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  if (value === "light" || value === "dark") return value;
+  if (value === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   }
-  return theme;
+  return "dark";
 }
 
 export function applyTheme(theme: Theme) {
-  const resolved = resolveTheme(theme);
-  document.documentElement.classList.toggle("dark", resolved === "dark");
-  document.documentElement.style.colorScheme = resolved;
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
 }
 
 export { STORAGE_KEY as themeStorageKey };
