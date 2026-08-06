@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getProfileName, profile } from "@/content/profile";
+import { Link } from "@/i18n/navigation";
 import { PageShell } from "@/components/ui/PageShell";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 import { SocialLinks } from "@/components/ui/SocialLinks";
@@ -19,10 +20,11 @@ export async function ContactPageContent() {
             <div className="relative min-h-72">
               <Image
                 src={profile.heroImagePath}
-                alt=""
+                alt={`${displayName} — ${t("availability")}`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-8">
@@ -35,7 +37,7 @@ export async function ContactPageContent() {
           </div>
 
           <div className="glass-card rounded-[2rem] p-8 sm:p-10">
-            <SectionHeading title={t("title")} subtitle={t("subtitle")} />
+            <SectionHeading title={t("title")} subtitle={t("subtitle")} as="h1" />
             <SocialLinks emailLabel={t("email")} className="mt-2" />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {(Object.entries(profile.social) as [keyof typeof profile.social, string][]).map(
@@ -44,7 +46,7 @@ export async function ContactPageContent() {
                     key={key}
                     href={href}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="me noopener noreferrer"
                     className="rounded-2xl border border-border bg-surface px-4 py-4 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
                     {tSocial(key)}
@@ -52,6 +54,12 @@ export async function ContactPageContent() {
                 ),
               )}
             </div>
+            <Link
+              href="/about"
+              className="mt-8 inline-flex text-sm font-semibold text-accent transition-opacity hover:opacity-80"
+            >
+              {t("aboutLink")}
+            </Link>
           </div>
         </div>
       </Section>

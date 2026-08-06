@@ -3,6 +3,8 @@ type SectionHeadingProps = {
   title: string;
   subtitle?: string;
   align?: "start" | "center";
+  /** Use h1 once per page for the primary title. */
+  as?: "h1" | "h2";
 };
 
 export function SectionHeading({
@@ -10,8 +12,10 @@ export function SectionHeading({
   title,
   subtitle,
   align = "start",
+  as = "h2",
 }: SectionHeadingProps) {
   const alignClass = align === "center" ? "text-center items-center" : "text-start items-start";
+  const HeadingTag = as;
 
   return (
     <div className={`mb-12 flex flex-col gap-4 ${alignClass}`}>
@@ -20,9 +24,9 @@ export function SectionHeading({
           {eyebrow}
         </span>
       ) : null}
-      <h2 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+      <HeadingTag className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
         {title}
-      </h2>
+      </HeadingTag>
       {subtitle ? (
         <p className="max-w-2xl text-lg leading-relaxed text-muted">{subtitle}</p>
       ) : null}

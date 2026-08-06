@@ -66,7 +66,7 @@ export function SocialLinks({
             key={key}
             href={href}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="me noopener noreferrer"
             className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-surface text-muted transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-lg hover:shadow-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label={t(key)}
           >

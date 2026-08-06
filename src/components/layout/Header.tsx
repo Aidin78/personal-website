@@ -112,7 +112,7 @@ export function Header() {
             <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-background sm:h-11 sm:w-11">
               <Image
                 src={profile.avatarPath}
-                alt={displayName}
+                alt=""
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="44px"

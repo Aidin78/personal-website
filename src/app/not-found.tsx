@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  description: "The page you are looking for does not exist or has been moved.",
+  robots: { index: false, follow: true },
+};
 
 /** Root fallback when no locale segment is available. Prefer `[locale]/not-found`. */
 export default function NotFound() {
@@ -13,13 +20,13 @@ export default function NotFound() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/en"
+              href="/en/"
               className="inline-flex rounded-full bg-[#7b7eff] px-5 py-2.5 text-sm font-semibold text-[#06060b]"
             >
               English home
             </Link>
             <Link
-              href="/fa"
+              href="/fa/"
               className="inline-flex rounded-full border border-[#7b7eff]/50 px-5 py-2.5 text-sm font-semibold text-[#f5f7ff]"
             >
               خانه فارسی

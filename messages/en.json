@@ -22,6 +22,7 @@
     "title": "Front-End Developer & UI Designer",
     "pitch": "I build modern, responsive, and user-friendly web applications with a focus on performance, maintainability, and clean design.",
     "viewProjects": "View Projects",
+    "viewAbout": "About me",
     "downloadCv": "Download CV"
   },
   "home": {
@@ -76,7 +77,8 @@
     "summary": "Frontend Developer & UI Designer with several years of experience in designing and developing modern web applications and user interfaces.",
     "highlight1": "Successfully delivered 30+ UI/UX projects for government websites, managing the entire process from design to frontend implementation.",
     "highlight2": "Experienced in developing scalable frontend solutions and contributing to proprietary CMS platforms, including Spirit Portal at Niafam.",
-    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js."
+    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js.",
+    "ctaContact": "Get in touch"
   },
   "experience": {
     "title": "Work Experience",
@@ -118,7 +120,8 @@
     "title": "Contact",
     "subtitle": "Let's connect — reach out via social media.",
     "email": "Email",
-    "availability": "Front-End Developer & UI Designer"
+    "availability": "Front-End Developer & UI Designer",
+    "aboutLink": "Learn more about me"
   },
   "footer": {
     "rights": "All rights reserved.",

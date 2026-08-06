@@ -8,6 +8,15 @@ import {
   projectsEnabled,
 } from "@/content/projects";
 import { ProjectDetailContent } from "@/components/pages/ProjectDetailContent";
+import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  localePath,
+  SITE_URL,
+  webPageJsonLd,
+} from "@/lib/seo";
 
 type ProjectDetailPageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -29,26 +38,31 @@ export async function generateMetadata({
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!projectsEnabled) {
-    return { title: "Project not found" };
+    return {
+      title: "Project not found",
+      robots: { index: false, follow: false },
+    };
   }
 
   const project = getLocalizedProjectBySlug(slug, locale);
 
   if (!project) {
-    return { title: "Project not found" };
+    return {
+      title: "Project not found",
+      robots: { index: false, follow: false },
+    };
   }
 
   const t = await getTranslations({ locale, namespace: "projects" });
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/projects/${slug}`,
     title: `${project.title} — ${t("title")}`,
     description: project.overview,
-    openGraph: {
-      title: project.title,
-      description: project.overview,
-      images: [project.image],
-    },
-  };
+    image: project.image,
+    type: "article",
+  });
 }
 
 export default async function ProjectDetailPage({
@@ -58,12 +72,47 @@ export default async function ProjectDetailPage({
   setRequestLocale(locale);
 
   if (!projectsEnabled) {
-    redirect(`/${locale}`);
+    redirect(localePath(locale));
   }
 
-  if (!getProjectBySlug(slug)) {
+  const project = getLocalizedProjectBySlug(slug, locale);
+  if (!project || !getProjectBySlug(slug)) {
     notFound();
   }
 
-  return <ProjectDetailContent slug={slug} />;
+  const t = await getTranslations({ locale, namespace: "projects" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+
+  return (
+    <>
+      <JsonLd
+        data={[
+          webPageJsonLd({
+            locale,
+            path: `/projects/${slug}`,
+            title: project.title,
+            description: project.overview,
+          }),
+          breadcrumbJsonLd(locale, [
+            { name: tNav("home"), path: "" },
+            { name: tNav("projects"), path: "/projects" },
+            { name: project.title, path: `/projects/${slug}` },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            name: project.title,
+            description: project.overview,
+            url: absoluteUrl(locale, `/projects/${slug}`),
+            image: `${SITE_URL}${project.image}`,
+            dateCreated: project.year,
+            creator: { "@id": `${SITE_URL}/#person` },
+            inLanguage: locale,
+            keywords: project.technologies.join(", "),
+          },
+        ]}
+      />
+      <ProjectDetailContent slug={slug} />
+    </>
+  );
 }

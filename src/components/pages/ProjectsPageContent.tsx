@@ -16,6 +16,7 @@ export async function ProjectsPageContent() {
           eyebrow={t("eyebrow")}
           title={t("title")}
           subtitle={t("subtitle")}
+          as="h1"
         />
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project, index) => (

@@ -103,7 +103,21 @@ export async function HomeHero() {
                   {t("viewProjects")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              ) : null}
+              ) : (
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/30 transition-transform hover:-translate-y-0.5"
+                >
+                  {t("viewAbout")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
+              >
+                {home("ctaButton")}
+              </Link>
               <a
                 href={profile.resumePath}
                 download
@@ -121,7 +135,7 @@ export async function HomeHero() {
             <div className="modern-panel relative overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-border">
               <Image
                 src={profile.heroImagePath}
-                alt={displayName}
+                alt={`${displayName}, ${t("title")}`}
                 width={900}
                 height={700}
                 priority
@@ -135,7 +149,7 @@ export async function HomeHero() {
                 <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-accent/30">
                   <Image
                     src={profile.avatarPath}
-                    alt={displayName}
+                    alt=""
                     fill
                     className="object-cover"
                     sizes="56px"

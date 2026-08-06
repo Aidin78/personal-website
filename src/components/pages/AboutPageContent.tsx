@@ -5,6 +5,7 @@ import { experience } from "@/content/experience";
 import { tContent } from "@/content/i18n";
 import { getProfileName, profile } from "@/content/profile";
 import { skills } from "@/content/skills";
+import { Link } from "@/i18n/navigation";
 import { PageShell } from "@/components/ui/PageShell";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -30,7 +31,7 @@ export async function AboutPageContent() {
             <div className="relative overflow-hidden rounded-[2rem] border border-border">
               <Image
                 src={profile.portraitPath}
-                alt={displayName}
+                alt={`${displayName} — portrait`}
                 width={600}
                 height={720}
                 className="h-auto w-full object-cover"
@@ -44,6 +45,7 @@ export async function AboutPageContent() {
               eyebrow={about("title")}
               title={displayName}
               subtitle={about("summary")}
+              as="h1"
             />
             <div className="space-y-4 text-base leading-relaxed text-muted">
               <p>{about("description")}</p>
@@ -59,15 +61,18 @@ export async function AboutPageContent() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-opacity hover:opacity-80"
+            >
+              {about("ctaContact")}
+            </Link>
           </div>
         </div>
       </Section>
 
       <Section>
-        <SectionHeading
-          eyebrow={experienceT("title")}
-          title={experienceT("title")}
-        />
+        <SectionHeading title={experienceT("title")} />
         <div className="relative space-y-0">
           <div className="absolute start-4 top-0 hidden h-full w-px bg-border sm:block" />
           {experience.map((item, index) => {
@@ -116,7 +121,7 @@ export async function AboutPageContent() {
       </Section>
 
       <Section className="pb-24">
-        <SectionHeading eyebrow={skillsT("title")} title={skillsT("title")} />
+        <SectionHeading title={skillsT("title")} />
         <div className="grid gap-5 md:grid-cols-3">
           {skills.map((group, index) => (
             <div

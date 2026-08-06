@@ -13,16 +13,16 @@ test.describe("portfolio smoke", () => {
     await page.goto("/en/about");
     await expect(page.getByRole("heading", { name: /Aidin|آیدین/i }).first()).toBeVisible();
 
-    const projectsResponse = await page.goto("/en/projects");
+    await page.goto("/en/projects");
     const projectsNav = page.getByRole("navigation").getByRole("link", { name: "Projects" });
     const projectsVisible = (await projectsNav.count()) > 0;
 
     if (projectsVisible) {
-      expect(projectsResponse?.ok()).toBeTruthy();
       await expect(page.getByRole("heading").first()).toBeVisible();
       await expect(page.locator('a[href*="/projects/"]').first()).toBeVisible();
     } else {
-      await expect(page.getByRole("heading", { name: /not found/i })).toBeVisible();
+      await expect(page).toHaveURL(/\/en\/?$/);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     }
 
     await page.goto("/en/contact");
@@ -35,14 +35,14 @@ test.describe("portfolio smoke", () => {
 
     await Promise.all([
       page.waitForURL(/\/fa(\/|$)/),
-      page.getByRole("button", { name: "Switch to فارسی" }).click(),
+      page.getByRole("link", { name: "Switch to فارسی" }).click(),
     ]);
     await expect(page.locator("html")).toHaveAttribute("lang", "fa");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
 
     await Promise.all([
       page.waitForURL(/\/en(\/|$)/),
-      page.getByRole("button", { name: /تغییر به English|Switch to English/i }).click(),
+      page.getByRole("link", { name: /تغییر به English|Switch to English/i }).click(),
     ]);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
   });

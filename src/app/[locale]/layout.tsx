@@ -2,16 +2,25 @@ import { Space_Grotesk, DM_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { yekanBakh } from "@/lib/fonts";
+import {
+  SITE_NAME,
+  SITE_URL,
+  openGraphLocale,
+  personJsonLd,
+  websiteJsonLd,
+} from "@/lib/seo";
+import { profile } from "@/content/profile";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { themeScript } from "@/components/providers/theme";
 import { GamingModeProvider } from "@/components/gaming/GamingModeProvider";
 import { GamingLayer } from "@/components/gaming/GamingLayer";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -32,6 +41,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f7fc" },
+    { media: "(prefers-color-scheme: dark)", color: "#06060b" },
+  ],
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -41,34 +59,41 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
 
   return {
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "https://aidinsahebi.ir",
-    ),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: t("title"),
       template: locale === "fa" ? `%s | آیدین صاحبی` : `%s | Aidin Sahebi`,
     },
     description: t("description"),
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        en: "/en",
-        fa: "/fa",
-        "x-default": "/en",
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_NAME, url: SITE_URL }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
       },
     },
+    icons: {
+      icon: [{ url: "/favicon.ico", sizes: "any" }],
+    },
     openGraph: {
-      title: t("title"),
-      description: t("description"),
       type: "website",
-      locale: locale === "fa" ? "fa_IR" : "en_US",
-      images: ["/images/profile-ai.png"],
+      siteName: SITE_NAME,
+      locale: openGraphLocale(locale),
+      images: [{ url: profile.avatarPath, alt: SITE_NAME }],
     },
     twitter: {
       card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
-      images: ["/images/profile-ai.png"],
+      images: [profile.avatarPath],
     },
   };
 }
@@ -97,6 +122,7 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <JsonLd data={[websiteJsonLd(locale), personJsonLd(locale)]} />
       </head>
       <body className={`${fontClass} relative min-h-full antialiased`}>
         <ThemeProvider>

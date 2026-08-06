@@ -1,11 +1,9 @@
 import type { MetadataRoute } from "next";
 import { projects, projectsEnabled } from "@/content/projects";
 import { routing } from "@/i18n/routing";
+import { absoluteLanguageAlternates, localePath, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://aidinsahebi.ir";
 
 const staticPaths = projectsEnabled
   ? ["", "/about", "/projects", "/contact"]
@@ -16,18 +14,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const locale of routing.locales) {
     for (const path of staticPaths) {
+      const localized = localePath(locale, path);
       entries.push({
-        url: `${siteUrl}/${locale}${path}/`,
+        url: `${SITE_URL}${localized}`,
         lastModified: new Date(),
         changeFrequency: path === "" ? "weekly" : "monthly",
         priority: path === "" ? 1 : 0.8,
         alternates: {
-          languages: Object.fromEntries(
-            routing.locales.map((alt) => [
-              alt,
-              `${siteUrl}/${alt}${path}/`,
-            ]),
-          ),
+          languages: { ...absoluteLanguageAlternates(path) },
         },
       });
     }
@@ -35,18 +29,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (projectsEnabled) {
       for (const project of projects) {
         const path = `/projects/${project.slug}`;
+        const localized = localePath(locale, path);
         entries.push({
-          url: `${siteUrl}/${locale}${path}/`,
+          url: `${SITE_URL}${localized}`,
           lastModified: new Date(),
           changeFrequency: "monthly",
           priority: 0.6,
           alternates: {
-            languages: Object.fromEntries(
-              routing.locales.map((alt) => [
-                alt,
-                `${siteUrl}/${alt}${path}/`,
-              ]),
-            ),
+            languages: { ...absoluteLanguageAlternates(path) },
           },
         });
       }
