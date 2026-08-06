@@ -1,6 +1,6 @@
 "use client";
 
-import { Crosshair, Heart, Trophy, Zap } from "lucide-react";
+import { Heart, Trophy, Zap } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
@@ -13,8 +13,6 @@ export function GamingHUD() {
     lives,
     level,
     toast,
-    arcadeOpen,
-    setArcadeOpen,
     toggleGaming,
     restartSession,
   } = useGamingMode();
@@ -62,31 +60,31 @@ export function GamingHUD() {
       <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
         <div className="mx-auto flex max-w-6xl items-start justify-between gap-3">
           <div className="gaming-panel pointer-events-auto px-4 py-3">
-            <p className="gaming-pixel text-[10px] uppercase tracking-widest text-[#39ff14]">
+            <p className="gaming-pixel text-sm uppercase tracking-widest text-[#39ff14]">
               {t("player")} 01
             </p>
-            <p className="gaming-pixel mt-1 text-xs text-[#ff00ff]">{t("modeActive")}</p>
+            <p className="gaming-pixel mt-1 text-base text-[#ff00ff]">{t("modeActive")}</p>
           </div>
 
           <div className="gaming-panel pointer-events-auto flex flex-wrap items-center gap-3 px-4 py-3">
             <div className="flex items-center gap-2 text-[#39ff14]">
-              <Zap className="h-4 w-4" aria-hidden />
-              <span className="gaming-pixel text-sm">{score}</span>
+              <Zap className="h-5 w-5" aria-hidden />
+              <span className="gaming-pixel text-lg">{score}</span>
             </div>
             <div className="flex items-center gap-2 text-[#00f0ff]">
-              <Trophy className="h-4 w-4" aria-hidden />
-              <span className="gaming-pixel text-sm">{highScore}</span>
+              <Trophy className="h-5 w-5" aria-hidden />
+              <span className="gaming-pixel text-lg">{highScore}</span>
             </div>
             <div className="flex items-center gap-1 text-[#ff3864]" aria-label={`${t("lives")}: ${lives}`}>
               {Array.from({ length: 3 }).map((_, index) => (
                 <Heart
                   key={index}
-                  className={`h-4 w-4 ${index < lives ? "fill-current" : "opacity-25"}`}
+                  className={`h-5 w-5 ${index < lives ? "fill-current" : "opacity-25"}`}
                   aria-hidden
                 />
               ))}
             </div>
-            <span className="gaming-pixel text-xs text-[#ffe600]">LV {level}</span>
+            <span className="gaming-pixel text-base text-[#ffe600]">LV {level}</span>
           </div>
         </div>
       </div>
@@ -94,10 +92,10 @@ export function GamingHUD() {
       <div className="gaming-hud pointer-events-none fixed inset-x-0 bottom-4 z-[60] px-4">
         <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-3">
           <div className="gaming-panel pointer-events-auto hidden px-4 py-3 sm:block">
-            <p className="gaming-pixel text-[10px] leading-relaxed text-[#00f0ff]">
+            <p className="gaming-pixel text-sm leading-relaxed text-[#00f0ff]">
               {t("controlsMove")}
             </p>
-            <p className="gaming-pixel mt-1 text-[10px] leading-relaxed text-[#00f0ff]/80">
+            <p className="gaming-pixel mt-1 text-sm leading-relaxed text-[#00f0ff]/80">
               {t("controlsCollect")}
             </p>
           </div>
@@ -105,16 +103,8 @@ export function GamingHUD() {
           <div className="pointer-events-auto flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => setArcadeOpen(!arcadeOpen)}
-              className="gaming-panel gaming-pixel flex items-center gap-2 px-4 py-3 text-xs text-[#39ff14] transition-transform hover:scale-105"
-            >
-              <Crosshair className="h-4 w-4" aria-hidden />
-              {t("openArcade")}
-            </button>
-            <button
-              type="button"
               onClick={toggleGaming}
-              className="gaming-panel gaming-pixel px-4 py-3 text-xs text-[#ff3864]"
+              className="gaming-panel gaming-pixel px-4 py-3 text-base text-[#ff3864]"
             >
               {t("exit")}
             </button>
@@ -126,7 +116,7 @@ export function GamingHUD() {
         <div
           role="status"
           aria-live="polite"
-          className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-sm text-[#39ff14] rtl:translate-x-1/2"
+          className="gaming-toast gaming-pixel fixed start-1/2 top-32 z-[70] -translate-x-1/2 px-5 py-3 text-lg text-[#39ff14] rtl:translate-x-1/2"
         >
           {toast}
         </div>
@@ -141,14 +131,14 @@ export function GamingHUD() {
             aria-labelledby={gameOverTitleId}
             className="gaming-panel flex flex-col items-center gap-4 px-6 py-5 text-center"
           >
-            <p id={gameOverTitleId} className="gaming-pixel text-sm text-[#ff3864]">
+            <p id={gameOverTitleId} className="gaming-pixel text-lg text-[#ff3864]">
               {t("gameOver")}
             </p>
             <button
               ref={retryRef}
               type="button"
               onClick={restartSession}
-              className="gaming-pixel text-xs text-[#39ff14] transition-transform hover:scale-105"
+              className="gaming-pixel text-base text-[#39ff14] transition-transform hover:scale-105"
             >
               {t("retry")}
             </button>

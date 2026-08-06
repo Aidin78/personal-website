@@ -7,6 +7,13 @@ export const SITE_URL =
 
 export const SITE_NAME = "Aidin Sahebi";
 
+/**
+ * Significant content revision date for sitemap lastmod (YYYY-MM-DD).
+ * Update this when primary copy, structure, or indexable pages change —
+ * not on every rebuild.
+ */
+export const SITE_CONTENT_LASTMOD = "2026-08-06";
+
 /** Locale path with trailing slash to match `trailingSlash: true`. */
 export function localePath(locale: string, path = ""): string {
   const clean = path.replace(/^\/|\/$/g, "");
@@ -61,7 +68,7 @@ export function buildPageMetadata({
   path = "",
   title,
   description,
-  image = profile.avatarPath,
+  image = profile.portraitPath,
   type = "website",
   noIndex = false,
   absoluteTitle = false,
@@ -77,8 +84,18 @@ export function buildPageMetadata({
     description,
     alternates: pageAlternates(locale, path),
     robots: noIndex
-      ? { index: false, follow: false }
-      : { index: true, follow: true },
+      ? { index: false, follow: true }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
     openGraph: {
       title,
       description,
@@ -106,7 +123,7 @@ export function personJsonLd(locale: string) {
     "@id": `${SITE_URL}/#person`,
     name,
     url: absoluteUrl(locale),
-    image: `${SITE_URL}${profile.avatarPath}`,
+    image: `${SITE_URL}${profile.portraitPath}`,
     jobTitle: "Front-End Developer & UI Designer",
     sameAs: Object.values(profile.social),
     knowsAbout: [

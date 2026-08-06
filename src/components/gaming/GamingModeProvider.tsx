@@ -13,8 +13,6 @@ import {
 
 const HIGH_SCORE_KEY = "aidin-portfolio-gaming-highscore";
 
-export type ArcadeGame = "blaster" | "stars" | null;
-
 type GamingContextValue = {
   isGaming: boolean;
   toggleGaming: () => void;
@@ -26,10 +24,6 @@ type GamingContextValue = {
   resetLives: () => void;
   level: number;
   toast: string | null;
-  arcadeOpen: boolean;
-  setArcadeOpen: (open: boolean) => void;
-  activeGame: ArcadeGame;
-  setActiveGame: (game: ArcadeGame) => void;
   snakeLength: number;
   growSnake: () => void;
   resetSnake: () => void;
@@ -59,8 +53,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const [highScore, setHighScore] = useState(() => readStoredHighScore());
   const [lives, setLives] = useState(3);
   const [toast, setToast] = useState<string | null>(null);
-  const [arcadeOpen, setArcadeOpen] = useState(false);
-  const [activeGame, setActiveGame] = useState<ArcadeGame>(null);
   const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE_LENGTH);
   const [sessionId, setSessionId] = useState(0);
 
@@ -135,8 +127,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const resetSession = useCallback(() => {
-    setArcadeOpen(false);
-    setActiveGame(null);
     scoreRef.current = 0;
     setScore(0);
     setLives(3);
@@ -148,8 +138,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     setSessionId((id) => id + 1);
     setLives(3);
     setSnakeLength(INITIAL_SNAKE_LENGTH);
-    setArcadeOpen(false);
-    setActiveGame(null);
     scoreRef.current = 0;
     setScore(0);
     collectedOrbsRef.current.clear();
@@ -213,10 +201,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       resetLives,
       level,
       toast,
-      arcadeOpen,
-      setArcadeOpen,
-      activeGame,
-      setActiveGame,
       snakeLength,
       growSnake,
       resetSnake,
@@ -236,8 +220,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       resetLives,
       level,
       toast,
-      arcadeOpen,
-      activeGame,
       snakeLength,
       growSnake,
       resetSnake,

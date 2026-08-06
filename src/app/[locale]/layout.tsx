@@ -17,7 +17,7 @@ import { profile } from "@/content/profile";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { themeScript } from "@/components/providers/theme";
 import { GamingModeProvider } from "@/components/gaming/GamingModeProvider";
-import { GamingLayer } from "@/components/gaming/GamingLayer";
+import { GamingLayerGate } from "@/components/gaming/GamingLayerGate";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -25,11 +25,15 @@ import { JsonLd } from "@/components/seo/JsonLd";
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+  display: "swap",
+  preload: false,
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
+  display: "swap",
+  preload: false,
 });
 
 type LocaleLayoutProps = {
@@ -80,6 +84,9 @@ export async function generateMetadata({
       googleBot: {
         index: true,
         follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
     icons: {
@@ -89,11 +96,11 @@ export async function generateMetadata({
       type: "website",
       siteName: SITE_NAME,
       locale: openGraphLocale(locale),
-      images: [{ url: profile.avatarPath, alt: SITE_NAME }],
+      images: [{ url: profile.portraitPath, alt: SITE_NAME }],
     },
     twitter: {
       card: "summary_large_image",
-      images: [profile.avatarPath],
+      images: [profile.portraitPath],
     },
   };
 }
@@ -139,7 +146,7 @@ export default async function LocaleLayout({
                 {children}
               </main>
               <Footer />
-              <GamingLayer />
+              <GamingLayerGate />
             </GamingModeProvider>
           </NextIntlClientProvider>
         </ThemeProvider>

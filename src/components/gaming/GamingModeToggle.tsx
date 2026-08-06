@@ -22,7 +22,7 @@ export function GamingModeToggle() {
       title={isGaming ? t("disable") : t("enable")}
     >
       <Gamepad2 className="h-4 w-4 shrink-0" aria-hidden />
-      <span className="hidden text-xs font-semibold tracking-wide sm:inline">
+      <span className="hidden text-sm font-semibold tracking-wide sm:inline">
         {isGaming ? t("toggleOn") : t("toggleLabel")}
       </span>
     </button>

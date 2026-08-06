@@ -104,8 +104,6 @@ function keyToDir(key: string): Dir | null {
 export function GamingPlayer() {
   const t = useTranslations("gaming");
   const {
-    activeGame,
-    arcadeOpen,
     snakeLength,
     loseLife,
     addScore,
@@ -113,7 +111,6 @@ export function GamingPlayer() {
     lives,
     collectOrb,
   } = useGamingMode();
-  const paused = activeGame !== null || arcadeOpen;
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
   const [burning, setBurning] = useState(false);
@@ -187,12 +184,7 @@ export function GamingPlayer() {
   }, [addScore, dead, lives, loseLife, resetSnakeState, t]);
 
   useEffect(() => {
-    if (!paused) return;
-    heldKeysRef.current.clear();
-  }, [paused]);
-
-  useEffect(() => {
-    if (paused || lives === 0) return;
+    if (lives === 0) return;
 
     const syncBoost = () => {
       setBoosting(heldKeysRef.current.size > 0);
@@ -241,10 +233,10 @@ export function GamingPlayer() {
       window.removeEventListener("blur", onBlur);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [paused, dead, lives]);
+  }, [dead, lives]);
 
   useEffect(() => {
-    if (paused || lives === 0) return;
+    if (lives === 0) return;
 
     let timeoutId = 0;
 
@@ -285,10 +277,10 @@ export function GamingPlayer() {
     timeoutId = window.setTimeout(loop, TICK);
 
     return () => window.clearTimeout(timeoutId);
-  }, [paused, lives, dead, triggerBurn, markWrapped]);
+  }, [lives, dead, triggerBurn, markWrapped]);
 
   useEffect(() => {
-    if (paused || burningRef.current) return;
+    if (burningRef.current) return;
 
     const head = segments[0];
     if (!head) return;
@@ -316,13 +308,11 @@ export function GamingPlayer() {
         collectOrb(id, points, t("orbCollected", { points }));
       }
     });
-  }, [segments, paused, collectOrb, t]);
-
-  if (paused) return null;
+  }, [segments, collectOrb, t]);
 
   return (
     <div
-      className={`gaming-snake pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting && !paused ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}${dead || lives === 0 ? " gaming-snake-dead" : ""}`}
+      className={`gaming-snake pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}${dead || lives === 0 ? " gaming-snake-dead" : ""}`}
       aria-hidden
     >
       {segments.map((seg, i) => {

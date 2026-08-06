@@ -1,7 +1,9 @@
 import type { LocalizedString } from "@/content/i18n";
 import { tContent, tContentList } from "@/content/i18n";
 
-/** Flip to true when real project screenshots / galleries are ready. */
+/** Flip to true when real project screenshots / galleries are ready.
+ *  `npm run build` regenerates public/.htaccess — disabled projects get 301 → home.
+ */
 export const projectsEnabled = false;
 
 export type ProjectCategory =

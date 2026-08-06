@@ -8,14 +8,8 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   images: {
+    // Required for static export (no image optimizer server on cPanel).
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.dribbble.com",
-        pathname: "/userupload/**",
-      },
-    ],
   },
 };
 

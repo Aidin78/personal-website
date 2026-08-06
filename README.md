@@ -115,6 +115,8 @@ Set-Content -Path .env.local -Value "NEXT_PUBLIC_SITE_URL=https://aidinsahebi.ir
 npm run build
 ```
 
+`prebuild` regenerates `public/.htaccess` from `projectsEnabled` (301s for disabled project stubs, HTTPS, www→apex, `/`→`/en/`).
+
 3. In cPanel File Manager, open `public_html` for `aidinsahebi.ir`.
 4. Upload **the contents** of the `out/` folder (not the folder itself) — or zip `out/` contents, upload, and extract.
 5. Confirm DNS for `aidinsahebi.ir` points at the host, then open `https://aidinsahebi.ir/en/`.

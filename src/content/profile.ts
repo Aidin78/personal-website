@@ -5,9 +5,12 @@ export const profile = {
   },
   resumePath: "/CV-en.pdf",
   email: "",
-  avatarPath: "/images/profile-ai.png",
-  heroImagePath: "/images/hero-visual.png",
-  portraitPath: "/images/profile-ai.png",
+  /** Small crop for header / cards (~3KB). */
+  avatarPath: "/images/avatar.webp",
+  /** Medium crop for floating UI (~7KB). */
+  avatarMediumPath: "/images/avatar-md.webp",
+  heroImagePath: "/images/hero-visual.webp",
+  portraitPath: "/images/profile-portrait.webp",
   social: {
     linkedin: "https://linkedin.com/in/aidin78",
     dribbble: "https://dribbble.com/aidin78",

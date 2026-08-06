@@ -148,7 +148,7 @@ export async function HomeHero() {
               <div className="flex items-center gap-3">
                 <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-accent/30">
                   <Image
-                    src={profile.avatarPath}
+                    src={profile.avatarMediumPath}
                     alt=""
                     fill
                     className="object-cover"

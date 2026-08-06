@@ -21,8 +21,6 @@ const ORB_TTL_MAX = 6000;
 export function GamingCollectibles() {
   const t = useTranslations("gaming");
   const {
-    activeGame,
-    arcadeOpen,
     lives,
     collectOrb,
     registerOrbCollector,
@@ -90,7 +88,7 @@ export function GamingCollectibles() {
   }, []);
 
   useEffect(() => {
-    if (activeGame || arcadeOpen || lives === 0 || !visible) return;
+    if (lives === 0 || !visible) return;
 
     const tick = window.setInterval(() => {
       const currentNow = Date.now();
@@ -108,7 +106,7 @@ export function GamingCollectibles() {
       window.clearInterval(spawn);
       window.clearTimeout(initial);
     };
-  }, [spawnOrb, activeGame, arcadeOpen, lives, visible]);
+  }, [spawnOrb, lives, visible]);
 
   const tryCollect = (id: number, tone: Orb["tone"]) => {
     if (lives === 0) return;

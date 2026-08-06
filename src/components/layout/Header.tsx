@@ -98,8 +98,8 @@ export function Header() {
       <div
         className={`header-bar mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 rounded-2xl border px-3 sm:px-5 ${
           scrolled
-            ? "border-border/90 bg-background/90 shadow-xl shadow-black/8 backdrop-blur-xl dark:shadow-black/30"
-            : "border-border/60 bg-background/70 shadow-lg shadow-black/5 backdrop-blur-lg dark:shadow-black/20"
+            ? "border-border/90 bg-background/95 shadow-xl shadow-black/8 backdrop-blur-md dark:shadow-black/30 sm:backdrop-blur-xl"
+            : "border-border/60 bg-background/80 shadow-lg shadow-black/5 backdrop-blur-sm dark:shadow-black/20 sm:bg-background/70 sm:backdrop-blur-lg"
         }`}
       >
         <Link

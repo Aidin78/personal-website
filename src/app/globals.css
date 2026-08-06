@@ -530,12 +530,6 @@ html[lang="fa"] {
     transition: none !important;
   }
 
-  .gaming-star {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: translateY(40px) !important;
-  }
-
   .gaming-orb {
     animation: none !important;
     opacity: 1 !important;
@@ -575,7 +569,8 @@ html.gaming-mode .glass-card {
 
 .gaming-pixel {
   font-family: "Press Start 2P", monospace;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.75;
 }
 
 .gaming-crt {
@@ -802,69 +797,3 @@ html.gaming-mode .glass-card {
   }
 }
 
-.gaming-arcade {
-  box-shadow:
-    0 0 0 2px rgba(57, 255, 20, 0.2),
-    0 0 60px rgba(57, 255, 20, 0.15);
-}
-
-.gaming-arcade-card {
-  border: 1px solid rgba(57, 255, 20, 0.25);
-  background: rgba(57, 255, 20, 0.04);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.gaming-arcade-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(57, 255, 20, 0.55);
-}
-
-.gaming-arcade-card-hot {
-  border-color: rgba(255, 56, 100, 0.45);
-  background: linear-gradient(
-    135deg,
-    rgba(57, 255, 20, 0.08),
-    rgba(255, 0, 255, 0.06)
-  );
-  box-shadow: 0 0 30px rgba(255, 56, 100, 0.12);
-}
-
-.gaming-blaster-canvas {
-  image-rendering: pixelated;
-}
-
-.gaming-star {
-  width: 16px;
-  height: 16px;
-  background: #ffe600;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  animation-name: star-fall;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-  cursor: pointer;
-  filter: drop-shadow(0 0 8px rgba(255, 230, 0, 0.8));
-}
-
-@keyframes star-fall {
-  from {
-    transform: translateY(-20px);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(288px);
-    opacity: 0;
-  }
-}

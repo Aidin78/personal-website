@@ -36,6 +36,8 @@ Set-Content -Path .env.local -Value "NEXT_PUBLIC_SITE_URL=https://aidinsahebi.ir
 npm run build
 ```
 
+`prebuild` writes `public/.htaccess` (HTTPS, www→apex, `/`→`/en/`, and when `projectsEnabled` is false: 301 `/en|fa/projects/*` → home so Google does not see soft-200 stubs).
+
 3. Verify export artifacts exist:
 
 - `out/en/index.html`

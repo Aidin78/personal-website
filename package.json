@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-htaccess.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "htaccess": "node scripts/generate-htaccess.mjs",
+    "optimize:assets": "node scripts/optimize-assets.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.21.0",

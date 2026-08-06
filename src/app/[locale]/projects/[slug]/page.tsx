@@ -40,7 +40,7 @@ export async function generateMetadata({
   if (!projectsEnabled) {
     return {
       title: "Project not found",
-      robots: { index: false, follow: false },
+      robots: { index: false, follow: true },
     };
   }
 
@@ -49,7 +49,7 @@ export async function generateMetadata({
   if (!project) {
     return {
       title: "Project not found",
-      robots: { index: false, follow: false },
+      robots: { index: false, follow: true },
     };
   }
 

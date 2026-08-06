@@ -15,8 +15,8 @@ export const proof = {
   ],
   dribbbleUsername: "aidin78",
   /**
-   * Shot embeds are blocked by Dribbble (X-Frame-Options: SAMEORIGIN),
-   * so we show CDN thumbnails that link to the shot page.
+   * Local WebP mirrors of Dribbble shots (no CDN at runtime — better for Iran/VPN).
+   * Re-run `node scripts/optimize-assets.mjs` to refresh.
    */
   dribbbleShots: [
     {
@@ -25,8 +25,7 @@ export const proof = {
         en: "Multi-lang website — intro",
         fa: "وب‌سایت چندزبانه — صفحه معرفی",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/10148182/file/original-432327ba34cce9252e73a1b43a71618e.png?resize=800x600",
+      image: "/images/dribbble/22590088.webp",
     },
     {
       id: "22558795",
@@ -34,8 +33,7 @@ export const proof = {
         en: "Organization of nomadic affairs",
         fa: "سازمان امور عشایر",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/10064319/file/original-58952c4958167b6b39e7f8296719964c.png?resize=800x600",
+      image: "/images/dribbble/22558795.webp",
     },
     {
       id: "22557112",
@@ -43,8 +41,7 @@ export const proof = {
         en: "Government organization",
         fa: "سازمان دولتی",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/10060368/file/original-10391ccd957f46a3ebb86dbf98b9c12b.png?resize=800x600",
+      image: "/images/dribbble/22557112.webp",
     },
     {
       id: "22556701",
@@ -52,8 +49,7 @@ export const proof = {
         en: "Insurance company design",
         fa: "طراحی شرکت بیمه",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/10059354/file/original-02f93ec73eaf2e896d609ef6f545bfd4.png?resize=800x600",
+      image: "/images/dribbble/22556701.webp",
     },
     {
       id: "22543931",
@@ -61,8 +57,7 @@ export const proof = {
         en: "Oil refining company",
         fa: "شرکت پالایش نفت",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/10026736/file/original-634193911321a447e8aa1f4a850ae747.png?resize=800x600",
+      image: "/images/dribbble/22543931.webp",
     },
     {
       id: "22393381",
@@ -70,8 +65,7 @@ export const proof = {
         en: "Kerman governorate",
         fa: "استانداری کرمان",
       },
-      image:
-        "https://cdn.dribbble.com/userupload/9619367/file/original-8b2d9bd46583773e14e13b178b655cfa.png?resize=800x600",
+      image: "/images/dribbble/22393381.webp",
     },
   ] satisfies { id: string; title: LocalizedString; image: string }[],
 } as const;

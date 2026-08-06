@@ -3,23 +3,30 @@
 import { useEffect } from "react";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 
-const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
-const LINK_ID = "gaming-press-start-font";
+const STYLE_ID = "gaming-press-start-font-style";
 
-/** Loads the arcade pixel font only after gaming mode is turned on. */
+/**
+ * Loads the gaming pixel font from a local file (no Google Fonts CDN).
+ */
 export function GamingFontLoader() {
   const { isGaming } = useGamingMode();
 
   useEffect(() => {
     if (!isGaming) return;
-    if (document.getElementById(LINK_ID)) return;
+    if (document.getElementById(STYLE_ID)) return;
 
-    const link = document.createElement("link");
-    link.id = LINK_ID;
-    link.rel = "stylesheet";
-    link.href = FONT_HREF;
-    document.head.appendChild(link);
+    const style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent = `
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/PressStart2P-Regular.woff2") format("woff2");
+}
+`;
+    document.head.appendChild(style);
   }, [isGaming]);
 
   return null;

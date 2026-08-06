@@ -22,7 +22,7 @@ export async function generateMetadata({
   if (!projectsEnabled) {
     return {
       title: "Projects",
-      robots: { index: false, follow: false },
+      robots: { index: false, follow: true },
     };
   }
 
