@@ -48,6 +48,20 @@ export async function Footer() {
             <p className="font-semibold text-foreground">{t("connect")}</p>
             <div className="flex flex-col gap-2 text-muted">
               <a
+                href={`mailto:${profile.email}`}
+                dir="ltr"
+                className="transition-colors hover:text-accent"
+              >
+                {profile.email}
+              </a>
+              <a
+                href={`tel:${profile.phoneTel}`}
+                dir="ltr"
+                className="transition-colors hover:text-accent"
+              >
+                {profile.phone}
+              </a>
+              <a
                 href={profile.social.github}
                 target="_blank"
                 rel="me noopener noreferrer"

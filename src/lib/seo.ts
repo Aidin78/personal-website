@@ -124,6 +124,8 @@ export function personJsonLd(locale: string) {
     name,
     url: absoluteUrl(locale),
     image: `${SITE_URL}${profile.portraitPath}`,
+    email: profile.email,
+    telephone: profile.phoneTel,
     jobTitle: "Front-End Developer & UI Designer",
     sameAs: Object.values(profile.social),
     knowsAbout: [

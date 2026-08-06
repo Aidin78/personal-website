@@ -118,10 +118,13 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's connect — reach out via social media.",
+    "subtitle": "Email or call — social links are below if you prefer.",
     "email": "Email",
+    "phone": "Phone",
+    "socialTitle": "Social",
     "availability": "Front-End Developer & UI Designer",
-    "aboutLink": "Learn more about me"
+    "availableBadge": "Open to work",
+    "panelNote": "Usually replies within a day. Happy to talk about front-end, UI, or collaboration."
   },
   "footer": {
     "rights": "All rights reserved.",

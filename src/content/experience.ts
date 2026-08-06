@@ -7,22 +7,27 @@ export type ExperienceItem = {
   url?: string;
 };
 
+/**
+ * Periods use Jalali years as the source of truth; Gregorian is approximate year-level.
+ * Current concurrent roles first, then past roles newest → oldest.
+ */
 export const experience: ExperienceItem[] = [
   {
     company: { en: "Talayedaran", fa: "طلایه‌داران" },
     role: {
-      en: "Front-End Developer — Next.js",
-      fa: "توسعه‌دهنده فرانت‌اند — Next.js",
+      en: "Front-End Developer — Next.js & Blazor",
+      fa: "توسعه‌دهنده فرانت‌اند — Next.js و Blazor",
     },
     period: { en: "2026 – Present", fa: "۱۴۰۵ – اکنون" },
   },
   {
-    company: { en: "Reoweb Co", fa: "ریووب" },
+    company: { en: "Etemadmelal", fa: "اعتماد ملل" },
     role: {
-      en: "Front-End Developer",
-      fa: "توسعه‌دهنده فرانت‌اند",
+      en: "Development & Support",
+      fa: "توسعه و پشتیبانی",
     },
     period: { en: "2025 – Present", fa: "۱۴۰۴ – اکنون" },
+    url: "https://etemadmelal.com",
   },
   {
     company: { en: "Niafam", fa: "نیافام" },
@@ -30,7 +35,7 @@ export const experience: ExperienceItem[] = [
       en: "Frontend Developer & UI Designer",
       fa: "توسعه‌دهنده فرانت‌اند و طراح UI",
     },
-    period: { en: "2022 – 2025", fa: "۱۴۰۱ – ۱۴۰۴" },
+    period: { en: "2022 – Present", fa: "۱۴۰۱ – اکنون" },
     url: "https://niafam.com",
   },
   {
@@ -39,15 +44,14 @@ export const experience: ExperienceItem[] = [
       en: "Front-End Developer",
       fa: "توسعه‌دهنده فرانت‌اند",
     },
-    period: { en: "2020 – 2022", fa: "۱۳۹۹ – ۱۴۰۱" },
+    period: { en: "2020 – 2025", fa: "۱۳۹۹ – ۱۴۰۴" },
   },
   {
-    company: { en: "Etemadmelal", fa: "اعتماد ملل" },
+    company: { en: "Reoweb Co", fa: "ریووب" },
     role: {
-      en: "Development & Support",
-      fa: "توسعه و پشتیبانی",
+      en: "Front-End Developer",
+      fa: "توسعه‌دهنده فرانت‌اند",
     },
     period: { en: "2017 – 2019", fa: "۱۳۹۶ – ۱۳۹۸" },
-    url: "https://etemadmelal.com",
   },
 ];

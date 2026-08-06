@@ -4,7 +4,10 @@ export const profile = {
     fa: "آیدین صاحبی",
   },
   resumePath: "/CV-en.pdf",
-  email: "",
+  email: "sahebi.aidin78@gmail.com",
+  /** Display number (Iran local). Use `phoneTel` for tel: links. */
+  phone: "0936 384 0760",
+  phoneTel: "+989363840760",
   /** Small crop for header / cards (~3KB). */
   avatarPath: "/images/avatar.webp",
   /** Medium crop for floating UI (~7KB). */
@@ -12,7 +15,7 @@ export const profile = {
   heroImagePath: "/images/hero-visual.webp",
   portraitPath: "/images/profile-portrait.webp",
   social: {
-    linkedin: "https://linkedin.com/in/aidin78",
+    linkedin: "https://www.linkedin.com/in/aidin78",
     dribbble: "https://dribbble.com/aidin78",
     codepen: "https://codepen.io/Aidin-Sahebi",
     github: "https://github.com/Aidin78",
