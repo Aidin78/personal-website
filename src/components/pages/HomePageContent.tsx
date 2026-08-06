@@ -1,7 +1,6 @@
 import Image from "next/image";
 import {
   ArrowRight,
-  Download,
   Layers,
   Palette,
   Sparkles,
@@ -43,7 +42,7 @@ export async function HomeHero() {
   return (
     <section className="home-hero relative overflow-hidden pb-8 pt-6 sm:pt-10">
       <div className="relative mx-auto w-full max-w-6xl px-6">
-        <div className="mb-8 flex flex-wrap items-center gap-3">
+        <div className="mb-6 flex flex-wrap items-center gap-3 sm:mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -56,8 +55,48 @@ export async function HomeHero() {
           </span>
         </div>
 
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="animate-fade-up space-y-8">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+          {/* Photo first on mobile; text first on desktop */}
+          <div className="relative mx-auto w-full max-w-md order-1 lg:order-2 lg:max-w-none">
+            <HeroFloatingElements />
+            <div className="absolute -inset-6 animate-pulse-glow rounded-[2rem] bg-gradient-to-br from-accent/25 to-accent-secondary/25 blur-3xl" />
+            <div className="modern-panel relative overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-border">
+              <Image
+                src={profile.heroImagePath}
+                alt={`${displayName}, ${t("title")}`}
+                width={900}
+                height={700}
+                priority
+                className="h-auto max-h-[22rem] w-full object-cover object-top sm:max-h-none"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px]" />
+            </div>
+
+            <div className="animate-float absolute -bottom-4 -start-2 modern-panel hidden rounded-2xl p-4 shadow-xl sm:-bottom-5 sm:-start-4 sm:flex lg:-start-8">
+              <div className="flex items-center gap-3">
+                <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-accent/30">
+                  <Image
+                    src={profile.avatarMediumPath}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                  />
+                </div>
+                <div>
+                  <p className="font-display text-sm font-bold">{displayName}</p>
+                  <p className="text-xs text-muted">{t("title")}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="animate-float-delay-2 absolute -end-2 top-6 modern-panel hidden rounded-2xl px-4 py-3 shadow-lg sm:top-8 sm:block sm:-end-6">
+              <p className="font-display text-2xl font-bold gradient-text">30+</p>
+              <p className="text-xs text-muted">{home("projectsDelivered")}</p>
+            </div>
+          </div>
+
+          <div className="animate-fade-up order-2 space-y-6 lg:order-1 lg:space-y-8">
             <div className="space-y-5">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
                 {t("greeting")}
@@ -118,53 +157,6 @@ export async function HomeHero() {
               >
                 {home("ctaButton")}
               </Link>
-              <a
-                href={profile.resumePath}
-                download
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
-              >
-                <Download className="h-4 w-4" />
-                {t("downloadCv")}
-              </a>
-            </div>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <HeroFloatingElements />
-            <div className="absolute -inset-6 animate-pulse-glow rounded-[2rem] bg-gradient-to-br from-accent/25 to-accent-secondary/25 blur-3xl" />
-            <div className="modern-panel relative overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-border">
-              <Image
-                src={profile.heroImagePath}
-                alt={`${displayName}, ${t("title")}`}
-                width={900}
-                height={700}
-                priority
-                className="h-auto w-full object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px]" />
-            </div>
-
-            <div className="animate-float absolute -bottom-5 -start-4 modern-panel rounded-2xl p-4 shadow-xl sm:-start-8">
-              <div className="flex items-center gap-3">
-                <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-accent/30">
-                  <Image
-                    src={profile.avatarMediumPath}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="56px"
-                  />
-                </div>
-                <div>
-                  <p className="font-display text-sm font-bold">{displayName}</p>
-                  <p className="text-xs text-muted">{t("title")}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="animate-float-delay-2 absolute -end-2 top-8 modern-panel rounded-2xl px-4 py-3 shadow-lg sm:-end-6">
-              <p className="font-display text-2xl font-bold gradient-text">30+</p>
-              <p className="text-xs text-muted">{home("projectsDelivered")}</p>
             </div>
           </div>
         </div>

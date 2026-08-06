@@ -167,6 +167,15 @@ export function Header() {
         <div className="flex items-center gap-2 lg:hidden">
           <GamingModeToggle />
           <ThemeToggle />
+          <a
+            href={profile.resumePath}
+            download
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-accent to-accent-secondary text-accent-foreground shadow-md shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:w-auto sm:gap-1.5 sm:px-3"
+            aria-label={t("cv")}
+          >
+            <Download className="h-4 w-4" aria-hidden />
+            <span className="hidden sm:inline text-sm font-semibold">{t("cv")}</span>
+          </a>
           <button
             ref={menuButtonRef}
             type="button"
@@ -231,14 +240,6 @@ export function Header() {
 
           <div className="flex items-center gap-2 border-t border-border p-4">
             <LocaleSwitcher />
-            <a
-              href={profile.resumePath}
-              download
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-secondary px-4 py-3 text-sm font-semibold text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              <Download className="h-4 w-4" aria-hidden />
-              {t("cv")}
-            </a>
           </div>
         </div>
       ) : null}
