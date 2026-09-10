@@ -32,7 +32,7 @@
     "companies": "Companies worked with",
     "yearsExperience": "Years of experience",
     "featuredEyebrow": "Selected work",
-    "featuredSubtitle": "Featured projects from government, enterprise, and municipal platforms.",
+    "featuredSubtitle": "A closer look at production platforms — from public portals to enterprise dashboards.",
     "viewAllProjects": "View all projects",
     "ctaTitle": "Let's build something great together",
     "ctaSubtitle": "Open to frontend development, UI design, and product collaboration opportunities.",
@@ -43,7 +43,7 @@
     "services": {
       "design": {
         "title": "UI / UX Design",
-        "description": "Wireframes, prototypes, and polished interfaces for web platforms — especially government and enterprise products."
+        "description": "Wireframes, prototypes, and interfaces built to hold up in production — from public-sector portals to enterprise products."
       },
       "development": {
         "title": "Front-End Development",
@@ -94,7 +94,7 @@
   "projects": {
     "eyebrow": "Portfolio",
     "title": "Projects",
-    "subtitle": "Case studies from government, enterprise, and municipal platforms I've designed and built.",
+    "subtitle": "Selected case studies — from public institutions to enterprise products I've designed and built.",
     "visitSite": "Visit site",
     "viewCaseStudy": "View case study",
     "categories": {
