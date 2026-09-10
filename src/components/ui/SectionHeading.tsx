@@ -19,11 +19,7 @@ export function SectionHeading({
 
   return (
     <div className={`mb-12 flex flex-col gap-4 ${alignClass}`}>
-      {eyebrow ? (
-        <span className="inline-flex rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-          {eyebrow}
-        </span>
-      ) : null}
+      {eyebrow ? <span className="field-label">{eyebrow}</span> : null}
       <HeadingTag className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
         {title}
       </HeadingTag>

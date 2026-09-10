@@ -27,11 +27,8 @@ export async function ContactPageContent() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
               <div className="absolute inset-x-0 bottom-0 space-y-3 p-6 sm:p-7">
-                <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
-                  <span className="relative flex h-2 w-2" aria-hidden>
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                  </span>
+                <p className="inline-flex items-center gap-2 border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white">
+                  <span className="h-1.5 w-1.5 shrink-0 bg-emerald-400" aria-hidden />
                   {t("availableBadge")}
                 </p>
                 <div>
@@ -50,14 +47,14 @@ export async function ContactPageContent() {
                 <div className="flex flex-wrap gap-2">
                   <a
                     href={`mailto:${profile.email}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+                    className="inline-flex items-center gap-2 border border-white/25 bg-white/10 px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-white/20"
                   >
                     <Mail className="h-3.5 w-3.5" aria-hidden />
                     {t("email")}
                   </a>
                   <a
                     href={`tel:${profile.phoneTel}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+                    className="inline-flex items-center gap-2 border border-white/25 bg-white/10 px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-white/20"
                   >
                     <Phone className="h-3.5 w-3.5" aria-hidden />
                     <span dir="ltr">{profile.phone}</span>
@@ -79,7 +76,7 @@ export async function ContactPageContent() {
                   <Mail className="h-5 w-5" aria-hidden />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-muted">
+                  <span className="block text-xs font-semibold text-muted">
                     {t("email")}
                   </span>
                   <span className="mt-1 block break-all text-base font-medium text-foreground" dir="ltr">
@@ -96,7 +93,7 @@ export async function ContactPageContent() {
                   <Phone className="h-5 w-5" aria-hidden />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-muted">
+                  <span className="block text-xs font-semibold text-muted">
                     {t("phone")}
                   </span>
                   <span className="mt-1 block text-base font-medium text-foreground" dir="ltr">

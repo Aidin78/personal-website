@@ -19,9 +19,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
       <div className="space-y-5">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {t("githubLabel")}
-            </p>
+            <span className="field-label">{t("githubLabel")}</span>
             <h3 className="mt-2 font-display text-2xl font-bold">{t("githubTitle")}</h3>
           </div>
           <a
@@ -84,9 +82,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
       <div className="space-y-5">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {t("dribbbleLabel")}
-            </p>
+            <span className="field-label">{t("dribbbleLabel")}</span>
             <h3 className="mt-2 font-display text-2xl font-bold">{t("dribbbleTitle")}</h3>
           </div>
           <a

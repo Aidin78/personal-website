@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Download, Menu, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
@@ -35,6 +34,7 @@ export function Header() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const displayName = getProfileName(locale);
+  const initial = displayName.charAt(0);
   const visibleNavItems = navItems.filter(
     (item) => !("requiresProjects" in item && item.requiresProjects) || projectsEnabled,
   );
@@ -94,43 +94,31 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-3">
-      <div
-        className={`header-bar mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 rounded-2xl border px-3 sm:px-5 ${
-          scrolled
-            ? "border-border/90 bg-background/95 shadow-xl shadow-black/8 backdrop-blur-md dark:shadow-black/30 sm:backdrop-blur-xl"
-            : "border-border/60 bg-background/80 shadow-lg shadow-black/5 backdrop-blur-sm dark:shadow-black/20 sm:bg-background/70 sm:backdrop-blur-lg"
-        }`}
-      >
+    <header
+      className={`sticky top-0 z-50 border-b bg-background transition-shadow ${
+        scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent"
+      }`}
+    >
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href="/"
-          className="group flex min-w-0 items-center gap-3"
+          className="flex min-w-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <div className="relative shrink-0">
-            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-accent to-accent-secondary opacity-70 blur-[1px] transition-opacity group-hover:opacity-100" />
-            <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-background sm:h-11 sm:w-11">
-              <Image
-                src={profile.avatarPath}
-                alt=""
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="44px"
-              />
-            </div>
-          </div>
-
-          <div className="min-w-0 leading-tight">
-            <p className="truncate font-display text-sm font-bold tracking-tight sm:text-base">
-              <span className="gradient-text">{displayName}</span>
-            </p>
-            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.22em] text-muted sm:text-[11px]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-foreground font-display text-sm font-bold">
+            {initial}
+          </span>
+          <span className="hidden min-w-0 leading-tight sm:flex sm:flex-col">
+            <span className="truncate font-display text-sm font-bold">
+              {displayName}
+            </span>
+            <span className="truncate text-xs text-muted">
               {t("brandTagline")}
-            </p>
-          </div>
+            </span>
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-xl border border-border/80 bg-surface/80 p-1 lg:flex" aria-label={t("menu")}>
+        <nav className="hidden items-center gap-7 lg:flex" aria-label={t("menu")}>
           {visibleNavItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -138,10 +126,10 @@ export function Header() {
                 key={item.key}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`relative rounded-lg px-4 py-2 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                className={`border-b-2 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   active
-                    ? "bg-accent text-accent-foreground shadow-md shadow-accent/20"
-                    : "text-muted hover:bg-surface hover:text-foreground"
+                    ? "border-accent text-foreground"
+                    : "border-transparent text-muted hover:text-foreground"
                 }`}
               >
                 {t(item.key)}
@@ -150,14 +138,14 @@ export function Header() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <GamingModeToggle />
           <ThemeToggle />
           <LocaleSwitcher />
           <a
             href={profile.resumePath}
             download
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-secondary px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-md shadow-accent/25 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex items-center gap-2 border border-foreground bg-foreground px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <Download className="h-4 w-4" aria-hidden />
             <span className="hidden xl:inline">{t("cv")}</span>
@@ -170,7 +158,7 @@ export function Header() {
           <a
             href={profile.resumePath}
             download
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-accent to-accent-secondary text-accent-foreground shadow-md shadow-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:w-auto sm:gap-1.5 sm:px-3"
+            className="inline-flex h-10 w-10 items-center justify-center border border-foreground bg-foreground text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:w-auto sm:gap-1.5 sm:px-3"
             aria-label={t("cv")}
           >
             <Download className="h-4 w-4" aria-hidden />
@@ -179,7 +167,7 @@ export function Header() {
           <button
             ref={menuButtonRef}
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex h-10 w-10 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? t("close") : t("menu")}
             aria-expanded={open}
@@ -197,11 +185,11 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={menuTitleId}
-          className="mx-auto mt-3 max-w-6xl overflow-hidden rounded-2xl border border-border bg-background/95 shadow-2xl backdrop-blur-xl lg:hidden"
+          className="border-t border-border bg-background lg:hidden"
         >
           <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
             <div>
-              <p id={menuTitleId} className="font-display text-base font-bold gradient-text">
+              <p id={menuTitleId} className="font-display text-base font-bold">
                 {displayName}
               </p>
               <p className="text-xs text-muted">{t("brandTagline")}</p>
@@ -210,14 +198,14 @@ export function Header() {
               ref={closeButtonRef}
               type="button"
               onClick={() => setOpen(false)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="inline-flex h-9 w-9 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               aria-label={t("close")}
             >
               <X className="h-4 w-4" aria-hidden />
             </button>
           </div>
 
-          <nav className="flex flex-col gap-1 p-3">
+          <nav className="flex flex-col">
             {visibleNavItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -226,10 +214,8 @@ export function Header() {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   aria-current={active ? "page" : undefined}
-                  className={`rounded-xl px-4 py-3.5 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    active
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted hover:bg-surface hover:text-foreground"
+                  className={`border-b border-border px-5 py-4 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    active ? "text-accent" : "text-foreground"
                   }`}
                 >
                   {t(item.key)}
@@ -238,7 +224,7 @@ export function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2 border-t border-border p-4">
+          <div className="flex items-center gap-2 p-4">
             <LocaleSwitcher />
           </div>
         </div>

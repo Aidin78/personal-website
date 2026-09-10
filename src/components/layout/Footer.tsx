@@ -16,7 +16,7 @@ export async function Footer() {
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.2fr_1fr]">
         <div className="space-y-4">
           <Link href="/" className="font-display text-2xl font-bold">
-            <span className="gradient-text">{displayName}</span>
+            <span className="signal-text">{displayName}</span>
           </Link>
           <p className="max-w-md text-sm leading-relaxed text-muted">
             {t("tagline")}

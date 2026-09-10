@@ -27,8 +27,7 @@ export async function AboutPageContent() {
       <Section className="pt-10 sm:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative mx-auto w-full max-w-sm">
-            <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-accent/40 to-accent-secondary/40 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-border">
+            <div className="overflow-hidden border border-border">
               <Image
                 src={profile.portraitPath}
                 alt={`${displayName} — portrait`}
