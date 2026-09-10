@@ -48,6 +48,10 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
 }
@@ -177,6 +181,21 @@ html[lang="fa"] {
   border-color: var(--accent);
 }
 
+@keyframes type-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.typewriter-line {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+  animation: type-reveal 0.45s steps(16, end) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -186,10 +205,12 @@ html[lang="fa"] {
   .gaming-toggle-idle,
   .animate-ping,
   .marquee-mask > div,
+  .typewriter-line,
   .gaming-toast,
   .gaming-snake-burning .gaming-snake-head,
   .gaming-snake-burning .gaming-snake-segment {
     animation: none !important;
+    clip-path: none !important;
   }
 
   .gaming-snake-head,

@@ -13,7 +13,7 @@ export async function Footer() {
 
   return (
     <footer className="relative border-t border-border bg-surface-solid/80">
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.2fr_1fr]">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.2fr_1fr]">
         <div className="space-y-4">
           <Link href="/" className="font-display text-2xl font-bold">
             <span className="signal-text">{displayName}</span>
@@ -98,7 +98,7 @@ export async function Footer() {
       </div>
 
       <div className="border-t border-border">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 text-sm text-muted">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 text-sm text-muted">
           <p>
             © {year} {displayName}. {t("rights")}
           </p>

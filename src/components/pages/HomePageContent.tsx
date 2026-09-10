@@ -20,9 +20,9 @@ export async function HomeHero() {
   const yearsExperience = stats.find((stat) => stat.labelKey === "yearsExperience")?.value;
 
   return (
-    <section className="relative pb-8 pt-6 sm:pt-10">
-      <div className="mx-auto w-full max-w-6xl px-6">
-        <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+    <section className="relative pb-12 pt-10 sm:pt-16 lg:pb-16">
+      <div className="mx-auto w-full max-w-7xl px-6">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div className="relative mx-auto w-full max-w-md order-1 lg:order-2 lg:max-w-none">
             <HeroCodePanel
               name={getProfileName("en")}
@@ -33,14 +33,13 @@ export async function HomeHero() {
             />
           </div>
 
-          <div className="animate-fade-up order-2 space-y-6 lg:order-1 lg:space-y-8">
+          <div className="animate-fade-up order-2 space-y-7 lg:order-1 lg:space-y-9">
             <div className="space-y-5">
-              <span className="field-label">{t("badge")}</span>
               <h1
                 className={`font-display leading-[0.95] tracking-tight text-foreground ${
                   locale === "fa"
-                    ? "text-4xl font-black sm:text-5xl lg:text-[4.25rem]"
-                    : "text-5xl font-bold sm:text-6xl lg:text-[5.5rem]"
+                    ? "text-4xl font-black sm:text-5xl lg:text-[4.75rem]"
+                    : "text-5xl font-bold sm:text-6xl lg:text-[6rem]"
                 }`}
               >
                 {displayName}
@@ -54,24 +53,9 @@ export async function HomeHero() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {projectsEnabled ? (
-                <Link
-                  href="/projects"
-                  className="inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
-                >
-                  {t("viewProjects")}
-                </Link>
-              ) : (
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
-                >
-                  {t("viewAbout")}
-                </Link>
-              )}
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 border border-border px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-foreground"
+                className="inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
               >
                 {home("ctaButton")}
               </Link>
@@ -79,7 +63,7 @@ export async function HomeHero() {
           </div>
         </div>
 
-        <div className="mt-12 border-y border-border py-5">
+        <div className="mt-14 border-y border-border py-5 lg:mt-20">
           <Marquee items={techStack} />
         </div>
       </div>
@@ -188,7 +172,7 @@ export async function HomeCta() {
 
   return (
     <section className="pt-8 pb-24 sm:pt-12">
-      <div className="mx-auto w-full max-w-6xl px-6">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <div className="border border-border p-8 sm:p-12">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="space-y-3">

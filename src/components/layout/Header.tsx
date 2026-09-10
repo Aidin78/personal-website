@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { getProfileName } from "@/content/profile";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { projectsEnabled } from "@/content/projects";
 
@@ -97,7 +96,7 @@ export function Header() {
         scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent"
       }`}
     >
-      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
+      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
         <Link
           href="/"
           className="min-w-0 justify-self-start leading-tight"
@@ -133,7 +132,6 @@ export function Header() {
 
         <div className="hidden items-center gap-3 justify-self-end lg:flex">
           <ThemeToggle />
-          <LocaleSwitcher />
         </div>
 
         <div className="col-start-3 flex items-center gap-2 justify-self-end lg:hidden">
@@ -162,11 +160,11 @@ export function Header() {
           className="border-t border-border bg-background lg:hidden"
         >
           <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
-            <div>
-              <p id={menuTitleId} className="font-display text-base font-bold">
+            <div className="min-w-0">
+              <p id={menuTitleId} className="truncate font-display text-base font-bold">
                 {displayName}
               </p>
-              <p className="text-xs text-muted">{t("brandTagline")}</p>
+              <p className="truncate text-xs text-muted">{t("brandTagline")}</p>
             </div>
             <button
               ref={closeButtonRef}
@@ -197,10 +195,6 @@ export function Header() {
               );
             })}
           </nav>
-
-          <div className="flex items-center gap-2 p-4">
-            <LocaleSwitcher />
-          </div>
         </div>
       ) : null}
     </header>

@@ -19,7 +19,7 @@ export function Marquee({ items, speed = "normal" }: MarqueeProps) {
         {loop.map((item, index) => (
           <span
             key={`${item}-${index}`}
-            className="inline-flex shrink-0 items-center border border-border bg-surface px-4 py-2 text-sm font-medium text-muted"
+            className="inline-flex shrink-0 items-center border border-border bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-accent"
           >
             <span className="me-2 h-1.5 w-1.5 bg-accent" />
             {item}

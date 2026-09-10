@@ -38,7 +38,7 @@ type SectionProps = {
 export function Section({ children, className = "" }: SectionProps) {
   return (
     <section className={`py-16 sm:py-24 ${className}`}>
-      <div className="mx-auto w-full max-w-6xl px-6">{children}</div>
+      <div className="mx-auto w-full max-w-7xl px-6">{children}</div>
     </section>
   );
 }

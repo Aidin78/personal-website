@@ -58,7 +58,7 @@ export function GamingHUD() {
   return (
     <>
       <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
-        <div className="mx-auto flex max-w-6xl items-start justify-between gap-3">
+        <div className="mx-auto flex max-w-7xl items-start justify-between gap-3">
           <div className="gaming-panel pointer-events-auto px-4 py-3">
             <p className="gaming-pixel text-sm uppercase tracking-widest text-[#39ff14]">
               {t("player")} 01
@@ -90,7 +90,7 @@ export function GamingHUD() {
       </div>
 
       <div className="gaming-hud pointer-events-none fixed inset-x-0 bottom-4 z-[60] px-4">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-3">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-3">
           <div className="gaming-panel pointer-events-auto hidden px-4 py-3 sm:block">
             <p className="gaming-pixel text-sm leading-relaxed text-[#00f0ff]">
               {t("controlsMove")}

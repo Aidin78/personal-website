@@ -1,6 +1,6 @@
 export default function LocaleLoading() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8" aria-busy="true" aria-live="polite">
+    <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" aria-busy="true" aria-live="polite">
       <div className="space-y-8">
         <div className="h-3 w-24 animate-pulse bg-border" />
         <div className="space-y-3">
