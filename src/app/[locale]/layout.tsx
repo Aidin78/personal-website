@@ -89,9 +89,6 @@ export async function generateMetadata({
         "max-video-preview": -1,
       },
     },
-    icons: {
-      icon: [{ url: "/favicon.ico", sizes: "any" }],
-    },
     openGraph: {
       type: "website",
       siteName: SITE_NAME,
