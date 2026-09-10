@@ -54,7 +54,7 @@ export async function AboutPageContent() {
               {highlights.map((item) => (
                 <li
                   key={item}
-                  className="glass-card rounded-2xl px-4 py-3 text-sm leading-relaxed text-muted"
+                  className="glass-card px-4 py-3 text-sm leading-relaxed text-muted"
                 >
                   {item}
                 </li>
@@ -84,9 +84,9 @@ export async function AboutPageContent() {
               className="relative grid gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
             >
               <div className="hidden sm:block">
-                <div className="relative z-10 mt-1 h-3 w-3 rounded-full border-4 border-background bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_25%,transparent)]" />
+                <div className="relative z-10 mt-1 h-3 w-3 border-4 border-background bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_25%,transparent)]" />
               </div>
-              <div className="glass-card rounded-3xl p-6">
+              <div className="glass-card p-6">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
@@ -97,7 +97,7 @@ export async function AboutPageContent() {
                     </h3>
                     <p className="mt-1 text-muted">{role}</p>
                   </div>
-                  <p className="rounded-full border border-border bg-surface px-3 py-1 text-sm text-muted">
+                  <p className="border border-border bg-surface px-3 py-1 text-sm text-muted">
                     {period.replace("Present", experienceT("present"))}
                   </p>
                 </div>
@@ -125,7 +125,7 @@ export async function AboutPageContent() {
           {skills.map((group, index) => (
             <div
               key={group.category}
-              className={`glass-card rounded-3xl p-6 ${
+              className={`glass-card p-6 ${
                 index === 0 ? "md:col-span-2 md:row-span-1" : ""
               }`}
             >
@@ -136,7 +136,7 @@ export async function AboutPageContent() {
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-border bg-surface px-3 py-1.5 text-sm text-muted"
+                    className="border border-border bg-surface px-3 py-1.5 text-sm text-muted"
                   >
                     {item}
                   </span>

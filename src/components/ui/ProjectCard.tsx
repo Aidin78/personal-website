@@ -26,7 +26,7 @@ export function ProjectCard({
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className={`group modern-panel image-shine flex h-full flex-col overflow-hidden rounded-[1.75rem] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/10 ${
+      className={`group modern-panel image-shine flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/10 ${
         featured ? "md:col-span-2 md:grid md:grid-cols-2" : ""
       } ${index % 5 === 0 && !featured ? "md:col-span-2 md:grid md:grid-cols-[1.1fr_0.9fr]" : ""}`}
     >
@@ -52,7 +52,7 @@ export function ProjectCard({
           className={`absolute inset-0 bg-gradient-to-t ${categoryColors[project.category]}`}
         />
         <div className="absolute inset-x-0 bottom-0 p-6">
-          <span className="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs font-semibold capitalize text-white backdrop-blur-md">
+          <span className="border border-white/20 bg-black/20 px-3 py-1 text-xs font-semibold capitalize text-white backdrop-blur-md">
             {project.category}
           </span>
         </div>
@@ -68,7 +68,7 @@ export function ProjectCard({
               {project.title}
             </h3>
           </div>
-          <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground">
+          <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-border bg-surface text-muted transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground">
             <ArrowUpRight className="h-5 w-5" />
           </span>
         </div>

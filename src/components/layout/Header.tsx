@@ -1,13 +1,12 @@
 "use client";
 
-import { Download, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
-import { getProfileName, profile } from "@/content/profile";
+import { getProfileName } from "@/content/profile";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/ui/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { GamingModeToggle } from "@/components/gaming/GamingModeToggle";
 import { projectsEnabled } from "@/content/projects";
 
 const navItems = [
@@ -34,7 +33,6 @@ export function Header() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const displayName = getProfileName(locale);
-  const initial = displayName.charAt(0);
   const visibleNavItems = navItems.filter(
     (item) => !("requiresProjects" in item && item.requiresProjects) || projectsEnabled,
   );
@@ -99,26 +97,21 @@ export function Header() {
         scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
         <Link
           href="/"
-          className="flex min-w-0 items-center gap-3"
+          className="min-w-0 justify-self-start leading-tight"
           onClick={() => setOpen(false)}
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-foreground font-display text-sm font-bold">
-            {initial}
+          <span className="block truncate font-display text-sm font-bold">
+            {displayName}
           </span>
-          <span className="hidden min-w-0 leading-tight sm:flex sm:flex-col">
-            <span className="truncate font-display text-sm font-bold">
-              {displayName}
-            </span>
-            <span className="truncate text-xs text-muted">
-              {t("brandTagline")}
-            </span>
+          <span className="hidden truncate text-xs text-muted sm:block">
+            {t("brandTagline")}
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label={t("menu")}>
+        <nav className="hidden items-center gap-7 justify-self-center lg:flex" aria-label={t("menu")}>
           {visibleNavItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -138,32 +131,13 @@ export function Header() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <GamingModeToggle />
+        <div className="hidden items-center gap-3 justify-self-end lg:flex">
           <ThemeToggle />
           <LocaleSwitcher />
-          <a
-            href={profile.resumePath}
-            download
-            className="inline-flex items-center gap-2 border border-foreground bg-foreground px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <Download className="h-4 w-4" aria-hidden />
-            <span className="hidden xl:inline">{t("cv")}</span>
-          </a>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
-          <GamingModeToggle />
+        <div className="col-start-3 flex items-center gap-2 justify-self-end lg:hidden">
           <ThemeToggle />
-          <a
-            href={profile.resumePath}
-            download
-            className="inline-flex h-10 w-10 items-center justify-center border border-foreground bg-foreground text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:w-auto sm:gap-1.5 sm:px-3"
-            aria-label={t("cv")}
-          >
-            <Download className="h-4 w-4" aria-hidden />
-            <span className="hidden sm:inline text-sm font-semibold">{t("cv")}</span>
-          </a>
           <button
             ref={menuButtonRef}
             type="button"

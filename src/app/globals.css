@@ -95,7 +95,7 @@ html[lang="fa"] {
 .modern-panel {
   border: 1px solid var(--border);
   background: var(--surface-solid);
-  border-radius: 0.625rem;
+  border-radius: 0;
 }
 
 .image-shine {

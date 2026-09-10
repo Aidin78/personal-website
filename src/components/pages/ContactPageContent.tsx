@@ -15,7 +15,7 @@ export async function ContactPageContent() {
     <PageShell>
       <Section className="pt-10 sm:pt-16 pb-24">
         <div className="grid items-stretch gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <aside className="glass-card overflow-hidden rounded-[2rem]">
+          <aside className="glass-card overflow-hidden">
             <div className="relative h-full min-h-[18rem] sm:min-h-[20rem]">
               <Image
                 src={profile.portraitPath}
@@ -64,15 +64,15 @@ export async function ContactPageContent() {
             </div>
           </aside>
 
-          <div className="glass-card rounded-[2rem] p-6 sm:p-8">
+          <div className="glass-card p-6 sm:p-8">
             <SectionHeading title={t("title")} subtitle={t("subtitle")} as="h1" />
 
             <div className="mt-6 grid gap-3">
               <a
                 href={`mailto:${profile.email}`}
-                className="group flex items-start gap-4 rounded-2xl border border-border bg-surface px-5 py-4 transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="group flex items-start gap-4 border border-border bg-surface px-5 py-4 transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-solid text-accent transition-colors group-hover:border-accent">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-border bg-surface-solid text-accent transition-colors group-hover:border-accent">
                   <Mail className="h-5 w-5" aria-hidden />
                 </span>
                 <span className="min-w-0">
@@ -87,9 +87,9 @@ export async function ContactPageContent() {
 
               <a
                 href={`tel:${profile.phoneTel}`}
-                className="group flex items-start gap-4 rounded-2xl border border-border bg-surface px-5 py-4 transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="group flex items-start gap-4 border border-border bg-surface px-5 py-4 transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-solid text-accent transition-colors group-hover:border-accent">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-border bg-surface-solid text-accent transition-colors group-hover:border-accent">
                   <Phone className="h-5 w-5" aria-hidden />
                 </span>
                 <span className="min-w-0">

@@ -50,7 +50,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
             <div className="space-y-5">
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${categoryColors[project.category]}`}
+                  className={`px-3 py-1 text-xs font-semibold capitalize ${categoryColors[project.category]}`}
                 >
                   {projectsT(`categories.${project.category}`)}
                 </span>
@@ -73,19 +73,19 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
             />
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div className="modern-panel rounded-[1.75rem] p-6">
+              <div className="modern-panel p-6">
                 <h2 className="font-display text-xl font-bold">{t("overview")}</h2>
                 <p className="mt-4 text-sm leading-relaxed text-muted">
                   {project.description}
                 </p>
               </div>
-              <div className="modern-panel rounded-[1.75rem] p-6">
+              <div className="modern-panel p-6">
                 <h2 className="font-display text-xl font-bold">{t("highlights")}</h2>
                 <ul className="mt-4 space-y-3">
                   {project.highlights.map((item) => (
                     <li
                       key={item}
-                      className="relative ps-4 text-sm leading-relaxed text-muted before:absolute before:start-0 before:top-2 before:h-1.5 before:w-1.5 before:rounded-full before:bg-accent"
+                      className="relative ps-4 text-sm leading-relaxed text-muted before:absolute before:start-0 before:top-2 before:h-1.5 before:w-1.5 before:bg-accent"
                     >
                       {item}
                     </li>
@@ -95,8 +95,8 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
             </div>
           </div>
 
-          <aside className="modern-panel sticky top-24 space-y-5 rounded-[1.75rem] p-6">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border">
+          <aside className="modern-panel sticky top-24 space-y-5 p-6">
+            <div className="relative aspect-[4/3] overflow-hidden border border-border">
               <Image
                 src={project.image}
                 alt={project.title}
@@ -129,7 +129,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs text-muted"
+                        className="border border-border bg-surface px-2.5 py-1 text-xs text-muted"
                       >
                         {tech}
                       </span>
@@ -143,7 +143,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
+              className="inline-flex w-full items-center justify-center gap-2 bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
             >
               {t("livePreview")}
               <ArrowUpRight className="h-4 w-4" />

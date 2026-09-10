@@ -31,7 +31,7 @@ function ShowcaseCard({
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className={`group showcase-card relative block overflow-hidden rounded-[1.75rem] border border-border ${
+      className={`group showcase-card relative block overflow-hidden border border-border ${
         large ? "h-full min-h-[320px] lg:min-h-full" : wide ? "min-h-[220px]" : "min-h-[220px] lg:min-h-[250px]"
       }`}
     >
@@ -57,7 +57,7 @@ function ShowcaseCard({
         <div className="flex items-end justify-between gap-4">
           <div className="space-y-2 sm:space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+              <span className="border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
                 {categoryLabel}
               </span>
               <span className="text-xs font-medium text-white/70">{project.year}</span>
@@ -79,7 +79,7 @@ function ShowcaseCard({
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </span>
           </div>
-          <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all group-hover:scale-110 group-hover:bg-white group-hover:text-foreground">
+          <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all group-hover:scale-110 group-hover:bg-white group-hover:text-foreground">
             <ArrowUpRight className="h-5 w-5" />
           </span>
         </div>

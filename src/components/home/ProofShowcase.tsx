@@ -26,7 +26,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
             href={profile.social.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
+            className="inline-flex items-center gap-2 border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
           >
             <GitBranch className="h-4 w-4" aria-hidden />
             {t("viewGithub")}
@@ -41,7 +41,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
                 href={repo.htmlUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group glass-card flex h-full flex-col rounded-[1.5rem] p-5 transition-colors hover:border-accent"
+                className="group glass-card flex h-full flex-col p-5 transition-colors hover:border-accent"
               >
                 <div className="flex items-start justify-between gap-3">
                   <p className="font-display text-lg font-bold text-foreground group-hover:text-accent">
@@ -89,7 +89,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
             href={profile.social.dribbble}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
+            className="inline-flex items-center gap-2 border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
           >
             {t("viewDribbble")}
             <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -106,7 +106,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block overflow-hidden rounded-[1.5rem] border border-border bg-surface-solid transition-colors hover:border-accent"
+                  className="group block overflow-hidden border border-border bg-surface-solid transition-colors hover:border-accent"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-black/5 dark:bg-white/5">
                     <Image

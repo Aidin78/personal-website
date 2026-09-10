@@ -8,19 +8,28 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const t = useTranslations("theme");
 
-  const next = theme === "dark" ? "light" : "dark";
-  const Icon = theme === "dark" ? Moon : Sun;
+  const isDark = theme === "dark";
+  const next = isDark ? "light" : "dark";
   const label = next === "light" ? t("light") : t("dark");
+  const Icon = isDark ? Moon : Sun;
 
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={isDark}
       onClick={() => setTheme(next)}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-muted transition-colors hover:border-accent hover:text-accent"
+      className="relative inline-flex h-7 w-14 shrink-0 items-center border border-border bg-surface transition-colors hover:border-accent"
       aria-label={label}
       title={label}
     >
-      <Icon className="h-4 w-4" aria-hidden />
+      <span
+        className={`flex h-[1.375rem] w-6 items-center justify-center border border-foreground bg-foreground text-background transition-transform duration-200 ${
+          isDark ? "translate-x-[1.5rem]" : "translate-x-0.5"
+        }`}
+      >
+        <Icon className="h-3.5 w-3.5" aria-hidden />
+      </span>
     </button>
   );
 }
