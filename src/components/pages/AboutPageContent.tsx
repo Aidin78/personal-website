@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { experience } from "@/content/experience";
-import { tContent } from "@/content/i18n";
+import { localizedIndex, tContent } from "@/content/i18n";
 import { getProfileName, profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { stats } from "@/content/stats";
@@ -28,7 +28,7 @@ export async function AboutPageContent() {
     <PageShell>
       <Section className="pt-10 sm:pt-16">
         <div className="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="mx-auto flex w-full max-w-sm flex-col gap-4 lg:sticky lg:top-24">
+          <div className="relative mx-auto w-full max-w-sm lg:sticky lg:top-24">
             <div className="overflow-hidden border border-border">
               <Image
                 src={profile.portraitPath}
@@ -39,9 +39,6 @@ export async function AboutPageContent() {
                 priority
               />
             </div>
-            <span className="field-label justify-center lg:justify-start">
-              {home("locationTag")}
-            </span>
           </div>
 
           <div className="space-y-8">
@@ -65,7 +62,7 @@ export async function AboutPageContent() {
               {highlights.map((item, index) => (
                 <div key={item} className="flex gap-4 py-4 first:pt-0 last:pb-0">
                   <span className="shrink-0 font-display text-sm font-bold text-accent">
-                    {String(index + 1).padStart(2, "0")}
+                    {localizedIndex(index + 1, locale)}
                   </span>
                   <p className="text-sm leading-relaxed text-muted">{item}</p>
                 </div>
@@ -111,7 +108,7 @@ export async function AboutPageContent() {
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                      {String(index + 1).padStart(2, "0")}
+                      {localizedIndex(index + 1, locale)}
                     </p>
                     <h3 className="mt-2 font-display text-2xl font-bold">
                       {company}
