@@ -12,7 +12,6 @@ export const skills: SkillGroup[] = [
       "JavaScript (ES6+), jQuery",
       "React.js, Redux",
       "Next.js",
-      "Node.js",
       "RESTful API Integration",
     ],
   },

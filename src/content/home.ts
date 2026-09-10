@@ -8,7 +8,6 @@ export const techStack = [
   "UI/UX Design",
   "SCSS",
   "Redux",
-  "Node.js",
   "REST API",
   "Responsive Design",
 ];

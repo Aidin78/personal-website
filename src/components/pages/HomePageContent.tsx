@@ -1,6 +1,5 @@
-import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getProfileName, profile } from "@/content/profile";
+import { getProfileName } from "@/content/profile";
 import { getLocalizedFeaturedProjects, projectsEnabled } from "@/content/projects";
 import { services, techStack } from "@/content/home";
 import { stats } from "@/content/stats";
@@ -8,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { Marquee } from "@/components/ui/Marquee";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 import { FeaturedProjectsShowcase } from "@/components/home/FeaturedProjectsShowcase";
+import { HeroCodePanel } from "@/components/home/HeroCodePanel";
 import { ProofShowcase } from "@/components/home/ProofShowcase";
 import { getPinnedRepos } from "@/lib/github";
 import { proof } from "@/content/proof";
@@ -17,22 +17,20 @@ export async function HomeHero() {
   const home = await getTranslations("home");
   const locale = await getLocale();
   const displayName = getProfileName(locale);
+  const yearsExperience = stats.find((stat) => stat.labelKey === "yearsExperience")?.value;
 
   return (
     <section className="relative pb-8 pt-6 sm:pt-10">
       <div className="mx-auto w-full max-w-6xl px-6">
         <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           <div className="relative mx-auto w-full max-w-md order-1 lg:order-2 lg:max-w-none">
-            <div className="modern-panel overflow-hidden">
-              <Image
-                src={profile.heroImagePath}
-                alt={`${displayName}, ${t("title")}`}
-                width={900}
-                height={700}
-                priority
-                className="h-auto max-h-[22rem] w-full object-cover object-top sm:max-h-none"
-              />
-            </div>
+            <HeroCodePanel
+              name={getProfileName("en")}
+              role="Front-End Developer & UI Designer"
+              stack={techStack.slice(0, 4)}
+              focus="Interfaces for government & enterprise platforms"
+              experience={yearsExperience ? `${yearsExperience} years` : "7+ years"}
+            />
           </div>
 
           <div className="animate-fade-up order-2 space-y-6 lg:order-1 lg:space-y-8">
@@ -53,17 +51,6 @@ export async function HomeHero() {
               <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
                 {t("pitch")}
               </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {techStack.slice(0, 6).map((tech) => (
-                <span
-                  key={tech}
-                  className="border border-border bg-surface px-3 py-1.5 text-xs font-medium text-muted"
-                >
-                  {tech}
-                </span>
-              ))}
             </div>
 
             <div className="flex flex-wrap gap-3">

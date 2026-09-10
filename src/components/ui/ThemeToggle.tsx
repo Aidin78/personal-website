@@ -19,13 +19,19 @@ export function ThemeToggle() {
       role="switch"
       aria-checked={isDark}
       onClick={() => setTheme(next)}
-      className="relative inline-flex h-7 w-14 shrink-0 items-center border border-border bg-surface transition-colors hover:border-accent"
+      className="relative inline-flex h-8 w-16 shrink-0 items-center border border-border bg-surface px-1 transition-colors hover:border-accent"
       aria-label={label}
       title={label}
     >
+      <span className="pointer-events-none absolute inset-y-0 left-1 flex w-6 items-center justify-center text-muted/50">
+        <Sun className="h-3.5 w-3.5" aria-hidden />
+      </span>
+      <span className="pointer-events-none absolute inset-y-0 right-1 flex w-6 items-center justify-center text-muted/50">
+        <Moon className="h-3.5 w-3.5" aria-hidden />
+      </span>
       <span
-        className={`flex h-[1.375rem] w-6 items-center justify-center border border-foreground bg-foreground text-background transition-transform duration-200 ${
-          isDark ? "translate-x-[1.5rem]" : "translate-x-0.5"
+        className={`relative z-10 flex h-6 w-6 items-center justify-center bg-accent text-accent-foreground transition-transform duration-300 ease-out ${
+          isDark ? "translate-x-8" : "translate-x-0"
         }`}
       >
         <Icon className="h-3.5 w-3.5" aria-hidden />
