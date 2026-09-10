@@ -39,3 +39,7 @@ This is a bilingual (EN/FA) Next.js App Router portfolio site, permanently confi
 **Theming**: light/dark handled by a custom provider (`src/components/providers/ThemeProvider.tsx` + `theme.ts`), not next-themes.
 
 **Fonts**: `src/lib/fonts.ts` centralizes font setup — Space Grotesk/DM Sans for EN, Yekan Bakh (self-hosted, `public/fonts/`) for FA, Press Start 2P for the gaming HUD.
+
+## Git commit messages
+
+Commit messages are a single subject line only — no body/description paragraph, and no `Co-Authored-By` trailer.
