@@ -5,6 +5,7 @@ import { experience } from "@/content/experience";
 import { tContent } from "@/content/i18n";
 import { getProfileName, profile } from "@/content/profile";
 import { skills } from "@/content/skills";
+import { stats } from "@/content/stats";
 import { Link } from "@/i18n/navigation";
 import { PageShell } from "@/components/ui/PageShell";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
@@ -13,6 +14,7 @@ export async function AboutPageContent() {
   const about = await getTranslations("about");
   const experienceT = await getTranslations("experience");
   const skillsT = await getTranslations("skills");
+  const home = await getTranslations("home");
   const locale = await getLocale();
   const displayName = getProfileName(locale);
 
@@ -25,8 +27,8 @@ export async function AboutPageContent() {
   return (
     <PageShell>
       <Section className="pt-10 sm:pt-16">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="relative mx-auto w-full max-w-sm">
+        <div className="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="mx-auto flex w-full max-w-sm flex-col gap-4 lg:sticky lg:top-24">
             <div className="overflow-hidden border border-border">
               <Image
                 src={profile.portraitPath}
@@ -37,9 +39,12 @@ export async function AboutPageContent() {
                 priority
               />
             </div>
+            <span className="field-label justify-center lg:justify-start">
+              {home("locationTag")}
+            </span>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <SectionHeading
               eyebrow={about("title")}
               title={displayName}
@@ -50,23 +55,39 @@ export async function AboutPageContent() {
               <p>{about("description")}</p>
               <p>{about("description2")}</p>
             </div>
-            <ul className="grid gap-3 sm:grid-cols-1">
-              {highlights.map((item) => (
-                <li
-                  key={item}
-                  className="glass-card px-4 py-3 text-sm leading-relaxed text-muted"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-opacity hover:opacity-80"
+              className="inline-flex items-center gap-2 border border-foreground bg-foreground px-5 py-3 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
             >
               {about("ctaContact")}
             </Link>
+            <div className="divide-y divide-border border-y border-border">
+              {highlights.map((item, index) => (
+                <div key={item} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+                  <span className="shrink-0 font-display text-sm font-bold text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm leading-relaxed text-muted">{item}</p>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </Section>
+
+      <Section>
+        <span className="field-label mb-6">{about("statsEyebrow")}</span>
+        <div className="grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.labelKey} className="bg-background p-6">
+              <p className="font-display text-3xl font-bold signal-text sm:text-4xl">
+                {stat.value}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {home(stat.labelKey)}
+              </p>
+            </div>
+          ))}
         </div>
       </Section>
 
@@ -119,7 +140,7 @@ export async function AboutPageContent() {
         </div>
       </Section>
 
-      <Section className="pb-24">
+      <Section>
         <SectionHeading title={skillsT("title")} />
         <div className="grid gap-5 md:grid-cols-3">
           {skills.map((group, index) => (
@@ -146,6 +167,27 @@ export async function AboutPageContent() {
           ))}
         </div>
       </Section>
+
+      <div className="pb-24 pt-8 sm:pt-12">
+        <div className="mx-auto w-full max-w-7xl px-6">
+          <div className="border border-border p-8 sm:p-12">
+            <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="space-y-3">
+                <h2 className="font-display text-3xl font-bold sm:text-4xl">
+                  {home("ctaTitle")}
+                </h2>
+                <p className="max-w-2xl text-muted">{home("ctaSubtitle")}</p>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
+              >
+                {home("ctaButton")}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </PageShell>
   );
 }

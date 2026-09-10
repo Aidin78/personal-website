@@ -72,12 +72,13 @@
   },
   "about": {
     "title": "About Me",
-    "description": "Front-End Web Developer with experience in building modern, responsive, and user-friendly web applications. Skilled in UI Design and passionate about creating fast, clean, and reliable user experiences.",
-    "description2": "Proficient in React, Next.js, and JavaScript, with a strong focus on performance, maintainability, and scalability. Continuously learning and adapting to new technologies to deliver high-quality digital products and effective solutions to complex challenges.",
-    "summary": "Frontend Developer & UI Designer with several years of experience in designing and developing modern web applications and user interfaces.",
-    "highlight1": "Successfully delivered 30+ UI/UX projects for government websites, managing the entire process from design to frontend implementation.",
-    "highlight2": "Experienced in developing scalable frontend solutions and contributing to proprietary CMS platforms, including Spirit Portal at Niafam.",
-    "highlight3": "Currently working on enterprise-grade financial management systems using Next.js.",
+    "description": "I design and build front-ends for institutional platforms — government portals, municipal sites, and enterprise systems — with React, Next.js, and TypeScript. My focus is on interfaces that hold up under real content and compliance requirements: structured information architecture, accessible UI, and layouts that scale from a public portal to a multi-step financial dashboard.",
+    "description2": "Since 2017 I've shipped 30+ projects across five teams, moving from static HTML/CSS sites to full React and Next.js applications — and I still do both design and front-end, from Figma to production code.",
+    "summary": "Front-end developer and UI designer building government, municipal, and enterprise web platforms for 7+ years.",
+    "statsEyebrow": "By the numbers",
+    "highlight1": "Owns Spirit Portal, Niafam's proprietary CMS front-end powering government and municipal sites in production today.",
+    "highlight2": "Currently building an enterprise financial management platform with Next.js and Blazor at Talayedaran.",
+    "highlight3": "Builds bilingual, RTL-ready interfaces end to end, from Figma to production — this site included.",
     "ctaContact": "Get in touch"
   },
   "experience": {
