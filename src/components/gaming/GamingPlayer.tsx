@@ -328,6 +328,7 @@ export function GamingPlayer() {
               width: CELL,
               height: CELL,
               zIndex: segments.length - i,
+              opacity: isHead ? 1 : Math.max(0.35, 1 - i / segments.length),
             }}
           />
         );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 
@@ -13,10 +13,20 @@ type Orb = {
   ttl: number;
 };
 
+type Burst = {
+  id: number;
+  x: number;
+  y: number;
+  tone: Orb["tone"];
+};
+
 let orbId = 0;
+let burstId = 0;
 
 const ORB_TTL_MIN = 3500;
 const ORB_TTL_MAX = 6000;
+const BURST_PARTICLES = 6;
+const BURST_MS = 500;
 
 export function GamingCollectibles() {
   const t = useTranslations("gaming");
@@ -26,10 +36,30 @@ export function GamingCollectibles() {
     registerOrbCollector,
   } = useGamingMode();
   const [orbs, setOrbs] = useState<Orb[]>([]);
+  const [bursts, setBursts] = useState<Burst[]>([]);
   const [now, setNow] = useState(() => Date.now());
   const [visible, setVisible] = useState(true);
   const orbsRef = useRef(orbs);
   const hiddenAtRef = useRef<number | null>(null);
+  const burstTimersRef = useRef(new Set<number>());
+
+  const spawnBurst = useCallback((x: number, y: number, tone: Orb["tone"]) => {
+    const id = ++burstId;
+    setBursts((prev) => [...prev, { id, x, y, tone }]);
+    const timer = window.setTimeout(() => {
+      burstTimersRef.current.delete(timer);
+      setBursts((prev) => prev.filter((burst) => burst.id !== id));
+    }, BURST_MS);
+    burstTimersRef.current.add(timer);
+  }, []);
+
+  useEffect(() => {
+    const timers = burstTimersRef.current;
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers.clear();
+    };
+  }, []);
 
   useEffect(() => {
     orbsRef.current = orbs;
@@ -108,10 +138,11 @@ export function GamingCollectibles() {
     };
   }, [spawnOrb, lives, visible]);
 
-  const tryCollect = (id: number, tone: Orb["tone"]) => {
+  const tryCollect = (id: number, tone: Orb["tone"], x: number, y: number) => {
     if (lives === 0) return;
     const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
-    collectOrb(id, points, t("orbCollected", { points }));
+    const collected = collectOrb(id, points, t("orbCollected", { points }));
+    if (collected) spawnBurst(x, y, tone);
   };
 
   if (lives === 0) return null;
@@ -137,11 +168,32 @@ export function GamingCollectibles() {
               opacity: fade,
               transform: `translate(-50%, -50%) scale(${scale})`,
             }}
-            onClick={() => tryCollect(orb.id, orb.tone)}
+            onClick={() => tryCollect(orb.id, orb.tone, orb.x, orb.y)}
             aria-label={t("collectOrb")}
           />
         );
       })}
+
+      {bursts.map((burst) => (
+        <div
+          key={burst.id}
+          aria-hidden
+          className="absolute"
+          style={{ left: `${burst.x}%`, top: `${burst.y}%` }}
+        >
+          {Array.from({ length: BURST_PARTICLES }).map((_, i) => (
+            <span
+              key={i}
+              className={`gaming-particle gaming-particle-${burst.tone}`}
+              style={
+                {
+                  "--particle-angle": `${(360 / BURST_PARTICLES) * i}deg`,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

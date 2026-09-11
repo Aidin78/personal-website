@@ -208,9 +208,15 @@ html[lang="fa"] {
   .typewriter-line,
   .gaming-toast,
   .gaming-snake-burning .gaming-snake-head,
-  .gaming-snake-burning .gaming-snake-segment {
+  .gaming-snake-burning .gaming-snake-segment,
+  .gaming-particle,
+  .gaming-score-pop {
     animation: none !important;
     clip-path: none !important;
+  }
+
+  .gaming-particle {
+    opacity: 0 !important;
   }
 
   .gaming-snake-head,
@@ -365,6 +371,62 @@ html.gaming-mode .glass-card {
   }
 }
 
+.gaming-particle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(var(--particle-angle)) translateX(0);
+  animation: gaming-particle-burst 0.5s ease-out forwards;
+}
+
+@keyframes gaming-particle-burst {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--particle-angle)) translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(var(--particle-angle)) translateX(28px);
+    opacity: 0;
+  }
+}
+
+.gaming-particle-green {
+  background: #39ff14;
+  box-shadow: 0 0 6px #39ff14;
+}
+
+.gaming-particle-cyan {
+  background: #00f0ff;
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+.gaming-particle-pink {
+  background: #ff00ff;
+  box-shadow: 0 0 6px #ff00ff;
+}
+
+@keyframes gaming-score-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35);
+    text-shadow: 0 0 10px currentColor;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.gaming-score-pop {
+  display: inline-block;
+  animation: gaming-score-pop 0.35s ease-out;
+}
+
 .gaming-snake {
   position: fixed;
   inset: 0;
@@ -480,5 +542,65 @@ html.gaming-mode .glass-card {
     filter: brightness(0.3);
     opacity: 0;
     transform: scale(0.2);
+  }
+}
+
+/* ── Gaming banner: home page teaser card ── */
+.gaming-banner {
+  background: #05070a;
+}
+
+.gaming-banner-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(57, 255, 20, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.22) 1px, transparent 1px);
+  background-size: 36px 36px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 10%, transparent 75%);
+  animation: gaming-banner-drift 10s linear infinite;
+}
+
+@keyframes gaming-banner-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 36px 36px, 36px 36px;
+  }
+}
+
+.gaming-banner-glow {
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(circle at 22% 25%, rgba(57, 255, 20, 0.3), transparent 55%),
+    radial-gradient(circle at 85% 20%, rgba(0, 240, 255, 0.22), transparent 50%),
+    radial-gradient(circle at 70% 90%, rgba(255, 0, 255, 0.18), transparent 50%);
+  filter: blur(20px);
+}
+
+.gaming-banner-scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.5;
+}
+
+.gaming-banner-cta {
+  animation: gaming-toggle-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gaming-banner-grid,
+  .gaming-banner-cta {
+    animation: none !important;
   }
 }

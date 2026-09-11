@@ -1,9 +1,24 @@
 "use client";
 
 import { Heart, Trophy, Zap } from "lucide-react";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
+
+function usePulseOnChange(value: number) {
+  const [pulsing, setPulsing] = useState(false);
+  const prevRef = useRef(value);
+
+  useEffect(() => {
+    if (value === prevRef.current) return;
+    prevRef.current = value;
+    setPulsing(true);
+    const timer = window.setTimeout(() => setPulsing(false), 350);
+    return () => window.clearTimeout(timer);
+  }, [value]);
+
+  return pulsing;
+}
 
 export function GamingHUD() {
   const t = useTranslations("gaming");
@@ -20,6 +35,8 @@ export function GamingHUD() {
   const retryRef = useRef<HTMLButtonElement>(null);
   const gameOverPanelRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const scorePulsing = usePulseOnChange(score);
+  const levelPulsing = usePulseOnChange(level);
 
   useEffect(() => {
     if (lives !== 0) return;
@@ -69,7 +86,9 @@ export function GamingHUD() {
           <div className="gaming-panel pointer-events-auto flex flex-wrap items-center gap-3 px-4 py-3">
             <div className="flex items-center gap-2 text-[#39ff14]">
               <Zap className="h-5 w-5" aria-hidden />
-              <span className="gaming-pixel text-lg">{score}</span>
+              <span className={`gaming-pixel text-lg${scorePulsing ? " gaming-score-pop" : ""}`}>
+                {score}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-[#00f0ff]">
               <Trophy className="h-5 w-5" aria-hidden />
@@ -84,7 +103,11 @@ export function GamingHUD() {
                 />
               ))}
             </div>
-            <span className="gaming-pixel text-base text-[#ffe600]">LV {level}</span>
+            <span
+              className={`gaming-pixel text-base text-[#ffe600]${levelPulsing ? " gaming-score-pop" : ""}`}
+            >
+              LV {level}
+            </span>
           </div>
         </div>
       </div>
