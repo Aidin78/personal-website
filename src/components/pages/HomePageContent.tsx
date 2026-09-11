@@ -8,6 +8,7 @@ import { Marquee } from "@/components/ui/Marquee";
 import { Section, SectionHeading } from "@/components/ui/SectionHeading";
 import { FeaturedProjectsShowcase } from "@/components/home/FeaturedProjectsShowcase";
 import { HeroCodePanel } from "@/components/home/HeroCodePanel";
+import { HomeGamingBanner } from "@/components/home/HomeGamingBanner";
 import { ProofShowcase } from "@/components/home/ProofShowcase";
 import { getPinnedRepos } from "@/lib/github";
 import { proof } from "@/content/proof";
@@ -199,6 +200,7 @@ export async function HomePageContent() {
     <div className="relative min-h-[calc(100vh-4rem)]">
       <HomeHero />
       <HomeStats />
+      <HomeGamingBanner />
       <HomeServices />
       <HomeFeaturedProjects />
       <HomeProof />

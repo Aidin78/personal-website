@@ -52,6 +52,13 @@
         "title": "Design Systems & CMS",
         "description": "Reusable UI systems and custom CMS front-ends like Spirit Portal at Niafam."
       }
+    },
+    "gamingBanner": {
+      "eyebrow": "Bonus level",
+      "title": "Yes, there's a playable game on this site",
+      "description": "A snake game with collectibles and a live scoring HUD, built straight into this page — one more sample of interaction and animation work.",
+      "cta": "Play the game",
+      "ctaActive": "Game running — click to exit"
     }
   },
   "proof": {
