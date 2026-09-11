@@ -20,14 +20,6 @@ function DribbbleIcon() {
   );
 }
 
-function CodePenIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.568 18.005c-.298-.298-.298-.782 0-1.08l4.573-4.573-4.573-4.573c-.298-.298-.298-.782 0-1.08.298-.298.782-.298 1.08 0l5.113 5.113c.298.298.298.782 0 1.08l-5.113 5.113c-.298.298-.782.298-1.08 0zm-2.866-2.866c-.298-.298-.298-.782 0-1.08l7.439-7.439c.298-.298.782-.298 1.08 0 .298.298.298.782 0 1.08l-7.439 7.439c-.298.298-.782.298-1.08 0z" />
-    </svg>
-  );
-}
-
 function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
@@ -37,10 +29,9 @@ function GitHubIcon() {
 }
 
 const iconMap = {
+  github: GitHubIcon,
   linkedin: LinkedInIcon,
   dribbble: DribbbleIcon,
-  codepen: CodePenIcon,
-  github: GitHubIcon,
 } as const;
 
 type SocialLinksProps = {

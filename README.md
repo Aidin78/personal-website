@@ -136,7 +136,6 @@ npm run build
 - [GitHub](https://github.com/Aidin78)
 - [LinkedIn](https://www.linkedin.com/in/aidin78)
 - [Dribbble](https://dribbble.com/aidin78)
-- [CodePen](https://codepen.io/Aidin-Sahebi)
 
 ## License
 

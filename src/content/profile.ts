@@ -15,10 +15,9 @@ export const profile = {
   heroImagePath: "/images/hero-visual.webp",
   portraitPath: "/images/profile-portrait.webp",
   social: {
+    github: "https://github.com/Aidin78",
     linkedin: "https://www.linkedin.com/in/aidin78",
     dribbble: "https://dribbble.com/aidin78",
-    codepen: "https://codepen.io/Aidin-Sahebi",
-    github: "https://github.com/Aidin78",
   },
 } as const;
 
