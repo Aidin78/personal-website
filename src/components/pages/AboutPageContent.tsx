@@ -85,9 +85,8 @@ export async function AboutPageContent() {
               key={`${company}-${period}`}
               className="relative grid gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
             >
-              <div className="hidden sm:block">
-                <div className="relative z-10 mt-1 h-3 w-3 border-4 border-background bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_25%,transparent)]" />
-              </div>
+              <div className="hidden sm:block" />
+              <div className="absolute start-4 top-1 z-10 hidden h-3 w-3 -translate-x-1/2 border-4 border-background bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_25%,transparent)] rtl:translate-x-1/2 sm:block" />
               <div className="glass-card p-6">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>

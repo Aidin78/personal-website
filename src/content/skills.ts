@@ -9,7 +9,7 @@ export const skills: SkillGroup[] = [
     category: "frontend",
     items: [
       "HTML5, CSS3, SASS / SCSS",
-      "JavaScript (ES6+), jQuery",
+      "JavaScript (ES6+), TypeScript, jQuery",
       "React.js, Redux",
       "Next.js",
       "RESTful API Integration",
