@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getProfileName, profile } from "@/content/profile";
 import { PageShell } from "@/components/ui/PageShell";
@@ -8,7 +8,6 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 
 export async function ContactPageContent() {
   const t = await getTranslations("contact");
-  const tHome = await getTranslations("home");
   const displayName = getProfileName(await getLocale());
 
   return (
@@ -37,10 +36,6 @@ export async function ContactPageContent() {
                 <p className="font-display text-2xl font-bold">{displayName}</p>
                 <p className="mt-1.5 text-sm text-muted">{t("availability")}</p>
               </div>
-              <p className="flex items-center gap-2 text-sm text-muted">
-                <MapPin className="h-4 w-4 shrink-0 text-accent" aria-hidden />
-                {tHome("locationTag")}
-              </p>
               <p className="text-sm leading-relaxed text-muted">{t("panelNote")}</p>
             </div>
           </aside>
