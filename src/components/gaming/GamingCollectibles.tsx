@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
+import { playOrbCollect } from "@/lib/gamingSound";
 
 type Orb = {
   id: number;
@@ -142,7 +143,10 @@ export function GamingCollectibles() {
     if (lives === 0) return;
     const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
     const collected = collectOrb(id, points, t("orbCollected", { points }));
-    if (collected) spawnBurst(x, y, tone);
+    if (collected) {
+      spawnBurst(x, y, tone);
+      playOrbCollect(tone);
+    }
   };
 
   if (lives === 0) return null;

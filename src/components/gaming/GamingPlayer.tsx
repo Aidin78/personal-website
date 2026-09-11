@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
+import { playBurn } from "@/lib/gamingSound";
 
 const CELL = 13;
 const TICK = 68;
@@ -167,6 +168,7 @@ export function GamingPlayer() {
     setBurning(true);
     loseLife();
     addScore(0, t("snakeBurn"));
+    playBurn();
 
     if (burnTimerRef.current !== null) {
       window.clearTimeout(burnTimerRef.current);

@@ -4,6 +4,7 @@ import { Heart, Trophy, Zap } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
+import { playGameOver, playLevelUp } from "@/lib/gamingSound";
 
 function usePulseOnChange(value: number) {
   const [pulsing, setPulsing] = useState(false);
@@ -37,6 +38,22 @@ export function GamingHUD() {
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const scorePulsing = usePulseOnChange(score);
   const levelPulsing = usePulseOnChange(level);
+  const prevLevelRef = useRef(level);
+  const gameOverPlayedRef = useRef(false);
+
+  useEffect(() => {
+    if (level > prevLevelRef.current) playLevelUp();
+    prevLevelRef.current = level;
+  }, [level]);
+
+  useEffect(() => {
+    if (lives === 0 && !gameOverPlayedRef.current) {
+      playGameOver();
+      gameOverPlayedRef.current = true;
+    } else if (lives > 0) {
+      gameOverPlayedRef.current = false;
+    }
+  }, [lives]);
 
   useEffect(() => {
     if (lives !== 0) return;
