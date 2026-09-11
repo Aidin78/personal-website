@@ -138,11 +138,13 @@ export default async function LocaleLayout({
               >
                 {tNav("skipToContent")}
               </a>
-              <Header />
-              <main id="main-content" className="relative z-10" tabIndex={-1}>
-                {children}
-              </main>
-              <Footer />
+              <div className="site-content">
+                <Header />
+                <main id="main-content" className="relative z-10" tabIndex={-1}>
+                  {children}
+                </main>
+                <Footer />
+              </div>
               <GamingLayerGate />
             </GamingModeProvider>
           </NextIntlClientProvider>

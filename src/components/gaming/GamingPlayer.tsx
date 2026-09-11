@@ -317,18 +317,20 @@ export function GamingPlayer() {
     >
       {segments.map((seg, i) => {
         const isHead = i === 0;
+        const size = isHead ? CELL : Math.max(7, CELL * (1 - (i / segments.length) * 0.45));
+        const offset = (CELL - size) / 2;
         return (
           <div
             key={i}
             className={isHead ? "gaming-snake-head" : "gaming-snake-segment"}
             data-facing={isHead ? facing : undefined}
             style={{
-              left: seg.x,
-              top: seg.y,
-              width: CELL,
-              height: CELL,
+              left: seg.x + offset,
+              top: seg.y + offset,
+              width: size,
+              height: size,
               zIndex: segments.length - i,
-              opacity: isHead ? 1 : Math.max(0.35, 1 - i / segments.length),
+              opacity: isHead ? 1 : Math.max(0.45, 1 - i / segments.length),
             }}
           />
         );
