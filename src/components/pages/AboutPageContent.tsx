@@ -18,12 +18,6 @@ export async function AboutPageContent() {
   const locale = await getLocale();
   const displayName = getProfileName(locale);
 
-  const highlights = [
-    about("highlight1"),
-    about("highlight2"),
-    about("highlight3"),
-  ];
-
   return (
     <PageShell>
       <Section className="pt-10 sm:pt-16">
@@ -58,16 +52,6 @@ export async function AboutPageContent() {
             >
               {about("ctaContact")}
             </Link>
-            <div className="divide-y divide-border border-y border-border">
-              {highlights.map((item, index) => (
-                <div key={item} className="flex gap-4 py-4 first:pt-0 last:pb-0">
-                  <span className="shrink-0 font-display text-sm font-bold text-accent">
-                    {localizedIndex(index + 1, locale)}
-                  </span>
-                  <p className="text-sm leading-relaxed text-muted">{item}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </Section>
