@@ -183,6 +183,12 @@
     "retry": "دوباره بازی",
     "orbCollected": "+{points} XP",
     "collectOrb": "جمع‌آوری گوی",
-    "linkBonus": "+30 امتیاز مسیر!"
+    "linkBonus": "+30 امتیاز مسیر!",
+    "leaderboardTitle": "۱۰ نفر برتر",
+    "namePlaceholder": "اسمت",
+    "submitScore": "ثبت امتیاز",
+    "scoreSubmitted": "ذخیره شد!",
+    "leaderboardLoading": "در حال بارگذاری لیدربورد…",
+    "leaderboardEmpty": "هنوز امتیازی ثبت نشده — اولین نفر باش."
   }
 }

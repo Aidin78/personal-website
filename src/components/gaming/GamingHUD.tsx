@@ -1,10 +1,18 @@
 "use client";
 
 import { Heart, Trophy, Zap } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { playGameOver, playLevelUp } from "@/lib/gamingSound";
+import {
+  fetchTopScores,
+  leaderboardEnabled,
+  submitScore,
+  type LeaderboardEntry,
+} from "@/lib/leaderboard";
+
+const LEADERBOARD_NAME_KEY = "aidin-portfolio-gaming-name";
 
 function usePulseOnChange(value: number) {
   const [pulsing, setPulsing] = useState(false);
@@ -19,6 +27,94 @@ function usePulseOnChange(value: number) {
   }, [value]);
 
   return pulsing;
+}
+
+function GameOverBoard({ score }: { score: number }) {
+  const t = useTranslations("gaming");
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState(() =>
+    typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY) ?? "",
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [topScores, setTopScores] = useState<LeaderboardEntry[]>([]);
+  const [loadingTop, setLoadingTop] = useState(false);
+
+  const loadTopScores = useCallback(async () => {
+    setLoadingTop(true);
+    const entries = await fetchTopScores();
+    setTopScores(entries);
+    setLoadingTop(false);
+  }, []);
+
+  useEffect(() => {
+    void loadTopScores();
+    nameInputRef.current?.focus();
+  }, [loadTopScores]);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!name.trim() || submitting || submitted) return;
+
+    setSubmitting(true);
+    const ok = await submitScore(name, score);
+    setSubmitting(false);
+
+    if (ok) {
+      window.localStorage.setItem(LEADERBOARD_NAME_KEY, name.trim());
+      setSubmitted(true);
+      void loadTopScores();
+    }
+  };
+
+  return (
+    <div className="w-full max-w-xs space-y-3 text-start">
+      {!submitted ? (
+        <form onSubmit={handleSubmit} className="flex items-center gap-2">
+          <input
+            ref={nameInputRef}
+            value={name}
+            onChange={(event) => setName(event.target.value.slice(0, 12))}
+            placeholder={t("namePlaceholder")}
+            maxLength={12}
+            className="gaming-pixel min-w-0 flex-1 border border-[#39ff14]/50 bg-black/40 px-2 py-2 text-sm text-[#39ff14] outline-none focus:border-[#39ff14]"
+          />
+          <button
+            type="submit"
+            disabled={!name.trim() || submitting}
+            className="gaming-pixel shrink-0 border border-[#39ff14]/60 px-3 py-2 text-xs text-[#39ff14] disabled:opacity-40"
+          >
+            {t("submitScore")}
+          </button>
+        </form>
+      ) : (
+        <p className="gaming-pixel text-center text-sm text-[#39ff14]">{t("scoreSubmitted")}</p>
+      )}
+
+      <div className="gaming-panel px-3 py-2">
+        <p className="gaming-pixel mb-2 text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+        {loadingTop ? (
+          <p className="gaming-pixel text-xs text-muted">{t("leaderboardLoading")}</p>
+        ) : topScores.length === 0 ? (
+          <p className="gaming-pixel text-xs text-muted">{t("leaderboardEmpty")}</p>
+        ) : (
+          <ol className="space-y-1">
+            {topScores.map((entry, index) => (
+              <li
+                key={`${entry.name}-${entry.created_at}`}
+                className="gaming-pixel flex items-center justify-between gap-2 text-xs text-[#39ff14]"
+              >
+                <span>
+                  {index + 1}. {entry.name}
+                </span>
+                <span>{entry.score}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function GamingHUD() {
@@ -59,7 +155,9 @@ export function GamingHUD() {
     if (lives !== 0) return;
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    const focusTimer = window.setTimeout(() => retryRef.current?.focus(), 0);
+    const focusTimer = window.setTimeout(() => {
+      if (!leaderboardEnabled) retryRef.current?.focus();
+    }, 0);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || !gameOverPanelRef.current) return;
@@ -174,6 +272,9 @@ export function GamingHUD() {
             <p id={gameOverTitleId} className="gaming-pixel text-lg text-[#ff3864]">
               {t("gameOver")}
             </p>
+
+            {leaderboardEnabled ? <GameOverBoard score={score} /> : null}
+
             <button
               ref={retryRef}
               type="button"

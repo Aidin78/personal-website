@@ -183,6 +183,12 @@
     "retry": "Play again",
     "orbCollected": "+{points} XP",
     "collectOrb": "Collect orb",
-    "linkBonus": "+30 NAV BONUS!"
+    "linkBonus": "+30 NAV BONUS!",
+    "leaderboardTitle": "Top 10",
+    "namePlaceholder": "Your name",
+    "submitScore": "Submit score",
+    "scoreSubmitted": "Saved!",
+    "leaderboardLoading": "Loading leaderboard…",
+    "leaderboardEmpty": "No scores yet — be the first."
   }
 }
