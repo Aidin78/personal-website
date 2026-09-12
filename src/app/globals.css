@@ -660,17 +660,25 @@ html.gaming-mode .glass-card {
   box-shadow:
     0 0 50px color-mix(in srgb, var(--accent, #39ff14) 16%, transparent),
     inset 0 0 40px rgba(0, 0, 0, 0.55);
-  max-height: min(92dvh, 640px);
-  overflow-y: auto;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Keep the leaderboard list short enough on narrow viewports that the
-   modal above fits without needing its overflow-y fallback to kick in. */
-@media (max-width: 639px) {
-  .gaming-leaderboard-list li:nth-child(n + 6) {
-    display: none;
-  }
+/* align-items: center, with a fallback for browsers that don't understand
+   "safe" — an unsupported value drops only this declaration, leaving the
+   plain "center" above in effect. "safe" stops flex centering from
+   clipping the top of content it can't shrink, which a plain "center"
+   does whenever the backdrop itself has to scroll. */
+.gaming-startgate-backdrop {
+  align-items: center;
+  align-items: safe center;
+}
+
+/* Only the leaderboard rows scroll — the rest of the panel (name form,
+   palette picker, Start button) always stays fully visible, and this is
+   what keeps the panel itself short instead of growing with the list. */
+.gaming-leaderboard-scroll {
+  max-height: 210px;
+  overflow-y: auto;
 }
 
 .gaming-corner {

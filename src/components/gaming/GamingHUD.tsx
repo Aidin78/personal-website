@@ -90,7 +90,7 @@ function LeaderboardList({
   if (topScores.length === 0) return <p className="text-xs text-muted">{t("leaderboardEmpty")}</p>;
 
   return (
-    <ol className="gaming-leaderboard-list flex flex-col gap-1 sm:gap-1.5">
+    <ol className="gaming-leaderboard-scroll flex flex-col gap-1 pe-1 sm:gap-1.5">
       {topScores.map((entry, index) => {
         const mine = isMine?.(entry) ?? false;
         return (
@@ -133,7 +133,7 @@ function GatePanel({
 
   return (
     <div
-      className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="gaming-startgate-backdrop pointer-events-auto fixed inset-0 z-[75] flex justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
