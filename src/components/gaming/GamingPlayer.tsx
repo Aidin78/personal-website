@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { playBurn } from "@/lib/gamingSound";
@@ -116,6 +123,7 @@ export function GamingPlayer() {
   const burningRef = useRef(false);
   const burnTimerRef = useRef<number | null>(null);
   const heldKeysRef = useRef(new Set<string>());
+  const heldPointersRef = useRef(new Set<number>());
   const snakeLengthRef = useRef(snakeLength);
   const wrapClearRef = useRef<number | null>(null);
 
@@ -145,6 +153,17 @@ export function GamingPlayer() {
     }, 0);
   }, []);
 
+  const syncBoost = useCallback(() => {
+    setBoosting(heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0);
+  }, []);
+
+  const queueDirection = useCallback((next: Dir) => {
+    if (burningRef.current) return;
+    if (next !== OPPOSITE[directionRef.current]) {
+      pendingDirRef.current = next;
+    }
+  }, []);
+
   const triggerDeath = useCallback(() => {
     if (burningRef.current) return;
 
@@ -163,10 +182,6 @@ export function GamingPlayer() {
   }, [addScore, score, elapsedSeconds, endRun, t]);
 
   useEffect(() => {
-    const syncBoost = () => {
-      setBoosting(heldKeysRef.current.size > 0);
-    };
-
     const onKeyDown = (event: KeyboardEvent) => {
       if (burningRef.current) return;
 
@@ -178,9 +193,7 @@ export function GamingPlayer() {
       syncBoost();
 
       const next = keyToDir(key);
-      if (next && next !== OPPOSITE[directionRef.current]) {
-        pendingDirRef.current = next;
-      }
+      if (next) queueDirection(next);
     };
 
     const onKeyUp = (event: KeyboardEvent) => {
@@ -192,6 +205,7 @@ export function GamingPlayer() {
 
     const clearHeld = () => {
       heldKeysRef.current.clear();
+      heldPointersRef.current.clear();
       setBoosting(false);
     };
 
@@ -210,7 +224,28 @@ export function GamingPlayer() {
       window.removeEventListener("blur", onBlur);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [syncBoost, queueDirection]);
+
+  const handlePadPointerDown = useCallback(
+    (dir: Dir) => (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (burningRef.current) return;
+      event.preventDefault();
+      event.currentTarget.setPointerCapture(event.pointerId);
+      heldPointersRef.current.add(event.pointerId);
+      syncBoost();
+      queueDirection(dir);
+      if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate(10);
+    },
+    [queueDirection, syncBoost],
+  );
+
+  const handlePadPointerUp = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      heldPointersRef.current.delete(event.pointerId);
+      syncBoost();
+    },
+    [syncBoost],
+  );
 
   useEffect(() => {
     let timeoutId = 0;
@@ -245,7 +280,8 @@ export function GamingPlayer() {
 
     const loop = () => {
       step();
-      const delay = heldKeysRef.current.size > 0 ? BOOST_TICK : TICK;
+      const boosting = heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0;
+      const delay = boosting ? BOOST_TICK : TICK;
       timeoutId = window.setTimeout(loop, delay);
     };
 
@@ -286,35 +322,76 @@ export function GamingPlayer() {
   }, [segments, collectOrb, t]);
 
   return (
-    <div
-      className={`gaming-snake gaming-snake-palette-${snakePalette} pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}`}
-      aria-hidden
-    >
-      {segments.map((seg, i) => {
-        const isHead = i === 0;
-        const size = isHead ? CELL : Math.max(7, CELL * (1 - (i / segments.length) * 0.45));
-        const offset = (CELL - size) / 2;
-        const tailDistance = segments.length - 1 - i;
-        const eatDelayMs = (tailDistance / Math.max(1, segments.length - 1)) * 350;
-        return (
-          <div
-            key={i}
-            className={isHead ? "gaming-snake-head" : "gaming-snake-segment"}
-            data-facing={isHead ? facing : undefined}
-            style={
-              {
-                left: seg.x + offset,
-                top: seg.y + offset,
-                width: size,
-                height: size,
-                zIndex: segments.length - i,
-                opacity: isHead ? 1 : Math.max(0.45, 1 - i / segments.length),
-                "--eat-delay": `${eatDelayMs}ms`,
-              } as CSSProperties
-            }
-          />
-        );
-      })}
-    </div>
+    <>
+      <div
+        className={`gaming-snake gaming-snake-palette-${snakePalette} pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}`}
+        aria-hidden
+      >
+        {segments.map((seg, i) => {
+          const isHead = i === 0;
+          const size = isHead ? CELL : Math.max(7, CELL * (1 - (i / segments.length) * 0.45));
+          const offset = (CELL - size) / 2;
+          const tailDistance = segments.length - 1 - i;
+          const eatDelayMs = (tailDistance / Math.max(1, segments.length - 1)) * 350;
+          return (
+            <div
+              key={i}
+              className={isHead ? "gaming-snake-head" : "gaming-snake-segment"}
+              data-facing={isHead ? facing : undefined}
+              style={
+                {
+                  left: seg.x + offset,
+                  top: seg.y + offset,
+                  width: size,
+                  height: size,
+                  zIndex: segments.length - i,
+                  opacity: isHead ? 1 : Math.max(0.45, 1 - i / segments.length),
+                  "--eat-delay": `${eatDelayMs}ms`,
+                } as CSSProperties
+              }
+            />
+          );
+        })}
+      </div>
+
+      <div className="gaming-dpad" role="group" aria-label={t("dpadLabel")}>
+        <button
+          type="button"
+          className="gaming-dpad-btn gaming-dpad-up"
+          aria-label={t("dpadUp")}
+          onPointerDown={handlePadPointerDown("up")}
+          onPointerUp={handlePadPointerUp}
+          onPointerCancel={handlePadPointerUp}
+          onPointerLeave={handlePadPointerUp}
+        />
+        <button
+          type="button"
+          className="gaming-dpad-btn gaming-dpad-left"
+          aria-label={t("dpadLeft")}
+          onPointerDown={handlePadPointerDown("left")}
+          onPointerUp={handlePadPointerUp}
+          onPointerCancel={handlePadPointerUp}
+          onPointerLeave={handlePadPointerUp}
+        />
+        <button
+          type="button"
+          className="gaming-dpad-btn gaming-dpad-right"
+          aria-label={t("dpadRight")}
+          onPointerDown={handlePadPointerDown("right")}
+          onPointerUp={handlePadPointerUp}
+          onPointerCancel={handlePadPointerUp}
+          onPointerLeave={handlePadPointerUp}
+        />
+        <button
+          type="button"
+          className="gaming-dpad-btn gaming-dpad-down"
+          aria-label={t("dpadDown")}
+          onPointerDown={handlePadPointerDown("down")}
+          onPointerUp={handlePadPointerUp}
+          onPointerCancel={handlePadPointerUp}
+          onPointerLeave={handlePadPointerUp}
+        />
+      </div>
+    </>
   );
 }

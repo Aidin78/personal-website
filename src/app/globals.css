@@ -237,6 +237,7 @@ html[lang="fa"] {
 
 /* ── Gaming mode ── */
 html.gaming-mode {
+  overflow: hidden;
   --background: #050508;
   --foreground: #eaffea;
   --muted: #7fd87f;
@@ -250,6 +251,7 @@ html.gaming-mode {
 
 html.gaming-mode body {
   cursor: crosshair;
+  overflow: hidden;
 }
 
 .site-content {
@@ -258,6 +260,7 @@ html.gaming-mode body {
 
 html.gaming-mode .site-content {
   filter: blur(14px) saturate(0.7) brightness(0.85);
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -317,6 +320,89 @@ html.gaming-mode .glass-card {
   box-shadow:
     0 0 20px rgba(57, 255, 20, 0.12),
     inset 0 0 20px rgba(57, 255, 20, 0.04);
+}
+
+.gaming-dpad {
+  display: none;
+  position: fixed;
+  left: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 62;
+  grid-template-columns: repeat(3, 46px);
+  grid-template-rows: repeat(3, 46px);
+  gap: 4px;
+  touch-action: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .gaming-dpad {
+    display: grid;
+  }
+}
+
+.gaming-dpad-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  background: rgba(0, 0, 0, 0.78);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 20px rgba(57, 255, 20, 0.12),
+    inset 0 0 20px rgba(57, 255, 20, 0.04);
+  color: #39ff14;
+  font-size: 16px;
+  line-height: 1;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background 0.1s ease;
+}
+
+.gaming-dpad-btn:active {
+  background: rgba(57, 255, 20, 0.25);
+}
+
+.gaming-dpad-btn:focus-visible {
+  outline: 2px solid #00f0ff;
+  outline-offset: 2px;
+}
+
+.gaming-dpad-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.gaming-dpad-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.gaming-dpad-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.gaming-dpad-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.gaming-dpad-up::before {
+  content: "\25B2";
+}
+
+.gaming-dpad-down::before {
+  content: "\25BC";
+}
+
+.gaming-dpad-left::before {
+  content: "\25C0";
+}
+
+.gaming-dpad-right::before {
+  content: "\25B6";
 }
 
 .gaming-toast {
