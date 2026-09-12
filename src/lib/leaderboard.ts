@@ -32,6 +32,24 @@ export async function fetchTopScores(limit = 10): Promise<LeaderboardEntry[]> {
   }
 }
 
+/** 1-based rank among all submitted scores (ties share a rank), or null when unknown. */
+export async function fetchRank(score: number): Promise<number | null> {
+  if (!leaderboardEnabled) return null;
+
+  try {
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=id&score=gt.${score}&limit=1`;
+    const response = await fetch(url, {
+      headers: { ...headers(), Prefer: "count=exact" },
+    });
+    if (!response.ok) return null;
+    const contentRange = response.headers.get("content-range");
+    const total = contentRange ? Number(contentRange.split("/")[1]) : NaN;
+    return Number.isFinite(total) ? total + 1 : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function submitScore(
   name: string,
   score: number,

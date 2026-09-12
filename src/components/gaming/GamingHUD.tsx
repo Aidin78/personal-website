@@ -1,6 +1,6 @@
 "use client";
 
-import { Trophy, Zap } from "lucide-react";
+import { Trophy, X, Zap } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -13,7 +13,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useGamingMode, SNAKE_PALETTES, type SnakePalette } from "@/components/gaming/GamingModeProvider";
 import { playGameStart, playLevelUp } from "@/lib/gamingSound";
-import { fetchTopScores, leaderboardEnabled, type LeaderboardEntry } from "@/lib/leaderboard";
+import { fetchRank, fetchTopScores, leaderboardEnabled, type LeaderboardEntry } from "@/lib/leaderboard";
 import { LEADERBOARD_NAME_KEY, finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 const PALETTE_GRADIENT: Record<SnakePalette, [string, string]> = {
@@ -47,6 +47,17 @@ function useLeaderboard() {
   }, []);
 
   return { topScores, loadingTop };
+}
+
+function useOwnRank(score: number) {
+  const [rank, setRank] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!leaderboardEnabled || score <= 0) return;
+    void fetchRank(score).then(setRank);
+  }, [score]);
+
+  return rank;
 }
 
 function usePulseOnChange(value: number) {
@@ -108,21 +119,29 @@ function GatePanel({
   accent,
   wide,
   onSubmit,
+  onClose,
   children,
 }: {
   accent: [string, string];
   wide: boolean;
   onSubmit: (event: FormEvent) => void;
+  onClose: () => void;
   children: ReactNode;
 }) {
+  const t = useTranslations("gaming");
   const [accentA, accentB] = accent;
 
   return (
-    <div className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div
+      className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
       <form
         onSubmit={onSubmit}
         style={{ "--accent": accentA, "--accent-2": accentB } as CSSProperties}
-        className={`gaming-startgate grid w-full grid-cols-1 gap-4 px-5 py-5 sm:gap-6 sm:px-9 sm:py-8${
+        className={`gaming-startgate relative grid w-full grid-cols-1 gap-4 px-5 py-5 sm:gap-6 sm:px-9 sm:py-8${
           wide ? " max-w-2xl sm:grid-cols-[1.1fr_1fr] sm:gap-8" : " max-w-sm"
         }`}
       >
@@ -130,6 +149,14 @@ function GatePanel({
         <span className="gaming-corner gaming-corner-tr" aria-hidden />
         <span className="gaming-corner gaming-corner-bl" aria-hidden />
         <span className="gaming-corner gaming-corner-br" aria-hidden />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={t("close")}
+          className="absolute end-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-muted transition-colors hover:border-white/30 hover:text-[#eaffea]"
+        >
+          <X className="h-4 w-4" aria-hidden />
+        </button>
         {children}
       </form>
     </div>
@@ -138,7 +165,7 @@ function GatePanel({
 
 function StartGate() {
   const t = useTranslations("gaming");
-  const { snakePalette, setSnakePalette, enterArena } = useGamingMode();
+  const { snakePalette, setSnakePalette, enterArena, toggleGaming } = useGamingMode();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(() =>
     typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY) ?? "",
@@ -159,7 +186,12 @@ function StartGate() {
   };
 
   return (
-    <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStart}>
+    <GatePanel
+      accent={PALETTE_GRADIENT[snakePalette]}
+      wide={leaderboardEnabled}
+      onSubmit={handleStart}
+      onClose={toggleGaming}
+    >
       <div className="flex flex-col gap-4 sm:gap-6">
         <div>
           <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("newGame")}</p>
@@ -218,6 +250,7 @@ function EndScreen() {
   const t = useTranslations("gaming");
   const { snakePalette, runResult, startAgain, toggleGaming } = useGamingMode();
   const { topScores, loadingTop } = useLeaderboard();
+  const ownRank = useOwnRank(runResult?.score ?? 0);
   const myName = typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY);
 
   if (!runResult) return null;
@@ -233,8 +266,15 @@ function EndScreen() {
     entry.score === runResult.score &&
     entry.duration_seconds === runResult.elapsedSeconds;
 
+  const shownInTop = topScores.some(isMine);
+
   return (
-    <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStartAgain}>
+    <GatePanel
+      accent={PALETTE_GRADIENT[snakePalette]}
+      wide={leaderboardEnabled}
+      onSubmit={handleStartAgain}
+      onClose={toggleGaming}
+    >
       <div className="flex flex-col gap-4 sm:gap-6">
         <div>
           <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("runComplete")}</p>
@@ -244,6 +284,9 @@ function EndScreen() {
               {runResult.score}
             </span>
             <span className="text-[#00f0ff]">{formatDuration(runResult.elapsedSeconds)}</span>
+            {!shownInTop && ownRank ? (
+              <span className="text-xs text-muted">{t("yourRank", { rank: ownRank })}</span>
+            ) : null}
           </div>
         </div>
 

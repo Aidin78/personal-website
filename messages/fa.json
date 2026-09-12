@@ -172,6 +172,7 @@
     "toggleLabel": "بازی",
     "toggleOn": "فعال",
     "exit": "خروج",
+    "close": "بستن",
     "snakeBurn": "بازی تمام شد!",
     "snakeHint": "از WASD یا فلش‌ها استفاده کن",
     "dpadLabel": "کنترل حرکت",
@@ -197,6 +198,7 @@
     "leaderboardTitle": "۱۰ نفر برتر",
     "leaderboardHint": "در تساوی امتیاز، سریع‌ترین زمان برنده است",
     "leaderboardLoading": "در حال بارگذاری لیدربورد…",
-    "leaderboardEmpty": "هنوز امتیازی ثبت نشده — اولین نفر باش."
+    "leaderboardEmpty": "هنوز امتیازی ثبت نشده — اولین نفر باش.",
+    "yourRank": "رتبه‌ات: #{rank}"
   }
 }

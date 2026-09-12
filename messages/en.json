@@ -172,6 +172,7 @@
     "toggleLabel": "Play",
     "toggleOn": "Playing",
     "exit": "Exit game",
+    "close": "Close",
     "snakeBurn": "GAME OVER!",
     "snakeHint": "Use WASD or arrow keys",
     "dpadLabel": "Movement controls",
@@ -197,6 +198,7 @@
     "leaderboardTitle": "Top 10",
     "leaderboardHint": "Fastest time wins ties",
     "leaderboardLoading": "Loading leaderboard…",
-    "leaderboardEmpty": "No scores yet — be the first."
+    "leaderboardEmpty": "No scores yet — be the first.",
+    "yourRank": "Rank #{rank}"
   }
 }
