@@ -7,8 +7,13 @@ create table if not exists public.leaderboard_scores (
   id bigint generated always as identity primary key,
   name text not null check (char_length(name) between 1 and 12),
   score integer not null check (score >= 0 and score <= 100000),
+  duration_seconds integer not null default 0 check (duration_seconds >= 0 and duration_seconds <= 36000),
   created_at timestamptz not null default now()
 );
+
+-- Safe to re-run against a table created before duration_seconds existed.
+alter table public.leaderboard_scores
+  add column if not exists duration_seconds integer not null default 0;
 
 create index if not exists leaderboard_scores_score_idx
   on public.leaderboard_scores (score desc, created_at asc);

@@ -12,6 +12,12 @@ import {
 } from "react";
 
 const HIGH_SCORE_KEY = "aidin-portfolio-gaming-highscore";
+const PALETTE_KEY = "aidin-portfolio-gaming-palette";
+
+export const SNAKE_PALETTES = ["green", "magenta", "gold"] as const;
+export type SnakePalette = (typeof SNAKE_PALETTES)[number];
+
+export type GamingRunResult = { score: number; elapsedSeconds: number };
 
 type GamingContextValue = {
   isGaming: boolean;
@@ -19,21 +25,35 @@ type GamingContextValue = {
   score: number;
   highScore: number;
   addScore: (points: number, reason?: string) => void;
-  lives: number;
-  loseLife: () => void;
-  resetLives: () => void;
   level: number;
   toast: string | null;
   snakeLength: number;
   growSnake: () => void;
   resetSnake: () => void;
-  restartSession: () => void;
   sessionId: number;
   collectOrb: (id: number, points: number, reason: string) => boolean;
   registerOrbCollector: (fn: ((id: number) => boolean) | null) => void;
+  arenaEntered: boolean;
+  enterArena: () => void;
+  snakePalette: SnakePalette;
+  setSnakePalette: (palette: SnakePalette) => void;
+  elapsedSeconds: number;
+  runResult: GamingRunResult | null;
+  endRun: () => void;
+  startAgain: () => void;
 };
 
 const INITIAL_SNAKE_LENGTH = 3;
+
+function isSnakePalette(value: string): value is SnakePalette {
+  return (SNAKE_PALETTES as readonly string[]).includes(value);
+}
+
+function readStoredPalette(): SnakePalette {
+  if (typeof window === "undefined") return "green";
+  const raw = localStorage.getItem(PALETTE_KEY);
+  return raw && isSnakePalette(raw) ? raw : "green";
+}
 
 const GamingContext = createContext<GamingContextValue | null>(null);
 
@@ -51,16 +71,31 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const [isGaming, setIsGaming] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(() => readStoredHighScore());
-  const [lives, setLives] = useState(3);
   const [toast, setToast] = useState<string | null>(null);
   const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE_LENGTH);
   const [sessionId, setSessionId] = useState(0);
+  const [arenaEntered, setArenaEntered] = useState(false);
+  const [snakePalette, setSnakePaletteState] = useState<SnakePalette>(() => readStoredPalette());
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [runResult, setRunResult] = useState<GamingRunResult | null>(null);
 
   const toastTimerRef = useRef<number | null>(null);
   const collectedOrbsRef = useRef(new Set<number>());
   const orbCollectorRef = useRef<((id: number) => boolean) | null>(null);
   const scoreRef = useRef(0);
   const highScoreRef = useRef(readStoredHighScore());
+  const arenaStartRef = useRef<number | null>(null);
+  const elapsedIntervalRef = useRef<number | null>(null);
+
+  const stopElapsedTimer = useCallback(() => {
+    if (elapsedIntervalRef.current !== null) {
+      window.clearInterval(elapsedIntervalRef.current);
+      elapsedIntervalRef.current = null;
+    }
+    arenaStartRef.current = null;
+  }, []);
+
+  useEffect(() => stopElapsedTimer, [stopElapsedTimer]);
 
   useEffect(() => {
     localStorage.removeItem("aidin-portfolio-gaming");
@@ -110,14 +145,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     [showToast],
   );
 
-  const loseLife = useCallback(() => {
-    setLives((prev) => Math.max(0, prev - 1));
-  }, []);
-
-  const resetLives = useCallback(() => {
-    setLives(3);
-  }, []);
-
   const growSnake = useCallback(() => {
     setSnakeLength((prev) => prev + 1);
   }, []);
@@ -129,24 +156,44 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const resetSession = useCallback(() => {
     scoreRef.current = 0;
     setScore(0);
-    setLives(3);
     setSnakeLength(INITIAL_SNAKE_LENGTH);
     collectedOrbsRef.current.clear();
-  }, []);
-
-  const restartSession = useCallback(() => {
-    setSessionId((id) => id + 1);
-    setLives(3);
-    setSnakeLength(INITIAL_SNAKE_LENGTH);
-    scoreRef.current = 0;
-    setScore(0);
-    collectedOrbsRef.current.clear();
-  }, []);
+    setArenaEntered(false);
+    setElapsedSeconds(0);
+    stopElapsedTimer();
+  }, [stopElapsedTimer]);
 
   const startSession = useCallback(() => {
     setSessionId((id) => id + 1);
     resetSession();
   }, [resetSession]);
+
+  const enterArena = useCallback(() => {
+    stopElapsedTimer();
+    setArenaEntered(true);
+    setElapsedSeconds(0);
+    arenaStartRef.current = Date.now();
+    elapsedIntervalRef.current = window.setInterval(() => {
+      if (arenaStartRef.current === null) return;
+      setElapsedSeconds(Math.floor((Date.now() - arenaStartRef.current) / 1000));
+    }, 1000);
+  }, [stopElapsedTimer]);
+
+  const setSnakePalette = useCallback((palette: SnakePalette) => {
+    setSnakePaletteState(palette);
+    localStorage.setItem(PALETTE_KEY, palette);
+  }, []);
+
+  const endRun = useCallback(() => {
+    setRunResult({ score, elapsedSeconds });
+    resetSession();
+  }, [score, elapsedSeconds, resetSession]);
+
+  const startAgain = useCallback(() => {
+    setRunResult(null);
+    setSessionId((id) => id + 1);
+    enterArena();
+  }, [enterArena]);
 
   const pendingSessionActionRef = useRef<"start" | "reset" | null>(null);
 
@@ -161,8 +208,12 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     const action = pendingSessionActionRef.current;
     if (!action) return;
     pendingSessionActionRef.current = null;
-    if (action === "start") startSession();
-    else resetSession();
+    if (action === "start") {
+      startSession();
+    } else {
+      resetSession();
+      setRunResult(null);
+    }
   }, [isGaming, startSession, resetSession]);
 
   const registerOrbCollector = useCallback((fn: ((id: number) => boolean) | null) => {
@@ -196,18 +247,22 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       score,
       highScore,
       addScore,
-      lives,
-      loseLife,
-      resetLives,
       level,
       toast,
       snakeLength,
       growSnake,
       resetSnake,
-      restartSession,
       sessionId,
       collectOrb,
       registerOrbCollector,
+      arenaEntered,
+      enterArena,
+      snakePalette,
+      setSnakePalette,
+      elapsedSeconds,
+      runResult,
+      endRun,
+      startAgain,
     }),
     [
       isGaming,
@@ -215,18 +270,22 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       score,
       highScore,
       addScore,
-      lives,
-      loseLife,
-      resetLives,
       level,
       toast,
       snakeLength,
       growSnake,
       resetSnake,
-      restartSession,
       sessionId,
       collectOrb,
       registerOrbCollector,
+      arenaEntered,
+      enterArena,
+      snakePalette,
+      setSnakePalette,
+      elapsedSeconds,
+      runResult,
+      endRun,
+      startAgain,
     ],
   );
 

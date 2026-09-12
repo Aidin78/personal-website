@@ -31,11 +31,7 @@ const BURST_MS = 500;
 
 export function GamingCollectibles() {
   const t = useTranslations("gaming");
-  const {
-    lives,
-    collectOrb,
-    registerOrbCollector,
-  } = useGamingMode();
+  const { collectOrb, registerOrbCollector } = useGamingMode();
   const [orbs, setOrbs] = useState<Orb[]>([]);
   const [bursts, setBursts] = useState<Burst[]>([]);
   const [now, setNow] = useState(() => Date.now());
@@ -119,7 +115,7 @@ export function GamingCollectibles() {
   }, []);
 
   useEffect(() => {
-    if (lives === 0 || !visible) return;
+    if (!visible) return;
 
     const tick = window.setInterval(() => {
       const currentNow = Date.now();
@@ -137,10 +133,9 @@ export function GamingCollectibles() {
       window.clearInterval(spawn);
       window.clearTimeout(initial);
     };
-  }, [spawnOrb, lives, visible]);
+  }, [spawnOrb, visible]);
 
   const tryCollect = (id: number, tone: Orb["tone"], x: number, y: number) => {
-    if (lives === 0) return;
     const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
     const collected = collectOrb(id, points, t("orbCollected", { points }));
     if (collected) {
@@ -148,8 +143,6 @@ export function GamingCollectibles() {
       playOrbCollect(tone);
     }
   };
-
-  if (lives === 0) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[55]">

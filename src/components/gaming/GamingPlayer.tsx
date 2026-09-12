@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { playBurn } from "@/lib/gamingSound";
@@ -104,18 +104,10 @@ function keyToDir(key: string): Dir | null {
 
 export function GamingPlayer() {
   const t = useTranslations("gaming");
-  const {
-    snakeLength,
-    loseLife,
-    addScore,
-    resetSnake,
-    lives,
-    collectOrb,
-  } = useGamingMode();
+  const { snakeLength, addScore, resetSnake, collectOrb, snakePalette } = useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
   const [burning, setBurning] = useState(false);
-  const [dead, setDead] = useState(false);
   const [boosting, setBoosting] = useState(false);
   const [wrapping, setWrapping] = useState(false);
   const directionRef = useRef<Dir>("up");
@@ -161,12 +153,10 @@ export function GamingPlayer() {
   }, [resetSnake]);
 
   const triggerBurn = useCallback(() => {
-    if (burningRef.current || dead) return;
+    if (burningRef.current) return;
 
-    const willDie = lives <= 1;
     burningRef.current = true;
     setBurning(true);
-    loseLife();
     addScore(0, t("snakeBurn"));
     playBurn();
 
@@ -175,25 +165,19 @@ export function GamingPlayer() {
     }
     burnTimerRef.current = window.setTimeout(() => {
       burnTimerRef.current = null;
-      if (willDie) {
-        setDead(true);
-      } else {
-        resetSnakeState();
-      }
+      resetSnakeState();
       burningRef.current = false;
       setBurning(false);
     }, BURN_MS);
-  }, [addScore, dead, lives, loseLife, resetSnakeState, t]);
+  }, [addScore, resetSnakeState, t]);
 
   useEffect(() => {
-    if (lives === 0) return;
-
     const syncBoost = () => {
       setBoosting(heldKeysRef.current.size > 0);
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (burningRef.current || dead) return;
+      if (burningRef.current) return;
 
       const key = event.key.toLowerCase();
       if (!MOVE_KEYS.has(key)) return;
@@ -235,15 +219,13 @@ export function GamingPlayer() {
       window.removeEventListener("blur", onBlur);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [dead, lives]);
+  }, []);
 
   useEffect(() => {
-    if (lives === 0) return;
-
     let timeoutId = 0;
 
     const step = () => {
-      if (burningRef.current || dead || document.hidden) return;
+      if (burningRef.current || document.hidden) return;
 
       directionRef.current = pendingDirRef.current;
       setFacing(pendingDirRef.current);
@@ -279,7 +261,7 @@ export function GamingPlayer() {
     timeoutId = window.setTimeout(loop, TICK);
 
     return () => window.clearTimeout(timeoutId);
-  }, [lives, dead, triggerBurn, markWrapped]);
+  }, [triggerBurn, markWrapped]);
 
   useEffect(() => {
     if (burningRef.current) return;
@@ -314,26 +296,31 @@ export function GamingPlayer() {
 
   return (
     <div
-      className={`gaming-snake pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}${dead || lives === 0 ? " gaming-snake-dead" : ""}`}
+      className={`gaming-snake gaming-snake-palette-${snakePalette} pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}`}
       aria-hidden
     >
       {segments.map((seg, i) => {
         const isHead = i === 0;
         const size = isHead ? CELL : Math.max(7, CELL * (1 - (i / segments.length) * 0.45));
         const offset = (CELL - size) / 2;
+        const tailDistance = segments.length - 1 - i;
+        const eatDelayMs = (tailDistance / Math.max(1, segments.length - 1)) * 350;
         return (
           <div
             key={i}
             className={isHead ? "gaming-snake-head" : "gaming-snake-segment"}
             data-facing={isHead ? facing : undefined}
-            style={{
-              left: seg.x + offset,
-              top: seg.y + offset,
-              width: size,
-              height: size,
-              zIndex: segments.length - i,
-              opacity: isHead ? 1 : Math.max(0.45, 1 - i / segments.length),
-            }}
+            style={
+              {
+                left: seg.x + offset,
+                top: seg.y + offset,
+                width: size,
+                height: size,
+                zIndex: segments.length - i,
+                opacity: isHead ? 1 : Math.max(0.45, 1 - i / segments.length),
+                "--eat-delay": `${eatDelayMs}ms`,
+              } as CSSProperties
+            }
           />
         );
       })}

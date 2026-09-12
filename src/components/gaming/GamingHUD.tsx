@@ -1,18 +1,53 @@
 "use client";
 
-import { Heart, Trophy, Zap } from "lucide-react";
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { useTranslations } from "next-intl";
-import { useGamingMode } from "@/components/gaming/GamingModeProvider";
-import { playGameOver, playLevelUp } from "@/lib/gamingSound";
+import { Trophy, Zap } from "lucide-react";
 import {
-  fetchTopScores,
-  leaderboardEnabled,
-  submitScore,
-  type LeaderboardEntry,
-} from "@/lib/leaderboard";
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import { useTranslations } from "next-intl";
+import { useGamingMode, SNAKE_PALETTES, type SnakePalette } from "@/components/gaming/GamingModeProvider";
+import { playGameStart, playLevelUp } from "@/lib/gamingSound";
+import { fetchTopScores, leaderboardEnabled, type LeaderboardEntry } from "@/lib/leaderboard";
+import { LEADERBOARD_NAME_KEY, submitScoreOnExit } from "@/components/gaming/gamingLeaderboardExit";
 
-const LEADERBOARD_NAME_KEY = "aidin-portfolio-gaming-name";
+const PALETTE_GRADIENT: Record<SnakePalette, [string, string]> = {
+  green: ["#39ff14", "#00f0ff"],
+  magenta: ["#ff00ff", "#ff3864"],
+  gold: ["#ffe600", "#ff8a00"],
+};
+
+const PALETTE_LABEL_KEY: Record<SnakePalette, "paletteGreen" | "paletteMagenta" | "paletteGold"> = {
+  green: "paletteGreen",
+  magenta: "paletteMagenta",
+  gold: "paletteGold",
+};
+
+function formatDuration(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function useLeaderboard() {
+  const [topScores, setTopScores] = useState<LeaderboardEntry[]>([]);
+  const [loadingTop, setLoadingTop] = useState(leaderboardEnabled);
+
+  useEffect(() => {
+    if (!leaderboardEnabled) return;
+    void fetchTopScores().then((entries) => {
+      setTopScores(entries);
+      setLoadingTop(false);
+    });
+  }, []);
+
+  return { topScores, loadingTop };
+}
 
 function usePulseOnChange(value: number) {
   const [pulsing, setPulsing] = useState(false);
@@ -29,226 +64,275 @@ function usePulseOnChange(value: number) {
   return pulsing;
 }
 
-function GameOverBoard({ score }: { score: number }) {
+function LeaderboardList({
+  topScores,
+  loadingTop,
+  isMine,
+}: {
+  topScores: LeaderboardEntry[];
+  loadingTop: boolean;
+  isMine?: (entry: LeaderboardEntry) => boolean;
+}) {
   const t = useTranslations("gaming");
+
+  if (loadingTop) return <p className="text-xs text-muted">{t("leaderboardLoading")}</p>;
+  if (topScores.length === 0) return <p className="text-xs text-muted">{t("leaderboardEmpty")}</p>;
+
+  return (
+    <ol className="flex flex-col gap-1.5">
+      {topScores.map((entry, index) => {
+        const mine = isMine?.(entry) ?? false;
+        return (
+          <li
+            key={`${entry.name}-${entry.created_at}`}
+            className={`flex items-center justify-between gap-3 rounded px-1.5 py-0.5 text-sm${
+              mine ? " gaming-leaderboard-mine" : index === 0 ? " text-[#ffe600]" : " text-[#eaffea]"
+            }`}
+          >
+            <span className="flex min-w-0 items-center gap-2">
+              <span className="tabular-nums opacity-60">{index + 1}</span>
+              <span className="truncate">{entry.name}</span>
+            </span>
+            <span className="flex shrink-0 items-center gap-3 tabular-nums">
+              <span className="text-xs text-[#00f0ff]">{formatDuration(entry.duration_seconds)}</span>
+              <span>{entry.score}</span>
+            </span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function GatePanel({
+  accent,
+  wide,
+  onSubmit,
+  children,
+}: {
+  accent: [string, string];
+  wide: boolean;
+  onSubmit: (event: FormEvent) => void;
+  children: ReactNode;
+}) {
+  const [accentA, accentB] = accent;
+
+  return (
+    <div className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <form
+        onSubmit={onSubmit}
+        style={{ "--accent": accentA, "--accent-2": accentB } as CSSProperties}
+        className={`gaming-startgate grid w-full grid-cols-1 gap-6 px-6 py-7 sm:px-9 sm:py-8${
+          wide ? " max-w-2xl sm:grid-cols-[1.1fr_1fr] sm:gap-8" : " max-w-sm"
+        }`}
+      >
+        <span className="gaming-corner gaming-corner-tl" aria-hidden />
+        <span className="gaming-corner gaming-corner-tr" aria-hidden />
+        <span className="gaming-corner gaming-corner-bl" aria-hidden />
+        <span className="gaming-corner gaming-corner-br" aria-hidden />
+        {children}
+      </form>
+    </div>
+  );
+}
+
+function StartGate() {
+  const t = useTranslations("gaming");
+  const { snakePalette, setSnakePalette, enterArena } = useGamingMode();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(() =>
     typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY) ?? "",
   );
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [topScores, setTopScores] = useState<LeaderboardEntry[]>([]);
-  const [loadingTop, setLoadingTop] = useState(false);
-
-  const loadTopScores = useCallback(async () => {
-    setLoadingTop(true);
-    const entries = await fetchTopScores();
-    setTopScores(entries);
-    setLoadingTop(false);
-  }, []);
+  const { topScores, loadingTop } = useLeaderboard();
 
   useEffect(() => {
-    void loadTopScores();
     nameInputRef.current?.focus();
-  }, [loadTopScores]);
+  }, []);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleStart = (event: FormEvent) => {
     event.preventDefault();
-    if (!name.trim() || submitting || submitted) return;
-
-    setSubmitting(true);
-    const ok = await submitScore(name, score);
-    setSubmitting(false);
-
-    if (ok) {
-      window.localStorage.setItem(LEADERBOARD_NAME_KEY, name.trim());
-      setSubmitted(true);
-      void loadTopScores();
-    }
+    const trimmed = name.trim().slice(0, 12);
+    if (!trimmed) return;
+    window.localStorage.setItem(LEADERBOARD_NAME_KEY, trimmed);
+    playGameStart();
+    enterArena();
   };
 
   return (
-    <div className="w-full max-w-xs space-y-3 text-start">
-      {!submitted ? (
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <input
-            ref={nameInputRef}
-            value={name}
-            onChange={(event) => setName(event.target.value.slice(0, 12))}
-            placeholder={t("namePlaceholder")}
-            maxLength={12}
-            className="gaming-pixel min-w-0 flex-1 border border-[#39ff14]/50 bg-black/40 px-2 py-2 text-sm text-[#39ff14] outline-none focus:border-[#39ff14]"
-          />
-          <button
-            type="submit"
-            disabled={!name.trim() || submitting}
-            className="gaming-pixel shrink-0 border border-[#39ff14]/60 px-3 py-2 text-xs text-[#39ff14] disabled:opacity-40"
-          >
-            {t("submitScore")}
-          </button>
-        </form>
-      ) : (
-        <p className="gaming-pixel text-center text-sm text-[#39ff14]">{t("scoreSubmitted")}</p>
-      )}
+    <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStart}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("newGame")}</p>
+          <p className="mt-1 text-xs text-muted">{t("newGameHint")}</p>
+        </div>
 
-      <div className="gaming-panel px-3 py-2">
-        <p className="gaming-pixel mb-2 text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
-        {loadingTop ? (
-          <p className="gaming-pixel text-xs text-muted">{t("leaderboardLoading")}</p>
-        ) : topScores.length === 0 ? (
-          <p className="gaming-pixel text-xs text-muted">{t("leaderboardEmpty")}</p>
-        ) : (
-          <ol className="space-y-1">
-            {topScores.map((entry, index) => (
-              <li
-                key={`${entry.name}-${entry.created_at}`}
-                className="gaming-pixel flex items-center justify-between gap-2 text-xs text-[#39ff14]"
-              >
-                <span>
-                  {index + 1}. {entry.name}
-                </span>
-                <span>{entry.score}</span>
-              </li>
-            ))}
-          </ol>
-        )}
+        <input
+          ref={nameInputRef}
+          value={name}
+          onChange={(event) => setName(event.target.value.slice(0, 12))}
+          placeholder={t("namePlaceholder")}
+          maxLength={12}
+          required
+          className="gaming-pixel gaming-startgate-input w-full bg-transparent px-1 py-2 text-lg tracking-wide outline-none"
+        />
+
+        <div className="flex flex-col gap-3">
+          <p className="text-xs text-muted">{t("selectPalette")}</p>
+          <div className="flex items-center gap-4">
+            {SNAKE_PALETTES.map((palette) => {
+              const [a, b] = PALETTE_GRADIENT[palette];
+              return (
+                <button
+                  key={palette}
+                  type="button"
+                  onClick={() => setSnakePalette(palette)}
+                  aria-label={t(PALETTE_LABEL_KEY[palette])}
+                  aria-pressed={snakePalette === palette}
+                  className={`gaming-palette-swatch${snakePalette === palette ? " gaming-palette-swatch-selected" : ""}`}
+                  style={{ background: `linear-gradient(135deg, ${a}, ${b})`, color: a }}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        <button type="submit" className="gaming-startgate-cta gaming-pixel w-full px-4 py-2.5 text-sm">
+          {t("start")}
+        </button>
       </div>
-    </div>
+
+      {leaderboardEnabled ? (
+        <div className="flex flex-col gap-2 border-t border-white/10 pt-5 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
+          <div>
+            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+            <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+          </div>
+          <LeaderboardList topScores={topScores} loadingTop={loadingTop} />
+        </div>
+      ) : null}
+    </GatePanel>
+  );
+}
+
+function EndScreen() {
+  const t = useTranslations("gaming");
+  const { snakePalette, runResult, startAgain, toggleGaming } = useGamingMode();
+  const { topScores, loadingTop } = useLeaderboard();
+  const myName = typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY);
+
+  if (!runResult) return null;
+
+  const handleStartAgain = (event: FormEvent) => {
+    event.preventDefault();
+    playGameStart();
+    startAgain();
+  };
+
+  const isMine = (entry: LeaderboardEntry) =>
+    entry.name === myName &&
+    entry.score === runResult.score &&
+    entry.duration_seconds === runResult.elapsedSeconds;
+
+  return (
+    <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStartAgain}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("runComplete")}</p>
+          <div className="mt-2 flex items-center gap-4 text-sm">
+            <span className="flex items-center gap-1.5 text-[#39ff14]">
+              <Zap className="h-4 w-4" aria-hidden />
+              {runResult.score}
+            </span>
+            <span className="text-[#00f0ff]">{formatDuration(runResult.elapsedSeconds)}</span>
+          </div>
+        </div>
+
+        <button type="submit" className="gaming-startgate-cta gaming-pixel w-full px-4 py-2.5 text-sm">
+          {t("startAgain")}
+        </button>
+
+        <button
+          type="button"
+          onClick={toggleGaming}
+          className="text-xs text-muted transition-colors hover:text-[#eaffea]"
+        >
+          {t("leave")}
+        </button>
+      </div>
+
+      {leaderboardEnabled ? (
+        <div className="flex flex-col gap-2 border-t border-white/10 pt-5 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
+          <div>
+            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+            <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+          </div>
+          <LeaderboardList topScores={topScores} loadingTop={loadingTop} isMine={isMine} />
+        </div>
+      ) : null}
+    </GatePanel>
   );
 }
 
 export function GamingHUD() {
   const t = useTranslations("gaming");
-  const {
-    score,
-    highScore,
-    lives,
-    level,
-    toast,
-    toggleGaming,
-    restartSession,
-  } = useGamingMode();
-  const gameOverTitleId = useId();
-  const retryRef = useRef<HTMLButtonElement>(null);
-  const gameOverPanelRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const { score, highScore, level, toast, arenaEntered, elapsedSeconds, runResult, endRun } =
+    useGamingMode();
   const scorePulsing = usePulseOnChange(score);
-  const levelPulsing = usePulseOnChange(level);
   const prevLevelRef = useRef(level);
-  const gameOverPlayedRef = useRef(false);
 
   useEffect(() => {
     if (level > prevLevelRef.current) playLevelUp();
     prevLevelRef.current = level;
   }, [level]);
 
-  useEffect(() => {
-    if (lives === 0 && !gameOverPlayedRef.current) {
-      playGameOver();
-      gameOverPlayedRef.current = true;
-    } else if (lives > 0) {
-      gameOverPlayedRef.current = false;
-    }
-  }, [lives]);
-
-  useEffect(() => {
-    if (lives !== 0) return;
-
-    previousFocusRef.current = document.activeElement as HTMLElement | null;
-    const focusTimer = window.setTimeout(() => {
-      if (!leaderboardEnabled) retryRef.current?.focus();
-    }, 0);
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Tab" || !gameOverPanelRef.current) return;
-
-      const focusable = gameOverPanelRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusable.length === 0) return;
-
-      const first = focusable[0]!;
-      const last = focusable[focusable.length - 1]!;
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.clearTimeout(focusTimer);
-      document.removeEventListener("keydown", onKeyDown);
-      previousFocusRef.current?.focus();
-    };
-  }, [lives]);
+  const handleEndRun = useCallback(() => {
+    void submitScoreOnExit(score, elapsedSeconds).then(() => endRun());
+  }, [score, elapsedSeconds, endRun]);
 
   return (
     <>
-      <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
-        <div className="mx-auto flex max-w-7xl items-start justify-between gap-3">
-          <div className="gaming-panel pointer-events-auto px-4 py-3">
-            <p className="gaming-pixel text-sm uppercase tracking-widest text-[#39ff14]">
-              {t("player")} 01
-            </p>
-            <p className="gaming-pixel mt-1 text-base text-[#ff00ff]">{t("modeActive")}</p>
-          </div>
+      {arenaEntered ? (
+        <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
+          <div className="mx-auto grid max-w-7xl grid-cols-3 items-start gap-3">
+            <div />
 
-          <div className="gaming-panel pointer-events-auto flex flex-wrap items-center gap-3 px-4 py-3">
-            <div className="flex items-center gap-2 text-[#39ff14]">
-              <Zap className="h-5 w-5" aria-hidden />
-              <span className={`gaming-pixel text-lg${scorePulsing ? " gaming-score-pop" : ""}`}>
-                {score}
+            <div className="gaming-panel pointer-events-auto justify-self-center px-4 py-2">
+              <span className="gaming-pixel text-base text-[#00f0ff]" aria-label={t("time")}>
+                {formatDuration(elapsedSeconds)}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-[#00f0ff]">
-              <Trophy className="h-5 w-5" aria-hidden />
-              <span className="gaming-pixel text-lg">{highScore}</span>
+
+            <div className="gaming-panel pointer-events-auto flex flex-wrap items-center justify-self-end gap-3 px-4 py-3">
+              <div className="flex items-center gap-2 text-[#39ff14]">
+                <Zap className="h-5 w-5" aria-hidden />
+                <span className={`gaming-pixel text-lg${scorePulsing ? " gaming-score-pop" : ""}`}>
+                  {score}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-[#00f0ff]">
+                <Trophy className="h-5 w-5" aria-hidden />
+                <span className="gaming-pixel text-lg">{highScore}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 text-[#ff3864]" aria-label={`${t("lives")}: ${lives}`}>
-              {Array.from({ length: 3 }).map((_, index) => (
-                <Heart
-                  key={index}
-                  className={`h-5 w-5 ${index < lives ? "fill-current" : "opacity-25"}`}
-                  aria-hidden
-                />
-              ))}
-            </div>
-            <span
-              className={`gaming-pixel text-base text-[#ffe600]${levelPulsing ? " gaming-score-pop" : ""}`}
-            >
-              LV {level}
-            </span>
           </div>
         </div>
-      </div>
+      ) : null}
 
-      <div className="gaming-hud pointer-events-none fixed inset-x-0 bottom-4 z-[60] px-4">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-3">
-          <div className="gaming-panel pointer-events-auto hidden px-4 py-3 sm:block">
-            <p className="gaming-pixel text-sm leading-relaxed text-[#00f0ff]">
-              {t("controlsMove")}
-            </p>
-            <p className="gaming-pixel mt-1 text-sm leading-relaxed text-[#00f0ff]/80">
-              {t("controlsCollect")}
-            </p>
-          </div>
-
-          <div className="pointer-events-auto flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={toggleGaming}
-              className="gaming-panel gaming-pixel px-4 py-3 text-base text-[#ff3864]"
-            >
-              {t("exit")}
-            </button>
+      {arenaEntered ? (
+        <div className="gaming-hud pointer-events-none fixed inset-x-0 bottom-4 z-[60] px-4">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-end gap-3">
+            <div className="pointer-events-auto flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleEndRun}
+                className="gaming-panel gaming-pixel px-3.5 py-2.5 text-sm text-[#ff3864]"
+              >
+                {t("exit")}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
 
       {toast ? (
         <div
@@ -260,32 +344,7 @@ export function GamingHUD() {
         </div>
       ) : null}
 
-      {lives === 0 ? (
-        <div className="pointer-events-auto fixed inset-0 z-[75] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div
-            ref={gameOverPanelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={gameOverTitleId}
-            className="gaming-panel flex flex-col items-center gap-4 px-6 py-5 text-center"
-          >
-            <p id={gameOverTitleId} className="gaming-pixel text-lg text-[#ff3864]">
-              {t("gameOver")}
-            </p>
-
-            {leaderboardEnabled ? <GameOverBoard score={score} /> : null}
-
-            <button
-              ref={retryRef}
-              type="button"
-              onClick={restartSession}
-              className="gaming-pixel text-base text-[#39ff14] transition-transform hover:scale-105"
-            >
-              {t("retry")}
-            </button>
-          </div>
-        </div>
-      ) : null}
+      {!arenaEntered ? (runResult ? <EndScreen /> : <StartGate />) : null}
     </>
   );
 }

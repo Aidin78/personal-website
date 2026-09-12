@@ -65,8 +65,29 @@ export function playBurn() {
   beep({ frequency: 110, duration: 0.3, type: "sawtooth", volume: 0.14, delay: 0.08 });
 }
 
-export function playGameOver() {
-  [392, 349, 294, 220].forEach((frequency, i) =>
-    beep({ frequency, duration: 0.22, type: "triangle", volume: 0.16, delay: i * 0.16 }),
+export function playGameStart() {
+  const ctx = getContext();
+  if (!ctx) return;
+
+  [392, 523, 659].forEach((frequency, i) =>
+    beep({ frequency, duration: 0.1, type: "square", volume: 0.14, delay: i * 0.07 }),
   );
+
+  const startTime = ctx.currentTime + 0.24;
+  const duration = 1.5;
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0, startTime);
+  gain.gain.linearRampToValueAtTime(0.1, startTime + 0.08);
+  gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+  gain.connect(ctx.destination);
+
+  [659, 663].forEach((frequency) => {
+    const oscillator = ctx.createOscillator();
+    oscillator.type = "triangle";
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    oscillator.connect(gain);
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration + 0.05);
+  });
 }
