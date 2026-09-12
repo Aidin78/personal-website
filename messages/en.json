@@ -172,7 +172,7 @@
     "toggleLabel": "Play",
     "toggleOn": "Playing",
     "exit": "Exit game",
-    "snakeBurn": "SELF BURN!",
+    "snakeBurn": "GAME OVER!",
     "snakeHint": "Use WASD or arrow keys",
     "orbCollected": "+{points} XP",
     "collectOrb": "Collect orb",

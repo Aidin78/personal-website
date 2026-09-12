@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 import { useGamingMode, SNAKE_PALETTES, type SnakePalette } from "@/components/gaming/GamingModeProvider";
 import { playGameStart, playLevelUp } from "@/lib/gamingSound";
 import { fetchTopScores, leaderboardEnabled, type LeaderboardEntry } from "@/lib/leaderboard";
-import { LEADERBOARD_NAME_KEY, submitScoreOnExit } from "@/components/gaming/gamingLeaderboardExit";
+import { LEADERBOARD_NAME_KEY, finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 const PALETTE_GRADIENT: Record<SnakePalette, [string, string]> = {
   green: ["#39ff14", "#00f0ff"],
@@ -286,7 +286,7 @@ export function GamingHUD() {
   }, [level]);
 
   const handleEndRun = useCallback(() => {
-    void submitScoreOnExit(score, elapsedSeconds).then(() => endRun());
+    void finishRun(score, elapsedSeconds, endRun);
   }, [score, elapsedSeconds, endRun]);
 
   return (

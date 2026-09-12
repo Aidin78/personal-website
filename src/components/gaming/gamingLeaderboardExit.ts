@@ -8,3 +8,8 @@ export async function submitScoreOnExit(score: number, durationSeconds: number):
   if (!name) return false;
   return submitScore(name, score, durationSeconds);
 }
+
+export async function finishRun(score: number, elapsedSeconds: number, endRun: () => void): Promise<void> {
+  await submitScoreOnExit(score, elapsedSeconds);
+  endRun();
+}

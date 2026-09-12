@@ -172,7 +172,7 @@
     "toggleLabel": "بازی",
     "toggleOn": "فعال",
     "exit": "خروج",
-    "snakeBurn": "خودسوزی!",
+    "snakeBurn": "بازی تمام شد!",
     "snakeHint": "از WASD یا فلش‌ها استفاده کن",
     "orbCollected": "+{points} XP",
     "collectOrb": "جمع‌آوری گوی",

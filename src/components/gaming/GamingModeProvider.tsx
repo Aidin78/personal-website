@@ -29,7 +29,6 @@ type GamingContextValue = {
   toast: string | null;
   snakeLength: number;
   growSnake: () => void;
-  resetSnake: () => void;
   sessionId: number;
   collectOrb: (id: number, points: number, reason: string) => boolean;
   registerOrbCollector: (fn: ((id: number) => boolean) | null) => void;
@@ -149,10 +148,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     setSnakeLength((prev) => prev + 1);
   }, []);
 
-  const resetSnake = useCallback(() => {
-    setSnakeLength(INITIAL_SNAKE_LENGTH);
-  }, []);
-
   const resetSession = useCallback(() => {
     scoreRef.current = 0;
     setScore(0);
@@ -251,7 +246,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       toast,
       snakeLength,
       growSnake,
-      resetSnake,
       sessionId,
       collectOrb,
       registerOrbCollector,
@@ -274,7 +268,6 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       toast,
       snakeLength,
       growSnake,
-      resetSnake,
       sessionId,
       collectOrb,
       registerOrbCollector,

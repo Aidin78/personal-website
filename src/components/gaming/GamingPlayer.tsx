@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { playBurn } from "@/lib/gamingSound";
+import { finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 const CELL = 13;
 const TICK = 68;
@@ -104,7 +105,7 @@ function keyToDir(key: string): Dir | null {
 
 export function GamingPlayer() {
   const t = useTranslations("gaming");
-  const { snakeLength, addScore, resetSnake, collectOrb, snakePalette } = useGamingMode();
+  const { snakeLength, addScore, collectOrb, snakePalette, score, elapsedSeconds, endRun } = useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
   const [burning, setBurning] = useState(false);
@@ -144,15 +145,7 @@ export function GamingPlayer() {
     }, 0);
   }, []);
 
-  const resetSnakeState = useCallback(() => {
-    setSegments(initSegments());
-    directionRef.current = "up";
-    pendingDirRef.current = "up";
-    setFacing("up");
-    resetSnake();
-  }, [resetSnake]);
-
-  const triggerBurn = useCallback(() => {
+  const triggerDeath = useCallback(() => {
     if (burningRef.current) return;
 
     burningRef.current = true;
@@ -165,11 +158,9 @@ export function GamingPlayer() {
     }
     burnTimerRef.current = window.setTimeout(() => {
       burnTimerRef.current = null;
-      resetSnakeState();
-      burningRef.current = false;
-      setBurning(false);
+      void finishRun(score, elapsedSeconds, endRun);
     }, BURN_MS);
-  }, [addScore, resetSnakeState, t]);
+  }, [addScore, score, elapsedSeconds, endRun, t]);
 
   useEffect(() => {
     const syncBoost = () => {
@@ -240,7 +231,7 @@ export function GamingPlayer() {
         );
 
         if (hitsSelf(nextHead, prev.slice(1))) {
-          window.setTimeout(triggerBurn, 0);
+          window.setTimeout(triggerDeath, 0);
           return prev;
         }
 
@@ -261,7 +252,7 @@ export function GamingPlayer() {
     timeoutId = window.setTimeout(loop, TICK);
 
     return () => window.clearTimeout(timeoutId);
-  }, [triggerBurn, markWrapped]);
+  }, [triggerDeath, markWrapped]);
 
   useEffect(() => {
     if (burningRef.current) return;

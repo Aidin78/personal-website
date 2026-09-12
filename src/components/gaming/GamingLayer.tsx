@@ -7,7 +7,7 @@ import { GamingCollectibles } from "@/components/gaming/GamingCollectibles";
 import { GamingPlayer } from "@/components/gaming/GamingPlayer";
 import { GamingLinkBonus } from "@/components/gaming/GamingLinkBonus";
 import { GamingFontLoader } from "@/components/gaming/GamingFontLoader";
-import { submitScoreOnExit } from "@/components/gaming/gamingLeaderboardExit";
+import { finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 export function GamingLayer() {
   const { isGaming, arenaEntered, score, elapsedSeconds, sessionId, toggleGaming, endRun } =
@@ -20,7 +20,7 @@ export function GamingLayer() {
       if (event.key !== "Escape") return;
       event.preventDefault();
       if (arenaEntered) {
-        void submitScoreOnExit(score, elapsedSeconds).then(() => endRun());
+        void finishRun(score, elapsedSeconds, endRun);
       } else {
         toggleGaming();
       }
