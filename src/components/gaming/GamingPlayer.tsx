@@ -18,6 +18,15 @@ const TICK = 68;
 const BOOST_TICK = 38;
 const INITIAL_LENGTH = 3;
 const BURN_MS = 900;
+const LEVEL_TICK_STEP = 4;
+const MIN_TICK = 34;
+const MIN_BOOST_TICK = 22;
+
+function tickForLevel(level: number, boosting: boolean) {
+  const base = Math.max(MIN_TICK, TICK - (level - 1) * LEVEL_TICK_STEP);
+  if (!boosting) return base;
+  return Math.max(MIN_BOOST_TICK, base - (TICK - BOOST_TICK));
+}
 
 type Point = { x: number; y: number };
 type Dir = "up" | "down" | "left" | "right";
@@ -112,7 +121,8 @@ function keyToDir(key: string): Dir | null {
 
 export function GamingPlayer() {
   const t = useTranslations("gaming");
-  const { snakeLength, addScore, collectOrb, snakePalette, score, elapsedSeconds, endRun } = useGamingMode();
+  const { snakeLength, addScore, collectOrb, snakePalette, score, elapsedSeconds, endRun, level } =
+    useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
   const [burning, setBurning] = useState(false);
@@ -125,11 +135,16 @@ export function GamingPlayer() {
   const heldKeysRef = useRef(new Set<string>());
   const heldPointersRef = useRef(new Set<number>());
   const snakeLengthRef = useRef(snakeLength);
+  const levelRef = useRef(level);
   const wrapClearRef = useRef<number | null>(null);
 
   useEffect(() => {
     snakeLengthRef.current = snakeLength;
   }, [snakeLength]);
+
+  useEffect(() => {
+    levelRef.current = level;
+  }, [level]);
 
   useEffect(() => {
     return () => {
@@ -281,7 +296,7 @@ export function GamingPlayer() {
     const loop = () => {
       step();
       const boosting = heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0;
-      const delay = boosting ? BOOST_TICK : TICK;
+      const delay = tickForLevel(levelRef.current, boosting);
       timeoutId = window.setTimeout(loop, delay);
     };
 
