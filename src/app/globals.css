@@ -539,6 +539,21 @@ html.gaming-mode .glass-card {
   --snake-b: #ff8a00;
 }
 
+.gaming-snake-palette-cyan {
+  --snake-a: #00f0ff;
+  --snake-b: #0066ff;
+}
+
+.gaming-snake-palette-violet {
+  --snake-a: #a855f7;
+  --snake-b: #6d28d9;
+}
+
+.gaming-snake-palette-crimson {
+  --snake-a: #ff2d55;
+  --snake-b: #b3001b;
+}
+
 .gaming-snake-head,
 .gaming-snake-segment {
   position: absolute;

@@ -20,12 +20,21 @@ const PALETTE_GRADIENT: Record<SnakePalette, [string, string]> = {
   green: ["#39ff14", "#00f0ff"],
   magenta: ["#ff00ff", "#ff3864"],
   gold: ["#ffe600", "#ff8a00"],
+  cyan: ["#00f0ff", "#0066ff"],
+  violet: ["#a855f7", "#6d28d9"],
+  crimson: ["#ff2d55", "#b3001b"],
 };
 
-const PALETTE_LABEL_KEY: Record<SnakePalette, "paletteGreen" | "paletteMagenta" | "paletteGold"> = {
+const PALETTE_LABEL_KEY: Record<
+  SnakePalette,
+  "paletteGreen" | "paletteMagenta" | "paletteGold" | "paletteCyan" | "paletteViolet" | "paletteCrimson"
+> = {
   green: "paletteGreen",
   magenta: "paletteMagenta",
   gold: "paletteGold",
+  cyan: "paletteCyan",
+  violet: "paletteViolet",
+  crimson: "paletteCrimson",
 };
 
 function formatDuration(totalSeconds: number) {
@@ -210,7 +219,7 @@ function StartGate() {
 
         <div className="flex flex-col gap-3">
           <p className="text-xs text-muted">{t("selectPalette")}</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             {SNAKE_PALETTES.map((palette) => {
               const [a, b] = PALETTE_GRADIENT[palette];
               return (

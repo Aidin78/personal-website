@@ -14,7 +14,7 @@ import {
 const HIGH_SCORE_KEY = "aidin-portfolio-gaming-highscore";
 const PALETTE_KEY = "aidin-portfolio-gaming-palette";
 
-export const SNAKE_PALETTES = ["green", "magenta", "gold"] as const;
+export const SNAKE_PALETTES = ["green", "magenta", "gold", "cyan", "violet", "crimson"] as const;
 export type SnakePalette = (typeof SNAKE_PALETTES)[number];
 
 export type GamingRunResult = { score: number; elapsedSeconds: number };
