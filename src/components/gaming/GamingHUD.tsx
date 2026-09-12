@@ -79,13 +79,13 @@ function LeaderboardList({
   if (topScores.length === 0) return <p className="text-xs text-muted">{t("leaderboardEmpty")}</p>;
 
   return (
-    <ol className="flex flex-col gap-1.5">
+    <ol className="gaming-leaderboard-list flex flex-col gap-1 sm:gap-1.5">
       {topScores.map((entry, index) => {
         const mine = isMine?.(entry) ?? false;
         return (
           <li
             key={`${entry.name}-${entry.created_at}`}
-            className={`flex items-center justify-between gap-3 rounded px-1.5 py-0.5 text-sm${
+            className={`flex items-center justify-between gap-3 rounded px-1.5 py-0.5 text-xs sm:text-sm${
               mine ? " gaming-leaderboard-mine" : index === 0 ? " text-[#ffe600]" : " text-[#eaffea]"
             }`}
           >
@@ -122,7 +122,7 @@ function GatePanel({
       <form
         onSubmit={onSubmit}
         style={{ "--accent": accentA, "--accent-2": accentB } as CSSProperties}
-        className={`gaming-startgate grid w-full grid-cols-1 gap-6 px-6 py-7 sm:px-9 sm:py-8${
+        className={`gaming-startgate grid w-full grid-cols-1 gap-4 px-5 py-5 sm:gap-6 sm:px-9 sm:py-8${
           wide ? " max-w-2xl sm:grid-cols-[1.1fr_1fr] sm:gap-8" : " max-w-sm"
         }`}
       >
@@ -160,7 +160,7 @@ function StartGate() {
 
   return (
     <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStart}>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:gap-6">
         <div>
           <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("newGame")}</p>
           <p className="mt-1 text-xs text-muted">{t("newGameHint")}</p>
@@ -202,7 +202,7 @@ function StartGate() {
       </div>
 
       {leaderboardEnabled ? (
-        <div className="flex flex-col gap-2 border-t border-white/10 pt-5 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
+        <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
           <div>
             <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
@@ -235,7 +235,7 @@ function EndScreen() {
 
   return (
     <GatePanel accent={PALETTE_GRADIENT[snakePalette]} wide={leaderboardEnabled} onSubmit={handleStartAgain}>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:gap-6">
         <div>
           <p className="gaming-pixel text-base text-[var(--accent,#39ff14)]">{t("runComplete")}</p>
           <div className="mt-2 flex items-center gap-4 text-sm">
@@ -261,7 +261,7 @@ function EndScreen() {
       </div>
 
       {leaderboardEnabled ? (
-        <div className="flex flex-col gap-2 border-t border-white/10 pt-5 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
+        <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
           <div>
             <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>

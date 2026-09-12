@@ -574,9 +574,17 @@ html.gaming-mode .glass-card {
   box-shadow:
     0 0 50px color-mix(in srgb, var(--accent, #39ff14) 16%, transparent),
     inset 0 0 40px rgba(0, 0, 0, 0.55);
-  max-height: 90vh;
+  max-height: min(92dvh, 640px);
   overflow-y: auto;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Keep the leaderboard list short enough on narrow viewports that the
+   modal above fits without needing its overflow-y fallback to kick in. */
+@media (max-width: 639px) {
+  .gaming-leaderboard-list li:nth-child(n + 6) {
+    display: none;
+  }
 }
 
 .gaming-corner {
