@@ -159,11 +159,19 @@ export function GamingPlayer() {
   const snakeLengthRef = useRef(snakeLength);
   const levelRef = useRef(level);
   const wrapClearRef = useRef<number | null>(null);
+  const segmentsRef = useRef(segments);
+  const [trail, setTrail] = useState<{ id: number; x: number; y: number }[]>([]);
+  const trailIdRef = useRef(0);
+  const trailTimersRef = useRef(new Set<number>());
 
   useEffect(() => {
     startBackgroundMusic();
     return () => stopBackgroundMusic();
   }, []);
+
+  useEffect(() => {
+    segmentsRef.current = segments;
+  }, [segments]);
 
   useEffect(() => {
     snakeLengthRef.current = snakeLength;
@@ -193,6 +201,34 @@ export function GamingPlayer() {
       wrapClearRef.current = null;
       setWrapping(false);
     }, 0);
+  }, []);
+
+  const spawnTrailGhost = useCallback(() => {
+    const head = segmentsRef.current[0];
+    if (!head) return;
+
+    const id = trailIdRef.current;
+    trailIdRef.current += 1;
+    setTrail((prev) => [...prev, { id, x: head.x, y: head.y }]);
+    const timer = window.setTimeout(() => {
+      trailTimersRef.current.delete(timer);
+      setTrail((prev) => prev.filter((ghost) => ghost.id !== id));
+    }, 260);
+    trailTimersRef.current.add(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!boosting) return;
+    const interval = window.setInterval(spawnTrailGhost, 55);
+    return () => window.clearInterval(interval);
+  }, [boosting, spawnTrailGhost]);
+
+  useEffect(() => {
+    const timers = trailTimersRef.current;
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers.clear();
+    };
   }, []);
 
   const syncBoost = useCallback(() => {
@@ -400,6 +436,16 @@ export function GamingPlayer() {
 
   return (
     <>
+      <div className="pointer-events-none fixed inset-0 z-[77]" aria-hidden>
+        {trail.map((ghost) => (
+          <span
+            key={ghost.id}
+            className={`gaming-boost-ghost gaming-snake-palette-${snakePalette}`}
+            style={{ left: ghost.x, top: ghost.y, width: CELL, height: CELL }}
+          />
+        ))}
+      </div>
+
       <div
         className={`gaming-snake gaming-snake-palette-${snakePalette} pointer-events-none fixed z-[78]${burning ? " gaming-snake-burning" : ""}${boosting ? " gaming-snake-boost" : ""}${wrapping ? " gaming-snake-wrapping" : ""}`}
         aria-hidden

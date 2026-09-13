@@ -327,15 +327,29 @@ function EndScreen() {
 
 export function GamingHUD() {
   const t = useTranslations("gaming");
-  const { score, highScore, level, toast, arenaEntered, elapsedSeconds, runResult, endRun } =
+  const { score, highScore, level, toast, arenaEntered, elapsedSeconds, runResult, endRun, snakePalette } =
     useGamingMode();
   const scorePulsing = usePulseOnChange(score);
   const prevLevelRef = useRef(level);
+  const [levelFlash, setLevelFlash] = useState(false);
+  const flashTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (level > prevLevelRef.current) playLevelUp();
+    if (level > prevLevelRef.current) {
+      playLevelUp();
+      setLevelFlash(true);
+      if (flashTimerRef.current !== null) window.clearTimeout(flashTimerRef.current);
+      flashTimerRef.current = window.setTimeout(() => setLevelFlash(false), 500);
+    }
     prevLevelRef.current = level;
   }, [level]);
+
+  useEffect(
+    () => () => {
+      if (flashTimerRef.current !== null) window.clearTimeout(flashTimerRef.current);
+    },
+    [],
+  );
 
   const handleEndRun = useCallback(() => {
     void finishRun(score, elapsedSeconds, endRun);
@@ -343,6 +357,14 @@ export function GamingHUD() {
 
   return (
     <>
+      {levelFlash ? (
+        <div
+          className="gaming-levelup-flash"
+          style={{ "--flash-color": PALETTE_GRADIENT[snakePalette][1] } as CSSProperties}
+          aria-hidden
+        />
+      ) : null}
+
       {arenaEntered ? (
         <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
           <div className="mx-auto grid max-w-7xl grid-cols-3 items-start gap-3">

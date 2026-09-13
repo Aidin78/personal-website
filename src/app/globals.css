@@ -210,12 +210,16 @@ html[lang="fa"] {
   .gaming-snake-burning .gaming-snake-head,
   .gaming-snake-burning .gaming-snake-segment,
   .gaming-particle,
-  .gaming-score-pop {
+  .gaming-score-pop,
+  .gaming-boost-ghost,
+  .gaming-levelup-flash {
     animation: none !important;
     clip-path: none !important;
   }
 
-  .gaming-particle {
+  .gaming-particle,
+  .gaming-boost-ghost,
+  .gaming-levelup-flash {
     opacity: 0 !important;
   }
 
@@ -581,6 +585,49 @@ html.gaming-mode .glass-card {
 
 .gaming-snake-boost .gaming-snake-segment {
   filter: brightness(1.15);
+}
+
+.gaming-boost-ghost {
+  --snake-a: #39ff14;
+  --snake-b: #00f0ff;
+  position: absolute;
+  border-radius: 50%;
+  background: var(--snake-a);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--snake-a) 60%, transparent);
+  animation: gaming-boost-fade 0.26s ease-out forwards;
+}
+
+@keyframes gaming-boost-fade {
+  from {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+@keyframes gaming-levelup-flash {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.gaming-levelup-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--flash-color, #00f0ff) 55%, transparent),
+    transparent 70%
+  );
+  animation: gaming-levelup-flash 0.5s ease-out forwards;
 }
 
 .gaming-snake-head::before,
