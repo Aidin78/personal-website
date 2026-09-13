@@ -119,6 +119,27 @@ function keyToDir(key: string): Dir | null {
   return null;
 }
 
+const GAMEPAD_DEADZONE = 0.35;
+const GAMEPAD_BOOST_BUTTONS = new Set([0, 1, 2, 3, 6, 7]);
+
+function readGamepadDir(pad: Gamepad): Dir | null {
+  if (pad.buttons[12]?.pressed) return "up";
+  if (pad.buttons[13]?.pressed) return "down";
+  if (pad.buttons[14]?.pressed) return "left";
+  if (pad.buttons[15]?.pressed) return "right";
+
+  const [axisX, axisY] = pad.axes;
+  if (axisY !== undefined && axisY < -GAMEPAD_DEADZONE) return "up";
+  if (axisY !== undefined && axisY > GAMEPAD_DEADZONE) return "down";
+  if (axisX !== undefined && axisX < -GAMEPAD_DEADZONE) return "left";
+  if (axisX !== undefined && axisX > GAMEPAD_DEADZONE) return "right";
+  return null;
+}
+
+function readGamepadBoost(pad: Gamepad): boolean {
+  return pad.buttons.some((button, index) => GAMEPAD_BOOST_BUTTONS.has(index) && button.pressed);
+}
+
 export function GamingPlayer() {
   const t = useTranslations("gaming");
   const { snakeLength, addScore, collectOrb, snakePalette, score, elapsedSeconds, endRun, level } =
@@ -134,6 +155,7 @@ export function GamingPlayer() {
   const burnTimerRef = useRef<number | null>(null);
   const heldKeysRef = useRef(new Set<string>());
   const heldPointersRef = useRef(new Set<number>());
+  const gamepadBoostRef = useRef(false);
   const snakeLengthRef = useRef(snakeLength);
   const levelRef = useRef(level);
   const wrapClearRef = useRef<number | null>(null);
@@ -169,7 +191,9 @@ export function GamingPlayer() {
   }, []);
 
   const syncBoost = useCallback(() => {
-    setBoosting(heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0);
+    setBoosting(
+      heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0 || gamepadBoostRef.current,
+    );
   }, []);
 
   const queueDirection = useCallback((next: Dir) => {
@@ -221,6 +245,7 @@ export function GamingPlayer() {
     const clearHeld = () => {
       heldKeysRef.current.clear();
       heldPointersRef.current.clear();
+      gamepadBoostRef.current = false;
       setBoosting(false);
     };
 
@@ -263,6 +288,37 @@ export function GamingPlayer() {
   );
 
   useEffect(() => {
+    if (typeof navigator === "undefined" || !navigator.getGamepads) return;
+
+    let frameId = 0;
+
+    const poll = () => {
+      if (!burningRef.current) {
+        const pad = navigator.getGamepads().find((candidate) => candidate?.connected);
+
+        if (pad) {
+          const dir = readGamepadDir(pad);
+          if (dir) queueDirection(dir);
+
+          const boosting = readGamepadBoost(pad);
+          if (boosting !== gamepadBoostRef.current) {
+            gamepadBoostRef.current = boosting;
+            syncBoost();
+          }
+        } else if (gamepadBoostRef.current) {
+          gamepadBoostRef.current = false;
+          syncBoost();
+        }
+      }
+
+      frameId = window.requestAnimationFrame(poll);
+    };
+
+    frameId = window.requestAnimationFrame(poll);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [queueDirection, syncBoost]);
+
+  useEffect(() => {
     let timeoutId = 0;
 
     const step = () => {
@@ -295,7 +351,8 @@ export function GamingPlayer() {
 
     const loop = () => {
       step();
-      const boosting = heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0;
+      const boosting =
+        heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0 || gamepadBoostRef.current;
       const delay = tickForLevel(levelRef.current, boosting);
       timeoutId = window.setTimeout(loop, delay);
     };
