@@ -65,6 +65,38 @@ export function playBurn() {
   beep({ frequency: 110, duration: 0.3, type: "sawtooth", volume: 0.14, delay: 0.08 });
 }
 
+let musicTimer: number | null = null;
+let musicStep = 0;
+
+const MUSIC_STEP_MS = 180;
+// 0 = rest. A short minor-pentatonic loop, low in the mix so it sits under sfx.
+const MUSIC_PATTERN = [220, 0, 262, 220, 330, 0, 262, 196];
+
+/** Starts the looping background arpeggio; no-op if already running. */
+export function startBackgroundMusic() {
+  if (musicTimer !== null) return;
+  if (!getContext()) return;
+
+  const playStep = () => {
+    const frequency = MUSIC_PATTERN[musicStep % MUSIC_PATTERN.length];
+    musicStep += 1;
+    if (frequency) {
+      beep({ frequency, duration: (MUSIC_STEP_MS / 1000) * 0.85, type: "triangle", volume: 0.05 });
+    }
+    musicTimer = window.setTimeout(playStep, MUSIC_STEP_MS);
+  };
+
+  playStep();
+}
+
+export function stopBackgroundMusic() {
+  if (musicTimer !== null) {
+    window.clearTimeout(musicTimer);
+    musicTimer = null;
+  }
+  musicStep = 0;
+}
+
 export function playGameStart() {
   const ctx = getContext();
   if (!ctx) return;

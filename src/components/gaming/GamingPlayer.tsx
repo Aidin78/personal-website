@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useTranslations } from "next-intl";
 import { useGamingMode } from "@/components/gaming/GamingModeProvider";
-import { playBurn } from "@/lib/gamingSound";
+import { playBurn, startBackgroundMusic, stopBackgroundMusic } from "@/lib/gamingSound";
 import { finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 const CELL = 13;
@@ -159,6 +159,11 @@ export function GamingPlayer() {
   const snakeLengthRef = useRef(snakeLength);
   const levelRef = useRef(level);
   const wrapClearRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    startBackgroundMusic();
+    return () => stopBackgroundMusic();
+  }, []);
 
   useEffect(() => {
     snakeLengthRef.current = snakeLength;
