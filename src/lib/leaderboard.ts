@@ -11,6 +11,18 @@ export type LeaderboardEntry = {
   created_at: string;
 };
 
+export type LeaderboardRange = "today" | "week" | "all";
+
+function sinceIso(range: LeaderboardRange): string | null {
+  if (range === "all") return null;
+
+  const now = new Date();
+  if (range === "today") {
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+  }
+  return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+}
+
 function headers() {
   return {
     apikey: SUPABASE_ANON_KEY ?? "",
@@ -19,11 +31,16 @@ function headers() {
   };
 }
 
-export async function fetchTopScores(limit = 10): Promise<LeaderboardEntry[]> {
+export async function fetchTopScores(
+  limit = 10,
+  range: LeaderboardRange = "all",
+): Promise<LeaderboardEntry[]> {
   if (!leaderboardEnabled) return [];
 
   try {
-    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=name,score,duration_seconds,created_at&order=score.desc,created_at.asc&limit=${limit}`;
+    const since = sinceIso(range);
+    const rangeFilter = since ? `&created_at=gte.${encodeURIComponent(since)}` : "";
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=name,score,duration_seconds,created_at&order=score.desc,created_at.asc&limit=${limit}${rangeFilter}`;
     const response = await fetch(url, { headers: headers() });
     if (!response.ok) return [];
     return (await response.json()) as LeaderboardEntry[];

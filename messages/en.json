@@ -203,6 +203,9 @@
     "time": "Time",
     "leaderboardTitle": "Top 10",
     "leaderboardHint": "Fastest time wins ties",
+    "leaderboardRangeToday": "Today",
+    "leaderboardRangeWeek": "Week",
+    "leaderboardRangeAll": "All-time",
     "leaderboardLoading": "Loading leaderboard…",
     "leaderboardEmpty": "No scores yet — be the first.",
     "yourRank": "Rank #{rank}"

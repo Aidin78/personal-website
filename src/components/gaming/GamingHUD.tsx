@@ -13,7 +13,13 @@ import {
 import { useTranslations } from "next-intl";
 import { useGamingMode, SNAKE_PALETTES, type SnakePalette } from "@/components/gaming/GamingModeProvider";
 import { playGameStart, playLevelUp } from "@/lib/gamingSound";
-import { fetchRank, fetchTopScores, leaderboardEnabled, type LeaderboardEntry } from "@/lib/leaderboard";
+import {
+  fetchRank,
+  fetchTopScores,
+  leaderboardEnabled,
+  type LeaderboardEntry,
+  type LeaderboardRange,
+} from "@/lib/leaderboard";
 import { LEADERBOARD_NAME_KEY, finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 const PALETTE_GRADIENT: Record<SnakePalette, [string, string]> = {
@@ -44,18 +50,60 @@ function formatDuration(totalSeconds: number) {
 }
 
 function useLeaderboard() {
+  const [range, setRange] = useState<LeaderboardRange>("all");
   const [topScores, setTopScores] = useState<LeaderboardEntry[]>([]);
-  const [loadingTop, setLoadingTop] = useState(leaderboardEnabled);
+  const [loadedRange, setLoadedRange] = useState<LeaderboardRange | null>(null);
 
   useEffect(() => {
     if (!leaderboardEnabled) return;
-    void fetchTopScores().then((entries) => {
+    let cancelled = false;
+    void fetchTopScores(10, range).then((entries) => {
+      if (cancelled) return;
       setTopScores(entries);
-      setLoadingTop(false);
+      setLoadedRange(range);
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [range]);
 
-  return { topScores, loadingTop };
+  const loadingTop = leaderboardEnabled && loadedRange !== range;
+
+  return { topScores, loadingTop, range, setRange };
+}
+
+const RANGE_OPTIONS: { value: LeaderboardRange; key: "leaderboardRangeToday" | "leaderboardRangeWeek" | "leaderboardRangeAll" }[] = [
+  { value: "today", key: "leaderboardRangeToday" },
+  { value: "week", key: "leaderboardRangeWeek" },
+  { value: "all", key: "leaderboardRangeAll" },
+];
+
+function RangeTabs({
+  range,
+  setRange,
+}: {
+  range: LeaderboardRange;
+  setRange: (range: LeaderboardRange) => void;
+}) {
+  const t = useTranslations("gaming");
+
+  return (
+    <div className="flex shrink-0 gap-1 text-[11px]">
+      {RANGE_OPTIONS.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          onClick={() => setRange(option.value)}
+          aria-pressed={range === option.value}
+          className={`rounded px-2 py-0.5 transition-colors${
+            range === option.value ? " bg-white/15 text-[#eaffea]" : " text-muted hover:text-[#eaffea]"
+          }`}
+        >
+          {t(option.key)}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 function useOwnRank(score: number) {
@@ -179,7 +227,7 @@ function StartGate() {
   const [name, setName] = useState(() =>
     typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY) ?? "",
   );
-  const { topScores, loadingTop } = useLeaderboard();
+  const { topScores, loadingTop, range, setRange } = useLeaderboard();
 
   useEffect(() => {
     nameInputRef.current?.focus();
@@ -244,9 +292,12 @@ function StartGate() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div>
-            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
-            <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+              <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+            </div>
+            <RangeTabs range={range} setRange={setRange} />
           </div>
           <LeaderboardList topScores={topScores} loadingTop={loadingTop} />
         </div>
@@ -258,7 +309,7 @@ function StartGate() {
 function EndScreen() {
   const t = useTranslations("gaming");
   const { snakePalette, runResult, startAgain, toggleGaming } = useGamingMode();
-  const { topScores, loadingTop } = useLeaderboard();
+  const { topScores, loadingTop, range, setRange } = useLeaderboard();
   const ownRank = useOwnRank(runResult?.score ?? 0);
   const myName = typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY);
   const [shareState, setShareState] = useState<"idle" | "copied">("idle");
@@ -353,9 +404,12 @@ function EndScreen() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div>
-            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
-            <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+              <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
+            </div>
+            <RangeTabs range={range} setRange={setRange} />
           </div>
           <LeaderboardList topScores={topScores} loadingTop={loadingTop} isMine={isMine} />
         </div>

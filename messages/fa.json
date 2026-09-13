@@ -203,6 +203,9 @@
     "time": "زمان",
     "leaderboardTitle": "۱۰ نفر برتر",
     "leaderboardHint": "در تساوی امتیاز، سریع‌ترین زمان برنده است",
+    "leaderboardRangeToday": "امروز",
+    "leaderboardRangeWeek": "هفته",
+    "leaderboardRangeAll": "همیشه",
     "leaderboardLoading": "در حال بارگذاری لیدربورد…",
     "leaderboardEmpty": "هنوز امتیازی ثبت نشده — اولین نفر باش.",
     "yourRank": "رتبه‌ات: #{rank}"
