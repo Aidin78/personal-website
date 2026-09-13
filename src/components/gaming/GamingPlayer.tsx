@@ -409,30 +409,38 @@ export function GamingPlayer() {
     const head = segments[0];
     if (!head) return;
 
+    const headRect = {
+      left: head.x,
+      top: head.y,
+      right: head.x + CELL,
+      bottom: head.y + CELL,
+    };
+    const overlapsHead = (rect: DOMRect) =>
+      rect.left < headRect.right &&
+      rect.right > headRect.left &&
+      rect.top < headRect.bottom &&
+      rect.bottom > headRect.top;
+
+    const obstacles = document.querySelectorAll<HTMLElement>(".gaming-obstacle");
+    for (const obstacle of obstacles) {
+      if (overlapsHead(obstacle.getBoundingClientRect())) {
+        triggerDeath();
+        return;
+      }
+    }
+
     const orbs = document.querySelectorAll<HTMLElement>(".gaming-orb");
     orbs.forEach((orb) => {
       const id = Number(orb.dataset.orbId);
       const tone = orb.dataset.orbTone as "green" | "cyan" | "pink" | undefined;
       if (!Number.isFinite(id) || !tone) return;
 
-      const rect = orb.getBoundingClientRect();
-      const headRect = {
-        left: head.x,
-        top: head.y,
-        right: head.x + CELL,
-        bottom: head.y + CELL,
-      };
-      const overlap =
-        rect.left < headRect.right &&
-        rect.right > headRect.left &&
-        rect.top < headRect.bottom &&
-        rect.bottom > headRect.top;
-      if (overlap) {
+      if (overlapsHead(orb.getBoundingClientRect())) {
         const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
         collectOrb(id, points, t("orbCollected", { points }));
       }
     });
-  }, [segments, collectOrb, t]);
+  }, [segments, collectOrb, t, triggerDeath]);
 
   return (
     <>

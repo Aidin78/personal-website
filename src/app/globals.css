@@ -468,6 +468,16 @@ html.gaming-mode .glass-card {
   }
 }
 
+.gaming-obstacle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  background: repeating-linear-gradient(45deg, #ff3864, #ff3864 4px, #1a0006 4px, #1a0006 8px);
+  border: 1px solid rgba(255, 56, 100, 0.6);
+  box-shadow: 0 0 14px rgba(255, 56, 100, 0.45);
+}
+
 .gaming-particle {
   position: absolute;
   top: 0;
