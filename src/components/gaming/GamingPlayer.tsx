@@ -9,7 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { useTranslations } from "next-intl";
-import { useGamingMode } from "@/components/gaming/GamingModeProvider";
+import { useGamingMode, TIME_ATTACK_SECONDS } from "@/components/gaming/GamingModeProvider";
 import { playBurn, startBackgroundMusic, stopBackgroundMusic } from "@/lib/gamingSound";
 import { finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
@@ -154,6 +154,7 @@ export function GamingPlayer() {
     level,
     consumeShield,
     slowActive,
+    gameMode,
   } = useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
@@ -276,6 +277,14 @@ export function GamingPlayer() {
       void finishRun(score, elapsedSeconds, endRun);
     }, BURN_MS);
   }, [addScore, score, elapsedSeconds, endRun, t]);
+
+  useEffect(() => {
+    if (gameMode !== "timeAttack" || burningRef.current) return;
+    if (elapsedSeconds < TIME_ATTACK_SECONDS) return;
+
+    burningRef.current = true;
+    void finishRun(score, elapsedSeconds, endRun);
+  }, [gameMode, elapsedSeconds, score, endRun]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

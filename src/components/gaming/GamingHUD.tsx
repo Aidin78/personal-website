@@ -11,7 +11,14 @@ import {
   type ReactNode,
 } from "react";
 import { useTranslations } from "next-intl";
-import { useGamingMode, SNAKE_PALETTES, type SnakePalette } from "@/components/gaming/GamingModeProvider";
+import {
+  useGamingMode,
+  SNAKE_PALETTES,
+  GAME_MODES,
+  TIME_ATTACK_SECONDS,
+  type SnakePalette,
+  type GameMode,
+} from "@/components/gaming/GamingModeProvider";
 import { playGameStart, playLevelUp } from "@/lib/gamingSound";
 import {
   fetchRank,
@@ -220,9 +227,15 @@ function GatePanel({
   );
 }
 
+const MODE_LABEL_KEY: Record<GameMode, "modeEndless" | "modeTimeAttack"> = {
+  endless: "modeEndless",
+  timeAttack: "modeTimeAttack",
+};
+
 function StartGate() {
   const t = useTranslations("gaming");
-  const { snakePalette, setSnakePalette, enterArena, toggleGaming } = useGamingMode();
+  const { snakePalette, setSnakePalette, gameMode, setGameMode, enterArena, toggleGaming } =
+    useGamingMode();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(() =>
     typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY) ?? "",
@@ -285,6 +298,23 @@ function StartGate() {
           </div>
         </div>
 
+        <div className="flex flex-col gap-3">
+          <p className="text-xs text-muted">{t("selectMode")}</p>
+          <div className="flex flex-wrap gap-2">
+            {GAME_MODES.map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setGameMode(mode)}
+                aria-pressed={gameMode === mode}
+                className={`gaming-mode-pill${gameMode === mode ? " gaming-mode-pill-active" : ""}`}
+              >
+                {t(MODE_LABEL_KEY[mode])}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <button type="submit" className="gaming-startgate-cta gaming-pixel w-full px-4 py-2.5 text-sm">
           {t("start")}
         </button>
@@ -293,10 +323,7 @@ function StartGate() {
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
           <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
-              <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
-            </div>
+            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <RangeTabs range={range} setRange={setRange} />
           </div>
           <LeaderboardList topScores={topScores} loadingTop={loadingTop} />
@@ -405,10 +432,7 @@ function EndScreen() {
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
           <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
-              <p className="mt-1 text-xs text-muted">{t("leaderboardHint")}</p>
-            </div>
+            <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <RangeTabs range={range} setRange={setRange} />
           </div>
           <LeaderboardList topScores={topScores} loadingTop={loadingTop} isMine={isMine} />
@@ -433,7 +457,11 @@ export function GamingHUD() {
     hasShield,
     slowActive,
     doubleScoreActive,
+    gameMode,
   } = useGamingMode();
+  const timeAttackRemaining = Math.max(0, TIME_ATTACK_SECONDS - elapsedSeconds);
+  const displaySeconds = gameMode === "timeAttack" ? timeAttackRemaining : elapsedSeconds;
+  const timeUrgent = gameMode === "timeAttack" && timeAttackRemaining <= 10;
   const scorePulsing = usePulseOnChange(score);
   const prevLevelRef = useRef(level);
   const [levelFlash, setLevelFlash] = useState(false);
@@ -504,8 +532,11 @@ export function GamingHUD() {
             </div>
 
             <div className="gaming-panel pointer-events-auto justify-self-center px-4 py-2">
-              <span className="gaming-pixel text-base text-[#00f0ff]" aria-label={t("time")}>
-                {formatDuration(elapsedSeconds)}
+              <span
+                className={`gaming-pixel text-base${timeUrgent ? " text-[#ff3864]" : " text-[#00f0ff]"}`}
+                aria-label={gameMode === "timeAttack" ? t("timeRemaining") : t("time")}
+              >
+                {formatDuration(displaySeconds)}
               </span>
             </div>
 

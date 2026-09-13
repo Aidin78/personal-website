@@ -842,6 +842,21 @@ html.gaming-mode .glass-card {
   border-color: var(--accent, #39ff14);
 }
 
+.gaming-mode-pill {
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--accent, #39ff14) 45%, transparent);
+  background: transparent;
+  color: var(--accent, #39ff14);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.75rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.gaming-mode-pill-active {
+  background: var(--accent, #39ff14);
+  color: #050508;
+}
+
 .gaming-startgate-cta {
   color: #050508;
   background: linear-gradient(135deg, var(--accent, #39ff14), var(--accent-2, #00f0ff));

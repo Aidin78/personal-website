@@ -27,4 +27,18 @@ test.describe("gaming mode", () => {
     await page.getByRole("button", { name: "Leave" }).click();
     await expect(page.getByRole("button", { name: "Play the game" })).toBeVisible();
   });
+
+  test("time attack mode shows a countdown", async ({ page }) => {
+    await page.goto("/en");
+
+    await page.getByRole("button", { name: "Play the game" }).click();
+    await page.getByPlaceholder("Your name").fill("E2E Runner");
+    await page.getByRole("button", { name: "Time Attack (60s)" }).click();
+    await page.getByRole("button", { name: "Start", exact: true }).click();
+
+    await expect(page.getByLabel("Time remaining")).toHaveText("1:00");
+
+    await page.getByRole("button", { name: "Exit game" }).click();
+    await page.getByRole("button", { name: "Leave" }).click();
+  });
 });

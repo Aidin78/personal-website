@@ -19,6 +19,10 @@ export type SnakePalette = (typeof SNAKE_PALETTES)[number];
 
 export type GamingRunResult = { score: number; elapsedSeconds: number };
 
+export const GAME_MODES = ["endless", "timeAttack"] as const;
+export type GameMode = (typeof GAME_MODES)[number];
+export const TIME_ATTACK_SECONDS = 60;
+
 type GamingContextValue = {
   isGaming: boolean;
   toggleGaming: () => void;
@@ -47,6 +51,8 @@ type GamingContextValue = {
   activateSlow: (durationMs: number) => void;
   doubleScoreActive: boolean;
   activateDoubleScore: (durationMs: number) => void;
+  gameMode: GameMode;
+  setGameMode: (mode: GameMode) => void;
 };
 
 const INITIAL_SNAKE_LENGTH = 3;
@@ -87,6 +93,7 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const [hasShield, setHasShield] = useState(false);
   const [slowActive, setSlowActive] = useState(false);
   const [doubleScoreActive, setDoubleScoreActive] = useState(false);
+  const [gameMode, setGameMode] = useState<GameMode>("endless");
 
   const toastTimerRef = useRef<number | null>(null);
   const collectedOrbsRef = useRef(new Set<number>());
@@ -332,6 +339,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       activateSlow,
       doubleScoreActive,
       activateDoubleScore,
+      gameMode,
+      setGameMode,
     }),
     [
       isGaming,
@@ -361,6 +370,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       activateSlow,
       doubleScoreActive,
       activateDoubleScore,
+      gameMode,
+      setGameMode,
     ],
   );
 
