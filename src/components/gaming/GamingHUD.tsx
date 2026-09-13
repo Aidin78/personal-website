@@ -1,6 +1,6 @@
 "use client";
 
-import { Trophy, X, Zap } from "lucide-react";
+import { Share2, Trophy, X, Zap } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -261,6 +261,7 @@ function EndScreen() {
   const { topScores, loadingTop } = useLeaderboard();
   const ownRank = useOwnRank(runResult?.score ?? 0);
   const myName = typeof window === "undefined" ? "" : window.localStorage.getItem(LEADERBOARD_NAME_KEY);
+  const [shareState, setShareState] = useState<"idle" | "copied">("idle");
 
   if (!runResult) return null;
 
@@ -268,6 +269,33 @@ function EndScreen() {
     event.preventDefault();
     playGameStart();
     startAgain();
+  };
+
+  const handleShare = async () => {
+    const shareText = t("shareText", {
+      score: runResult.score,
+      time: formatDuration(runResult.elapsedSeconds),
+    });
+    const url = typeof window === "undefined" ? undefined : window.location.href;
+
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ text: shareText, url });
+      } catch {
+        // user dismissed the native share sheet
+      }
+      return;
+    }
+
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url ? `${shareText} ${url}` : shareText);
+        setShareState("copied");
+        window.setTimeout(() => setShareState("idle"), 1600);
+      } catch {
+        // clipboard unavailable (insecure context / permissions) — nothing more to do
+      }
+    }
   };
 
   const isMine = (entry: LeaderboardEntry) =>
@@ -303,13 +331,24 @@ function EndScreen() {
           {t("startAgain")}
         </button>
 
-        <button
-          type="button"
-          onClick={toggleGaming}
-          className="text-xs text-muted transition-colors hover:text-[#eaffea]"
-        >
-          {t("leave")}
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-[#eaffea]"
+          >
+            <Share2 className="h-3.5 w-3.5" aria-hidden />
+            {shareState === "copied" ? t("shareCopied") : t("share")}
+          </button>
+
+          <button
+            type="button"
+            onClick={toggleGaming}
+            className="text-xs text-muted transition-colors hover:text-[#eaffea]"
+          >
+            {t("leave")}
+          </button>
+        </div>
       </div>
 
       {leaderboardEnabled ? (
