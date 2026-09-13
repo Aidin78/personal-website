@@ -5,6 +5,7 @@ import { useGamingMode } from "@/components/gaming/GamingModeProvider";
 import { GamingHUD } from "@/components/gaming/GamingHUD";
 import { GamingCollectibles } from "@/components/gaming/GamingCollectibles";
 import { GamingObstacles } from "@/components/gaming/GamingObstacles";
+import { GamingPowerUps } from "@/components/gaming/GamingPowerUps";
 import { GamingPlayer } from "@/components/gaming/GamingPlayer";
 import { GamingLinkBonus } from "@/components/gaming/GamingLinkBonus";
 import { GamingFontLoader } from "@/components/gaming/GamingFontLoader";
@@ -43,6 +44,7 @@ export function GamingLayer() {
         <>
           <GamingObstacles key={`obstacles-${sessionId}`} />
           <GamingCollectibles key={`collectibles-${sessionId}`} />
+          <GamingPowerUps key={`powerups-${sessionId}`} />
           <GamingPlayer key={`player-${sessionId}`} />
         </>
       ) : null}

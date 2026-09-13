@@ -21,6 +21,7 @@ const BURN_MS = 900;
 const LEVEL_TICK_STEP = 4;
 const MIN_TICK = 34;
 const MIN_BOOST_TICK = 22;
+const SLOW_TICK_MULTIPLIER = 1.6;
 
 function tickForLevel(level: number, boosting: boolean) {
   const base = Math.max(MIN_TICK, TICK - (level - 1) * LEVEL_TICK_STEP);
@@ -142,8 +143,18 @@ function readGamepadBoost(pad: Gamepad): boolean {
 
 export function GamingPlayer() {
   const t = useTranslations("gaming");
-  const { snakeLength, addScore, collectOrb, snakePalette, score, elapsedSeconds, endRun, level } =
-    useGamingMode();
+  const {
+    snakeLength,
+    addScore,
+    collectOrb,
+    snakePalette,
+    score,
+    elapsedSeconds,
+    endRun,
+    level,
+    consumeShield,
+    slowActive,
+  } = useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
   const [facing, setFacing] = useState<Dir>("up");
   const [burning, setBurning] = useState(false);
@@ -158,6 +169,7 @@ export function GamingPlayer() {
   const gamepadBoostRef = useRef(false);
   const snakeLengthRef = useRef(snakeLength);
   const levelRef = useRef(level);
+  const slowActiveRef = useRef(slowActive);
   const wrapClearRef = useRef<number | null>(null);
   const segmentsRef = useRef(segments);
   const [trail, setTrail] = useState<{ id: number; x: number; y: number }[]>([]);
@@ -180,6 +192,10 @@ export function GamingPlayer() {
   useEffect(() => {
     levelRef.current = level;
   }, [level]);
+
+  useEffect(() => {
+    slowActiveRef.current = slowActive;
+  }, [slowActive]);
 
   useEffect(() => {
     return () => {
@@ -378,7 +394,9 @@ export function GamingPlayer() {
         );
 
         if (hitsSelf(nextHead, prev.slice(1))) {
-          window.setTimeout(triggerDeath, 0);
+          window.setTimeout(() => {
+            if (!consumeShield()) triggerDeath();
+          }, 0);
           return prev;
         }
 
@@ -394,14 +412,15 @@ export function GamingPlayer() {
       step();
       const boosting =
         heldKeysRef.current.size > 0 || heldPointersRef.current.size > 0 || gamepadBoostRef.current;
-      const delay = tickForLevel(levelRef.current, boosting);
+      const baseDelay = tickForLevel(levelRef.current, boosting);
+      const delay = slowActiveRef.current ? baseDelay * SLOW_TICK_MULTIPLIER : baseDelay;
       timeoutId = window.setTimeout(loop, delay);
     };
 
     timeoutId = window.setTimeout(loop, TICK);
 
     return () => window.clearTimeout(timeoutId);
-  }, [triggerDeath, markWrapped]);
+  }, [triggerDeath, markWrapped, consumeShield]);
 
   useEffect(() => {
     if (burningRef.current) return;
@@ -424,7 +443,7 @@ export function GamingPlayer() {
     const obstacles = document.querySelectorAll<HTMLElement>(".gaming-obstacle");
     for (const obstacle of obstacles) {
       if (overlapsHead(obstacle.getBoundingClientRect())) {
-        triggerDeath();
+        if (!consumeShield()) triggerDeath();
         return;
       }
     }
@@ -440,7 +459,7 @@ export function GamingPlayer() {
         collectOrb(id, points, t("orbCollected", { points }));
       }
     });
-  }, [segments, collectOrb, t, triggerDeath]);
+  }, [segments, collectOrb, t, triggerDeath, consumeShield]);
 
   return (
     <>

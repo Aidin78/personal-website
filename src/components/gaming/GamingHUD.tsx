@@ -420,8 +420,20 @@ function EndScreen() {
 
 export function GamingHUD() {
   const t = useTranslations("gaming");
-  const { score, highScore, level, toast, arenaEntered, elapsedSeconds, runResult, endRun, snakePalette } =
-    useGamingMode();
+  const {
+    score,
+    highScore,
+    level,
+    toast,
+    arenaEntered,
+    elapsedSeconds,
+    runResult,
+    endRun,
+    snakePalette,
+    hasShield,
+    slowActive,
+    doubleScoreActive,
+  } = useGamingMode();
   const scorePulsing = usePulseOnChange(score);
   const prevLevelRef = useRef(level);
   const [levelFlash, setLevelFlash] = useState(false);
@@ -461,7 +473,35 @@ export function GamingHUD() {
       {arenaEntered ? (
         <div className="gaming-hud pointer-events-none fixed inset-x-0 top-20 z-[60] px-4">
           <div className="mx-auto grid max-w-7xl grid-cols-3 items-start gap-3">
-            <div />
+            <div className="pointer-events-auto flex flex-wrap items-center gap-2 justify-self-start">
+              {hasShield ? (
+                <span
+                  className="gaming-panel flex h-9 w-9 items-center justify-center text-base text-[#00f0ff]"
+                  title={t("powerUpShield")}
+                  aria-label={t("powerUpShield")}
+                >
+                  🛡
+                </span>
+              ) : null}
+              {slowActive ? (
+                <span
+                  className="gaming-panel flex h-9 w-9 items-center justify-center text-base text-[#a855f7]"
+                  title={t("powerUpSlow")}
+                  aria-label={t("powerUpSlow")}
+                >
+                  🐢
+                </span>
+              ) : null}
+              {doubleScoreActive ? (
+                <span
+                  className="gaming-panel gaming-pixel flex h-9 w-9 items-center justify-center text-sm text-[#ffe600]"
+                  title={t("powerUpDouble")}
+                  aria-label={t("powerUpDouble")}
+                >
+                  ×2
+                </span>
+              ) : null}
+            </div>
 
             <div className="gaming-panel pointer-events-auto justify-self-center px-4 py-2">
               <span className="gaming-pixel text-base text-[#00f0ff]" aria-label={t("time")}>

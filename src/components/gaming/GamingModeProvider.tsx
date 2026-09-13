@@ -40,6 +40,13 @@ type GamingContextValue = {
   runResult: GamingRunResult | null;
   endRun: () => void;
   startAgain: () => void;
+  hasShield: boolean;
+  activateShield: () => void;
+  consumeShield: () => boolean;
+  slowActive: boolean;
+  activateSlow: (durationMs: number) => void;
+  doubleScoreActive: boolean;
+  activateDoubleScore: (durationMs: number) => void;
 };
 
 const INITIAL_SNAKE_LENGTH = 3;
@@ -77,6 +84,9 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const [snakePalette, setSnakePaletteState] = useState<SnakePalette>(() => readStoredPalette());
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [runResult, setRunResult] = useState<GamingRunResult | null>(null);
+  const [hasShield, setHasShield] = useState(false);
+  const [slowActive, setSlowActive] = useState(false);
+  const [doubleScoreActive, setDoubleScoreActive] = useState(false);
 
   const toastTimerRef = useRef<number | null>(null);
   const collectedOrbsRef = useRef(new Set<number>());
@@ -85,6 +95,9 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const highScoreRef = useRef(readStoredHighScore());
   const arenaStartRef = useRef<number | null>(null);
   const elapsedIntervalRef = useRef<number | null>(null);
+  const shieldRef = useRef(false);
+  const slowTimerRef = useRef<number | null>(null);
+  const doubleScoreTimerRef = useRef<number | null>(null);
 
   const stopElapsedTimer = useCallback(() => {
     if (elapsedIntervalRef.current !== null) {
@@ -129,7 +142,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const addScore = useCallback(
     (points: number, reason?: string) => {
       if (points !== 0) {
-        const next = scoreRef.current + points;
+        const awarded = doubleScoreActive ? points * 2 : points;
+        const next = scoreRef.current + awarded;
         scoreRef.current = next;
         setScore(next);
 
@@ -141,7 +155,7 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       }
       if (reason) showToast(reason);
     },
-    [showToast],
+    [showToast, doubleScoreActive],
   );
 
   const growSnake = useCallback(() => {
@@ -156,6 +170,19 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     setArenaEntered(false);
     setElapsedSeconds(0);
     stopElapsedTimer();
+
+    shieldRef.current = false;
+    setHasShield(false);
+    if (slowTimerRef.current !== null) {
+      window.clearTimeout(slowTimerRef.current);
+      slowTimerRef.current = null;
+    }
+    setSlowActive(false);
+    if (doubleScoreTimerRef.current !== null) {
+      window.clearTimeout(doubleScoreTimerRef.current);
+      doubleScoreTimerRef.current = null;
+    }
+    setDoubleScoreActive(false);
   }, [stopElapsedTimer]);
 
   const startSession = useCallback(() => {
@@ -211,6 +238,47 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     }
   }, [isGaming, startSession, resetSession]);
 
+  const activateShield = useCallback(() => {
+    shieldRef.current = true;
+    setHasShield(true);
+  }, []);
+
+  const consumeShield = useCallback(() => {
+    if (!shieldRef.current) return false;
+    shieldRef.current = false;
+    setHasShield(false);
+    return true;
+  }, []);
+
+  const activateSlow = useCallback((durationMs: number) => {
+    setSlowActive(true);
+    if (slowTimerRef.current !== null) {
+      window.clearTimeout(slowTimerRef.current);
+    }
+    slowTimerRef.current = window.setTimeout(() => {
+      slowTimerRef.current = null;
+      setSlowActive(false);
+    }, durationMs);
+  }, []);
+
+  const activateDoubleScore = useCallback((durationMs: number) => {
+    setDoubleScoreActive(true);
+    if (doubleScoreTimerRef.current !== null) {
+      window.clearTimeout(doubleScoreTimerRef.current);
+    }
+    doubleScoreTimerRef.current = window.setTimeout(() => {
+      doubleScoreTimerRef.current = null;
+      setDoubleScoreActive(false);
+    }, durationMs);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (slowTimerRef.current !== null) window.clearTimeout(slowTimerRef.current);
+      if (doubleScoreTimerRef.current !== null) window.clearTimeout(doubleScoreTimerRef.current);
+    };
+  }, []);
+
   const registerOrbCollector = useCallback((fn: ((id: number) => boolean) | null) => {
     orbCollectorRef.current = fn;
   }, []);
@@ -257,6 +325,13 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       runResult,
       endRun,
       startAgain,
+      hasShield,
+      activateShield,
+      consumeShield,
+      slowActive,
+      activateSlow,
+      doubleScoreActive,
+      activateDoubleScore,
     }),
     [
       isGaming,
@@ -279,6 +354,13 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       runResult,
       endRun,
       startAgain,
+      hasShield,
+      activateShield,
+      consumeShield,
+      slowActive,
+      activateSlow,
+      doubleScoreActive,
+      activateDoubleScore,
     ],
   );
 

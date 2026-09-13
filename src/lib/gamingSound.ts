@@ -54,6 +54,12 @@ export function playOrbCollect(tone: keyof typeof ORB_FREQUENCIES) {
   beep({ frequency: base * 1.5, duration: 0.08, volume: 0.08, delay: 0.05 });
 }
 
+export function playPowerUp() {
+  [784, 988, 1244].forEach((frequency, i) =>
+    beep({ frequency, duration: 0.1, type: "triangle", volume: 0.14, delay: i * 0.06 }),
+  );
+}
+
 export function playLevelUp() {
   [523, 659, 784, 1046].forEach((frequency, i) =>
     beep({ frequency, duration: 0.12, volume: 0.16, delay: i * 0.09 }),
