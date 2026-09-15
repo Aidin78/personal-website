@@ -14,20 +14,20 @@ export async function Footer() {
   return (
     <footer className="relative border-t border-border bg-surface-solid/80">
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.2fr_1fr]">
-        <div className="space-y-4">
+        <div className="space-y-4 text-center md:text-start">
           <Link href="/" className="font-display text-2xl font-bold">
             <span className="signal-text">{displayName}</span>
           </Link>
-          <p className="max-w-md text-sm leading-relaxed text-muted">
+          <p className="mx-auto max-w-md text-sm leading-relaxed text-muted md:mx-0">
             {t("tagline")}
           </p>
-          <SocialLinks showEmail={false} />
+          <SocialLinks showEmail={false} className="justify-center md:justify-start" />
         </div>
 
         <div className="grid grid-cols-2 gap-6 text-sm">
-          <div className="space-y-3">
+          <div className="space-y-3 text-center sm:text-start">
             <p className="font-semibold text-foreground">{t("navigation")}</p>
-            <div className="flex flex-col gap-2 text-muted">
+            <div className="flex flex-col items-center gap-2 text-muted sm:items-start">
               <Link href="/" className="transition-colors hover:text-accent">
                 {nav("home")}
               </Link>
@@ -44,9 +44,9 @@ export async function Footer() {
               </Link>
             </div>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3 text-center sm:text-start">
             <p className="font-semibold text-foreground">{t("connect")}</p>
-            <div className="flex flex-col gap-2 text-muted">
+            <div className="flex flex-col items-center gap-2 text-muted sm:items-start">
               <a
                 href={`mailto:${profile.email}`}
                 dir="ltr"
@@ -98,7 +98,7 @@ export async function Footer() {
       </div>
 
       <div className="border-t border-border">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 text-sm text-muted">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-center px-6 py-5 text-center text-sm text-muted md:justify-start md:text-start">
           <p>
             © {year} {displayName}. {t("rights")}
           </p>
