@@ -157,7 +157,7 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={menuTitleId}
-          className="border-t border-border bg-background lg:hidden"
+          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-border bg-background lg:hidden"
         >
           <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
             <div className="min-w-0">
