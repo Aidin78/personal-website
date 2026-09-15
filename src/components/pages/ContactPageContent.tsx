@@ -13,7 +13,7 @@ export async function ContactPageContent() {
   return (
     <PageShell>
       <Section className="pt-10 sm:pt-16 pb-24">
-        <div className="grid items-stretch gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <aside className="flex flex-col gap-4">
             <div className="overflow-hidden border border-border">
               <div className="relative h-72 sm:h-80 lg:h-[22rem]">
@@ -55,7 +55,7 @@ export async function ContactPageContent() {
                   <span className="block text-xs font-semibold text-muted">
                     {t("email")}
                   </span>
-                  <span className="mt-1 block break-all text-base font-medium text-foreground" dir="ltr">
+                  <span className="mt-1 block break-words text-base font-medium text-foreground" dir="ltr">
                     {profile.email}
                   </span>
                 </span>
