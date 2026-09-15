@@ -24,7 +24,7 @@ export async function HomeHero() {
     <section className="relative pb-12 pt-10 sm:pt-16 lg:pb-16">
       <div className="mx-auto w-full max-w-7xl px-6">
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div className="relative mx-auto w-full max-w-md order-1 lg:order-2 lg:max-w-none">
+          <div className="relative mx-auto hidden w-full max-w-md order-1 lg:order-2 lg:block lg:max-w-none">
             <HeroCodePanel
               name={getProfileName("en")}
               role="Front-End Developer & UI Designer"
