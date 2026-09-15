@@ -150,50 +150,52 @@ export function Header() {
         </div>
       </div>
 
-      {open ? (
-        <div
-          id="mobile-nav"
-          ref={menuRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={menuTitleId}
-          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-border bg-background lg:hidden"
-        >
-          <p id={menuTitleId} className="sr-only">
-            {t("menu")}
-          </p>
-          <div className="flex items-center justify-end gap-3 border-b border-border px-5 py-4">
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={() => setOpen(false)}
-              className="inline-flex h-9 w-9 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              aria-label={t("close")}
-            >
-              <X className="h-4 w-4" aria-hidden />
-            </button>
-          </div>
-
-          <nav className="flex flex-col">
-            {visibleNavItems.map((item) => {
-              const active = isActive(pathname, item.href);
-              return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={active ? "page" : undefined}
-                  className={`border-b border-border px-5 py-4 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    active ? "text-accent" : "text-foreground"
-                  }`}
-                >
-                  {t(item.key)}
-                </Link>
-              );
-            })}
-          </nav>
+      <div
+        id="mobile-nav"
+        ref={menuRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={menuTitleId}
+        aria-hidden={!open}
+        inert={!open}
+        className={`fixed inset-0 z-40 overflow-y-auto bg-background transition-all duration-300 ease-out lg:hidden ${
+          open ? "opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+        }`}
+      >
+        <p id={menuTitleId} className="sr-only">
+          {t("menu")}
+        </p>
+        <div className="flex h-16 items-center justify-end gap-3 border-b border-border px-5">
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={() => setOpen(false)}
+            className="inline-flex h-9 w-9 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label={t("close")}
+          >
+            <X className="h-4 w-4" aria-hidden />
+          </button>
         </div>
-      ) : null}
+
+        <nav className="flex flex-col">
+          {visibleNavItems.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                aria-current={active ? "page" : undefined}
+                className={`border-b border-border px-5 py-4 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  active ? "text-accent" : "text-foreground"
+                }`}
+              >
+                {t(item.key)}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </header>
   );
 }
