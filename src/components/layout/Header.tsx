@@ -159,13 +159,10 @@ export function Header() {
           aria-labelledby={menuTitleId}
           className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-border bg-background lg:hidden"
         >
-          <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
-            <div className="min-w-0">
-              <p id={menuTitleId} className="truncate font-display text-base font-bold">
-                {displayName}
-              </p>
-              <p className="truncate text-xs text-muted">{t("brandTagline")}</p>
-            </div>
+          <p id={menuTitleId} className="sr-only">
+            {t("menu")}
+          </p>
+          <div className="flex items-center justify-end gap-3 border-b border-border px-5 py-4">
             <button
               ref={closeButtonRef}
               type="button"
