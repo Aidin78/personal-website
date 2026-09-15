@@ -34,7 +34,7 @@ export async function HomeHero() {
             />
           </div>
 
-          <div className="animate-fade-up order-2 space-y-7 lg:order-1 lg:space-y-9">
+          <div className="animate-fade-up order-2 space-y-7 text-center lg:order-1 lg:space-y-9 lg:text-start">
             <div className="space-y-5">
               <h1
                 className={`font-display leading-[0.95] tracking-tight text-foreground ${
@@ -53,7 +53,7 @@ export async function HomeHero() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-colors hover:bg-transparent hover:text-foreground"
