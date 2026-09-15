@@ -40,6 +40,7 @@ export function GamingObstacles() {
           key={obstacle.id}
           className="gaming-obstacle"
           data-obstacle
+          data-obstacle-id={obstacle.id}
           style={{ left: `${obstacle.x}%`, top: `${obstacle.y}%` }}
         />
       ))}

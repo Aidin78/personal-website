@@ -166,6 +166,7 @@ export function GamingPlayer() {
   const pendingDirRef = useRef<Dir>("up");
   const burningRef = useRef(false);
   const burnTimerRef = useRef<number | null>(null);
+  const shieldedObstacleIdRef = useRef<number | null>(null);
   const heldKeysRef = useRef(new Set<string>());
   const heldPointersRef = useRef(new Set<number>());
   const gamepadBoostRef = useRef(false);
@@ -452,11 +453,19 @@ export function GamingPlayer() {
 
     const obstacles = document.querySelectorAll<HTMLElement>(".gaming-obstacle");
     for (const obstacle of obstacles) {
-      if (overlapsHead(obstacle.getBoundingClientRect())) {
-        if (!consumeShield()) triggerDeath();
-        return;
+      if (!overlapsHead(obstacle.getBoundingClientRect())) continue;
+
+      const obstacleId = Number(obstacle.dataset.obstacleId);
+      if (shieldedObstacleIdRef.current === obstacleId) return;
+
+      if (!consumeShield()) {
+        triggerDeath();
+      } else {
+        shieldedObstacleIdRef.current = obstacleId;
       }
+      return;
     }
+    shieldedObstacleIdRef.current = null;
 
     const orbs = document.querySelectorAll<HTMLElement>(".gaming-orb");
     orbs.forEach((orb) => {
