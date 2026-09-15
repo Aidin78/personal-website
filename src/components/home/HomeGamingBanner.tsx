@@ -9,7 +9,7 @@ export function HomeGamingBanner() {
   const { isGaming, toggleGaming } = useGamingMode();
 
   return (
-    <section className="py-16 sm:py-24">
+    <section className="py-10 sm:py-24">
       <div className="mx-auto w-full max-w-7xl px-6">
         <button
           type="button"
