@@ -1,6 +1,6 @@
 "use client";
 
-import { Share2, Trophy, X, Zap } from "lucide-react";
+import { Share2, Trophy, Zap } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -194,7 +194,6 @@ function GatePanel({
   onClose: () => void;
   children: ReactNode;
 }) {
-  const t = useTranslations("gaming");
   const [accentA, accentB] = accent;
 
   return (
@@ -215,14 +214,6 @@ function GatePanel({
         <span className="gaming-corner gaming-corner-tr" aria-hidden />
         <span className="gaming-corner gaming-corner-bl" aria-hidden />
         <span className="gaming-corner gaming-corner-br" aria-hidden />
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={t("close")}
-          className="absolute end-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-muted transition-colors hover:border-white/30 hover:text-[#eaffea]"
-        >
-          <X className="h-4 w-4" aria-hidden />
-        </button>
         {children}
       </form>
     </div>
@@ -320,11 +311,19 @@ function StartGate() {
         <button type="submit" className="gaming-startgate-cta gaming-pixel w-full px-4 py-2.5 text-sm">
           {t("start")}
         </button>
+
+        <button
+          type="button"
+          onClick={toggleGaming}
+          className="text-xs text-muted transition-colors hover:text-[#eaffea]"
+        >
+          {t("leave")}
+        </button>
       </div>
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2 sm:pe-10">
+          <div className="flex items-start justify-between gap-2">
             <div className="shrink-0">
               <p className="gaming-pixel whitespace-nowrap text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
               <p className="mt-0.5 text-[11px] text-muted">{t(MODE_LABEL_KEY[gameMode])}</p>
@@ -437,7 +436,7 @@ function EndScreen() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2 sm:pe-10">
+          <div className="flex items-start justify-between gap-2">
             <div className="shrink-0">
               <p className="gaming-pixel whitespace-nowrap text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
               <p className="mt-0.5 text-[11px] text-muted">{t(MODE_LABEL_KEY[runGameMode])}</p>
