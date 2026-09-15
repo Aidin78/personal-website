@@ -172,7 +172,6 @@
     "toggleLabel": "Play",
     "toggleOn": "Playing",
     "exit": "Exit game",
-    "close": "Close",
     "snakeBurn": "GAME OVER!",
     "snakeHint": "Use WASD or arrow keys",
     "dpadLabel": "Movement controls",
