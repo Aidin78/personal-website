@@ -324,9 +324,9 @@ function StartGate() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2 pe-10">
-            <div>
-              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+          <div className="flex items-start justify-between gap-2 sm:pe-10">
+            <div className="shrink-0">
+              <p className="gaming-pixel whitespace-nowrap text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
               <p className="mt-0.5 text-[11px] text-muted">{t(MODE_LABEL_KEY[gameMode])}</p>
             </div>
             <RangeTabs range={range} setRange={setRange} />
@@ -437,9 +437,9 @@ function EndScreen() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2 pe-10">
-            <div>
-              <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
+          <div className="flex items-start justify-between gap-2 sm:pe-10">
+            <div className="shrink-0">
+              <p className="gaming-pixel whitespace-nowrap text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
               <p className="mt-0.5 text-[11px] text-muted">{t(MODE_LABEL_KEY[runGameMode])}</p>
             </div>
             <RangeTabs range={range} setRange={setRange} />
