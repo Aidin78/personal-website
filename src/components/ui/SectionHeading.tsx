@@ -14,7 +14,10 @@ export function SectionHeading({
   align = "start",
   as = "h2",
 }: SectionHeadingProps) {
-  const alignClass = align === "center" ? "text-center items-center" : "text-start items-start";
+  const alignClass =
+    align === "center"
+      ? "text-center items-center"
+      : "text-center items-center sm:text-start sm:items-start";
   const HeadingTag = as;
 
   return (

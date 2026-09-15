@@ -176,11 +176,11 @@ export async function HomeCta() {
       <div className="mx-auto w-full max-w-7xl px-6">
         <div className="border border-border p-8 sm:p-12">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="space-y-3">
+            <div className="space-y-3 text-center lg:text-start">
               <h2 className="font-display text-3xl font-bold sm:text-4xl">
                 {t("ctaTitle")}
               </h2>
-              <p className="max-w-2xl text-muted">{t("ctaSubtitle")}</p>
+              <p className="mx-auto max-w-2xl text-muted lg:mx-0">{t("ctaSubtitle")}</p>
             </div>
             <Link
               href="/contact"

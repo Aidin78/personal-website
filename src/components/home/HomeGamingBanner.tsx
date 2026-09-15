@@ -23,15 +23,15 @@ export function HomeGamingBanner() {
           <div aria-hidden className="gaming-banner-scan" />
 
           <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-2 text-[13px] font-semibold tracking-wide text-[#39ff14]">
+            <div className="space-y-3 text-center lg:text-start">
+              <span className="inline-flex items-center justify-center gap-2 text-[13px] font-semibold tracking-wide text-[#39ff14] lg:justify-start">
                 <span className="h-1.5 w-1.5 shrink-0 bg-[#39ff14]" />
                 {t("gamingBanner.eyebrow")}
               </span>
               <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
                 {t("gamingBanner.title")}
               </h2>
-              <p className="max-w-2xl text-white/70">{t("gamingBanner.description")}</p>
+              <p className="mx-auto max-w-2xl text-white/70 lg:mx-0">{t("gamingBanner.description")}</p>
             </div>
 
             <span
