@@ -187,7 +187,7 @@
     "powerUpShieldLabel": "Shield",
     "powerUpSlowLabel": "Slow",
     "powerUpDoubleLabel": "×2 Score",
-    "linkBonus": "+30 NAV BONUS!",
+    "linkBonus": "+{points} NAV BONUS!",
     "namePlaceholder": "Your name",
     "newGame": "New game",
     "newGameHint": "Enter your name and pick a color to start",

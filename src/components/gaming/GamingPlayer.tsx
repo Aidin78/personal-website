@@ -155,6 +155,7 @@ export function GamingPlayer() {
     level,
     consumeShield,
     slowActive,
+    doubleScoreActive,
     gameMode,
   } = useGamingMode();
   const [segments, setSegments] = useState<Point[]>(initSegments);
@@ -475,7 +476,8 @@ export function GamingPlayer() {
 
       if (overlapsHead(orb.getBoundingClientRect())) {
         const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
-        collectOrb(id, points, t("orbCollected", { points }));
+        const awardedPoints = doubleScoreActive ? points * 2 : points;
+        collectOrb(id, points, t("orbCollected", { points: awardedPoints }));
       }
     });
 
@@ -488,7 +490,7 @@ export function GamingPlayer() {
         collectPowerUp(id);
       }
     });
-  }, [segments, collectOrb, collectPowerUp, t, triggerDeath, consumeShield]);
+  }, [segments, collectOrb, collectPowerUp, doubleScoreActive, t, triggerDeath, consumeShield]);
 
   return (
     <>

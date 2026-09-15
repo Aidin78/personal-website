@@ -31,7 +31,7 @@ const BURST_MS = 500;
 
 export function GamingCollectibles() {
   const t = useTranslations("gaming");
-  const { collectOrb, registerOrbCollector } = useGamingMode();
+  const { collectOrb, registerOrbCollector, doubleScoreActive } = useGamingMode();
   const [orbs, setOrbs] = useState<Orb[]>([]);
   const [bursts, setBursts] = useState<Burst[]>([]);
   const [now, setNow] = useState(() => Date.now());
@@ -137,7 +137,8 @@ export function GamingCollectibles() {
 
   const tryCollect = (id: number, tone: Orb["tone"], x: number, y: number) => {
     const points = tone === "pink" ? 25 : tone === "cyan" ? 15 : 10;
-    const collected = collectOrb(id, points, t("orbCollected", { points }));
+    const awardedPoints = doubleScoreActive ? points * 2 : points;
+    const collected = collectOrb(id, points, t("orbCollected", { points: awardedPoints }));
     if (collected) {
       spawnBurst(x, y, tone);
       playOrbCollect(tone);

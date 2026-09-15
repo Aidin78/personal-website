@@ -187,7 +187,7 @@
     "powerUpShieldLabel": "سپر",
     "powerUpSlowLabel": "کند",
     "powerUpDoubleLabel": "×۲ امتیاز",
-    "linkBonus": "+30 امتیاز مسیر!",
+    "linkBonus": "+{points} امتیاز مسیر!",
     "namePlaceholder": "اسمت",
     "newGame": "بازی جدید",
     "newGameHint": "اسمت رو بنویس و یه رنگ انتخاب کن",

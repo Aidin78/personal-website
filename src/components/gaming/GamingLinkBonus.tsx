@@ -12,7 +12,7 @@ function clearLinkBonuses() {
 
 export function GamingLinkBonus() {
   const t = useTranslations("gaming");
-  const { isGaming, addScore, sessionId } = useGamingMode();
+  const { isGaming, addScore, sessionId, doubleScoreActive } = useGamingMode();
 
   useEffect(() => {
     clearLinkBonuses();
@@ -28,12 +28,14 @@ export function GamingLinkBonus() {
       if (link.closest(".gaming-hud")) return;
 
       link.dataset.gamingBonus = "true";
-      addScore(30, t("linkBonus"));
+      const points = 30;
+      const awardedPoints = doubleScoreActive ? points * 2 : points;
+      addScore(points, t("linkBonus", { points: awardedPoints }));
     };
 
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [isGaming, addScore, t]);
+  }, [isGaming, addScore, doubleScoreActive, t]);
 
   return null;
 }
