@@ -322,7 +322,7 @@ function StartGate() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start justify-between gap-2 pe-10">
             <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <RangeTabs range={range} setRange={setRange} />
           </div>
@@ -431,7 +431,7 @@ function EndScreen() {
 
       {leaderboardEnabled ? (
         <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:border-t-0 sm:border-s sm:ps-8 sm:pt-0">
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start justify-between gap-2 pe-10">
             <p className="gaming-pixel text-xs text-[#ffe600]">{t("leaderboardTitle")}</p>
             <RangeTabs range={range} setRange={setRange} />
           </div>
