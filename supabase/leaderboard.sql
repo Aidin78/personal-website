@@ -15,8 +15,25 @@ create table if not exists public.leaderboard_scores (
 alter table public.leaderboard_scores
   add column if not exists duration_seconds integer not null default 0;
 
-create index if not exists leaderboard_scores_score_idx
-  on public.leaderboard_scores (score desc, created_at asc);
+-- Safe to re-run against a table created before game_mode existed. Endless
+-- and Time Attack scores aren't comparable (different time budgets), so
+-- they're ranked as separate leaderboards (see src/lib/leaderboard.ts).
+alter table public.leaderboard_scores
+  add column if not exists game_mode text not null default 'endless';
+
+alter table public.leaderboard_scores
+  drop constraint if exists leaderboard_scores_game_mode_check;
+
+alter table public.leaderboard_scores
+  add constraint leaderboard_scores_game_mode_check
+  check (game_mode in ('endless', 'timeAttack'));
+
+-- Dropped and recreated (rather than "if not exists") so a re-run also
+-- upgrades an index created before game_mode was added to it.
+drop index if exists leaderboard_scores_score_idx;
+
+create index leaderboard_scores_score_idx
+  on public.leaderboard_scores (game_mode, score desc, created_at asc);
 
 -- Loose anti-cheat: the anon key can insert any row, so this blocks the
 -- obviously-fabricated ones. Orbs spawn one every 2.2s and the richest is

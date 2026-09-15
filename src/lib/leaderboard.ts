@@ -4,11 +4,14 @@ const TABLE = "leaderboard_scores";
 
 export const leaderboardEnabled = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
+export type LeaderboardGameMode = "endless" | "timeAttack";
+
 export type LeaderboardEntry = {
   name: string;
   score: number;
   duration_seconds: number;
   created_at: string;
+  game_mode: LeaderboardGameMode;
 };
 
 export type LeaderboardRange = "today" | "week" | "all";
@@ -34,13 +37,14 @@ function headers() {
 export async function fetchTopScores(
   limit = 10,
   range: LeaderboardRange = "all",
+  gameMode: LeaderboardGameMode = "endless",
 ): Promise<LeaderboardEntry[]> {
   if (!leaderboardEnabled) return [];
 
   try {
     const since = sinceIso(range);
     const rangeFilter = since ? `&created_at=gte.${encodeURIComponent(since)}` : "";
-    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=name,score,duration_seconds,created_at&order=score.desc,created_at.asc&limit=${limit}${rangeFilter}`;
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=name,score,duration_seconds,created_at,game_mode&game_mode=eq.${gameMode}&order=score.desc,created_at.asc&limit=${limit}${rangeFilter}`;
     const response = await fetch(url, { headers: headers() });
     if (!response.ok) return [];
     return (await response.json()) as LeaderboardEntry[];
@@ -49,12 +53,15 @@ export async function fetchTopScores(
   }
 }
 
-/** 1-based rank among all submitted scores (ties share a rank), or null when unknown. */
-export async function fetchRank(score: number): Promise<number | null> {
+/** 1-based rank among all submitted scores in the same mode (ties share a rank), or null when unknown. */
+export async function fetchRank(
+  score: number,
+  gameMode: LeaderboardGameMode = "endless",
+): Promise<number | null> {
   if (!leaderboardEnabled) return null;
 
   try {
-    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=id&score=gt.${score}&limit=1`;
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=id&game_mode=eq.${gameMode}&score=gt.${score}&limit=1`;
     const response = await fetch(url, {
       headers: { ...headers(), Prefer: "count=exact" },
     });
@@ -71,6 +78,7 @@ export async function submitScore(
   name: string,
   score: number,
   durationSeconds: number,
+  gameMode: LeaderboardGameMode = "endless",
 ): Promise<boolean> {
   if (!leaderboardEnabled) return false;
 
@@ -86,6 +94,7 @@ export async function submitScore(
         name: trimmedName,
         score,
         duration_seconds: Math.max(0, Math.floor(durationSeconds)),
+        game_mode: gameMode,
       }),
     });
     return response.ok;

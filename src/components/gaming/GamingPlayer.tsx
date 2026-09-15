@@ -274,16 +274,16 @@ export function GamingPlayer() {
     }
     burnTimerRef.current = window.setTimeout(() => {
       burnTimerRef.current = null;
-      void finishRun(score, elapsedSeconds, endRun);
+      void finishRun(score, elapsedSeconds, gameMode, endRun);
     }, BURN_MS);
-  }, [addScore, score, elapsedSeconds, endRun, t]);
+  }, [addScore, score, elapsedSeconds, gameMode, endRun, t]);
 
   useEffect(() => {
     if (gameMode !== "timeAttack" || burningRef.current) return;
     if (elapsedSeconds < TIME_ATTACK_SECONDS) return;
 
     burningRef.current = true;
-    void finishRun(score, elapsedSeconds, endRun);
+    void finishRun(score, elapsedSeconds, gameMode, endRun);
   }, [gameMode, elapsedSeconds, score, endRun]);
 
   useEffect(() => {

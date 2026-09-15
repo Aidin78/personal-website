@@ -17,7 +17,7 @@ const PALETTE_KEY = "aidin-portfolio-gaming-palette";
 export const SNAKE_PALETTES = ["green", "magenta", "gold", "cyan", "violet", "crimson"] as const;
 export type SnakePalette = (typeof SNAKE_PALETTES)[number];
 
-export type GamingRunResult = { score: number; elapsedSeconds: number };
+export type GamingRunResult = { score: number; elapsedSeconds: number; gameMode: GameMode };
 
 export const GAME_MODES = ["endless", "timeAttack"] as const;
 export type GameMode = (typeof GAME_MODES)[number];
@@ -214,9 +214,9 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const endRun = useCallback(() => {
-    setRunResult({ score, elapsedSeconds });
+    setRunResult({ score, elapsedSeconds, gameMode });
     resetSession();
-  }, [score, elapsedSeconds, resetSession]);
+  }, [score, elapsedSeconds, gameMode, resetSession]);
 
   const startAgain = useCallback(() => {
     setRunResult(null);

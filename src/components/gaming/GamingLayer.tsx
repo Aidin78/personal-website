@@ -12,7 +12,7 @@ import { GamingFontLoader } from "@/components/gaming/GamingFontLoader";
 import { finishRun } from "@/components/gaming/gamingLeaderboardExit";
 
 export function GamingLayer() {
-  const { isGaming, arenaEntered, score, elapsedSeconds, sessionId, toggleGaming, endRun } =
+  const { isGaming, arenaEntered, score, elapsedSeconds, gameMode, sessionId, toggleGaming, endRun } =
     useGamingMode();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function GamingLayer() {
       if (event.key !== "Escape") return;
       event.preventDefault();
       if (arenaEntered) {
-        void finishRun(score, elapsedSeconds, endRun);
+        void finishRun(score, elapsedSeconds, gameMode, endRun);
       } else {
         toggleGaming();
       }
@@ -30,7 +30,7 @@ export function GamingLayer() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isGaming, arenaEntered, score, elapsedSeconds, toggleGaming, endRun]);
+  }, [isGaming, arenaEntered, score, elapsedSeconds, gameMode, toggleGaming, endRun]);
 
   if (!isGaming) return null;
 
