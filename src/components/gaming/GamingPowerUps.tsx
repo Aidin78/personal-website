@@ -31,9 +31,15 @@ const KIND_LABEL_KEY: Record<PowerUpKind, "powerUpShield" | "powerUpSlow" | "pow
 
 export function GamingPowerUps() {
   const t = useTranslations("gaming");
-  const { activateShield, activateSlow, activateDoubleScore, addScore } = useGamingMode();
+  const { activateShield, activateSlow, activateDoubleScore, addScore, registerPowerUpCollector } =
+    useGamingMode();
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
   const expireTimersRef = useRef(new Set<number>());
+  const powerUpsRef = useRef(powerUps);
+
+  useEffect(() => {
+    powerUpsRef.current = powerUps;
+  }, [powerUps]);
 
   const removePowerUp = useCallback((id: number) => {
     setPowerUps((prev) => prev.filter((powerUp) => powerUp.id !== id));
@@ -81,12 +87,29 @@ export function GamingPowerUps() {
     [removePowerUp, activateShield, activateSlow, activateDoubleScore, addScore, t],
   );
 
+  const collectById = useCallback(
+    (id: number) => {
+      const powerUp = powerUpsRef.current.find((candidate) => candidate.id === id);
+      if (!powerUp) return false;
+      collect(powerUp);
+      return true;
+    },
+    [collect],
+  );
+
+  useEffect(() => {
+    registerPowerUpCollector(collectById);
+    return () => registerPowerUpCollector(null);
+  }, [registerPowerUpCollector, collectById]);
+
   return (
     <div className="pointer-events-none fixed inset-0 z-[56]">
       {powerUps.map((powerUp) => (
         <button
           key={powerUp.id}
           type="button"
+          data-powerup-id={powerUp.id}
+          data-powerup-kind={powerUp.kind}
           className={`gaming-powerup gaming-powerup-${powerUp.kind} pointer-events-auto absolute`}
           style={{ left: `${powerUp.x}%`, top: `${powerUp.y}%` }}
           onClick={() => collect(powerUp)}

@@ -36,6 +36,8 @@ type GamingContextValue = {
   sessionId: number;
   collectOrb: (id: number, points: number, reason: string) => boolean;
   registerOrbCollector: (fn: ((id: number) => boolean) | null) => void;
+  collectPowerUp: (id: number) => boolean;
+  registerPowerUpCollector: (fn: ((id: number) => boolean) | null) => void;
   arenaEntered: boolean;
   enterArena: () => void;
   snakePalette: SnakePalette;
@@ -98,6 +100,7 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
   const toastTimerRef = useRef<number | null>(null);
   const collectedOrbsRef = useRef(new Set<number>());
   const orbCollectorRef = useRef<((id: number) => boolean) | null>(null);
+  const powerUpCollectorRef = useRef<((id: number) => boolean) | null>(null);
   const scoreRef = useRef(0);
   const highScoreRef = useRef(readStoredHighScore());
   const arenaStartRef = useRef<number | null>(null);
@@ -290,6 +293,14 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
     orbCollectorRef.current = fn;
   }, []);
 
+  const registerPowerUpCollector = useCallback((fn: ((id: number) => boolean) | null) => {
+    powerUpCollectorRef.current = fn;
+  }, []);
+
+  const collectPowerUp = useCallback((id: number) => {
+    return powerUpCollectorRef.current?.(id) ?? false;
+  }, []);
+
   const collectOrb = useCallback(
     (id: number, points: number, reason: string) => {
       if (collectedOrbsRef.current.has(id)) return false;
@@ -324,6 +335,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       sessionId,
       collectOrb,
       registerOrbCollector,
+      collectPowerUp,
+      registerPowerUpCollector,
       arenaEntered,
       enterArena,
       snakePalette,
@@ -355,6 +368,8 @@ export function GamingModeProvider({ children }: { children: ReactNode }) {
       sessionId,
       collectOrb,
       registerOrbCollector,
+      collectPowerUp,
+      registerPowerUpCollector,
       arenaEntered,
       enterArena,
       snakePalette,

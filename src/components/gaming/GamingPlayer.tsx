@@ -147,6 +147,7 @@ export function GamingPlayer() {
     snakeLength,
     addScore,
     collectOrb,
+    collectPowerUp,
     snakePalette,
     score,
     elapsedSeconds,
@@ -468,7 +469,17 @@ export function GamingPlayer() {
         collectOrb(id, points, t("orbCollected", { points }));
       }
     });
-  }, [segments, collectOrb, t, triggerDeath, consumeShield]);
+
+    const powerUps = document.querySelectorAll<HTMLElement>(".gaming-powerup");
+    powerUps.forEach((powerUp) => {
+      const id = Number(powerUp.dataset.powerupId);
+      if (!Number.isFinite(id)) return;
+
+      if (overlapsHead(powerUp.getBoundingClientRect())) {
+        collectPowerUp(id);
+      }
+    });
+  }, [segments, collectOrb, collectPowerUp, t, triggerDeath, consumeShield]);
 
   return (
     <>
