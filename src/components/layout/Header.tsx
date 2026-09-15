@@ -105,7 +105,7 @@ export function Header() {
           <span className="block truncate font-display text-sm font-bold">
             {displayName}
           </span>
-          <span className="hidden truncate text-xs text-muted sm:block">
+          <span className="block truncate text-xs text-muted">
             {t("brandTagline")}
           </span>
         </Link>
