@@ -504,29 +504,31 @@ export function GamingHUD() {
             <div className="pointer-events-auto flex flex-wrap items-center gap-2 justify-self-start">
               {hasShield ? (
                 <span
-                  className="gaming-panel flex h-9 w-9 items-center justify-center text-base text-[#00f0ff]"
+                  className="gaming-panel flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[#00f0ff]"
                   title={t("powerUpShield")}
                   aria-label={t("powerUpShield")}
                 >
-                  🛡
+                  <span aria-hidden>🛡</span>
+                  {t("powerUpShieldLabel")}
                 </span>
               ) : null}
               {slowActive ? (
                 <span
-                  className="gaming-panel flex h-9 w-9 items-center justify-center text-base text-[#a855f7]"
+                  className="gaming-panel flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[#a855f7]"
                   title={t("powerUpSlow")}
                   aria-label={t("powerUpSlow")}
                 >
-                  🐢
+                  <span aria-hidden>🐢</span>
+                  {t("powerUpSlowLabel")}
                 </span>
               ) : null}
               {doubleScoreActive ? (
                 <span
-                  className="gaming-panel gaming-pixel flex h-9 w-9 items-center justify-center text-sm text-[#ffe600]"
+                  className="gaming-panel gaming-pixel flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-[#ffe600]"
                   title={t("powerUpDouble")}
                   aria-label={t("powerUpDouble")}
                 >
-                  ×2
+                  {t("powerUpDoubleLabel")}
                 </span>
               ) : null}
             </div>
