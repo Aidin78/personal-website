@@ -56,7 +56,7 @@
     "gamingBanner": {
       "eyebrow": "Bonus level",
       "title": "Yes, there's a playable game on this site",
-      "description": "A snake game with collectibles and a live scoring HUD, built straight into this page — one more sample of interaction and animation work.",
+      "description": "A full arcade Snake — power-ups, obstacles, two game modes, and a live global leaderboard — built straight into this page, not just a demo. One more sample of interaction and animation work.",
       "cta": "Play the game",
       "ctaActive": "Game running — click to exit"
     }
