@@ -26,6 +26,5 @@ export const yekanBakh = localFont({
   ],
   variable: "--font-yekan-bakh",
   display: "swap",
-  preload: false,
   fallback: ["Tahoma", "Arial", "sans-serif"],
 });
