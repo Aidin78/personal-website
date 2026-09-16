@@ -96,7 +96,10 @@ export function Header() {
         scrolled ? "border-border shadow-[0_1px_0_0_var(--border)]" : "border-transparent"
       }`}
     >
-      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6">
+      <div
+        className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6"
+        inert={open}
+      >
         <Link
           href="/"
           className="min-w-0 justify-self-start leading-tight"
