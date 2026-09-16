@@ -27,8 +27,8 @@ export async function AboutPageContent() {
               <Image
                 src={profile.portraitPath}
                 alt={`${displayName} — portrait`}
-                width={600}
-                height={720}
+                width={1536}
+                height={1024}
                 className="h-auto w-full object-cover"
                 priority
               />
