@@ -139,7 +139,7 @@ export function Header() {
           <button
             ref={menuButtonRef}
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex h-8 w-8 items-center justify-center border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? t("close") : t("menu")}
             aria-expanded={open}
@@ -158,14 +158,26 @@ export function Header() {
         aria-labelledby={menuTitleId}
         aria-hidden={!open}
         inert={!open}
-        className={`fixed inset-0 z-40 overflow-y-auto bg-background transition-all duration-300 ease-out lg:hidden ${
-          open ? "opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+        className={`fixed inset-0 z-40 overflow-y-auto bg-background transition-opacity duration-300 ease-out lg:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <p id={menuTitleId} className="sr-only">
           {t("menu")}
         </p>
-        <div className="flex h-16 items-center justify-end gap-3 border-b border-border px-5">
+        <div className="flex h-16 items-center justify-between gap-3 border-b border-border px-5">
+          <Link
+            href="/"
+            className="min-w-0 leading-tight"
+            onClick={() => setOpen(false)}
+          >
+            <span className="block truncate font-display text-sm font-bold">
+              {displayName}
+            </span>
+            <span className="block truncate text-xs text-muted">
+              {t("brandTagline")}
+            </span>
+          </Link>
           <button
             ref={closeButtonRef}
             type="button"
