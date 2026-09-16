@@ -35,7 +35,7 @@ export async function AboutPageContent() {
             </div>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8 text-center sm:text-start">
             <SectionHeading
               eyebrow={about("title")}
               title={displayName}
