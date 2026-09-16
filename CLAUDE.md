@@ -22,6 +22,8 @@ Run a single Playwright test: `npx playwright test e2e/smoke.spec.ts -g "test na
 
 Before deploying, see `.cursor/skills/cpanel-static-build/SKILL.md` for the full cPanel static-export workflow (set `NEXT_PUBLIC_SITE_URL` in `.env.local`, build, verify `out/` artifacts, upload contents of `out/` — never `.next` — to `public_html`).
 
+**Environment variables** (see `.env.example`): all optional except `NEXT_PUBLIC_SITE_URL` (absolute URLs in metadata/JSON-LD/sitemap). `GITHUB_TOKEN` raises GitHub API rate limits for the proof section. `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` enable the gaming leaderboard — see that section below.
+
 ## Architecture
 
 This is a bilingual (EN/FA) Next.js App Router portfolio site, permanently configured for **static export** (`output: "export"` in `next.config.ts`) so it can be hosted on cPanel shared hosting with no Node server. Do not remove `output: "export"` unless explicitly switching deploy targets — it forbids empty `generateStaticParams()` results and disables the image optimizer (`images.unoptimized: true`). `@/*` resolves to `src/*` (`tsconfig.json`).
@@ -40,7 +42,7 @@ This is a bilingual (EN/FA) Next.js App Router portfolio site, permanently confi
 
 **GitHub proof repos**: `src/lib/github.ts` fetches the repos named in `proof.githubRepos` (`src/content/proof.ts`) from the GitHub API at request time (`revalidate: 3600`), optionally authenticated with `GITHUB_TOKEN` for higher rate limits. On a failed/rate-limited response it falls back to zero-stat cards built straight from `proof.githubRepos` rather than showing nothing. Note this fetch runs at request/build time, not client-side — fine for `next build`'s static generation, but be aware the data can go stale between rebuilds since there's no ISR server to revalidate it on a static export.
 
-**Theming**: light/dark handled by a custom provider (`src/components/providers/ThemeProvider.tsx` + `theme.ts`), not next-themes.
+**Theming**: light/dark handled by a custom provider (`src/components/providers/ThemeProvider.tsx` + `theme.ts`), not next-themes. There is no `tailwind.config.*` — Tailwind v4's CSS-first config lives entirely in `src/app/globals.css`: light/dark color tokens are CSS custom properties on `:root`/`.dark`, exposed to Tailwind via `@theme inline`. Add new design tokens there, not in a JS config file.
 
 **Fonts**: `src/lib/fonts.ts` centralizes font setup — Space Grotesk/DM Sans for EN, Yekan Bakh (self-hosted, `public/fonts/`) for FA, Press Start 2P for the gaming HUD.
 
