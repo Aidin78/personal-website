@@ -23,7 +23,7 @@ export async function HomeHero() {
   return (
     <section className="relative pb-12 pt-10 sm:pt-16 lg:pb-16">
       <div className="mx-auto w-full max-w-7xl px-6">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div className="relative mx-auto hidden w-full max-w-md order-1 lg:order-2 lg:block lg:max-w-none">
             <HeroCodePanel
               name={getProfileName("en")}
@@ -107,7 +107,7 @@ export async function HomeServices() {
         {services.map(({ key }) => (
           <div
             key={key}
-            className="grid gap-2 py-8 sm:grid-cols-[1fr_2fr] sm:items-baseline sm:gap-10"
+            className="grid grid-cols-1 gap-2 py-8 sm:grid-cols-[1fr_2fr] sm:items-baseline sm:gap-10"
           >
             <h3 className="font-display text-xl font-bold">
               {t(`services.${key}.title`)}
@@ -175,7 +175,7 @@ export async function HomeCta() {
     <section className="pt-8 pb-24 sm:pt-12">
       <div className="mx-auto w-full max-w-7xl px-6">
         <div className="border border-border p-8 sm:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="space-y-3 text-center lg:text-start">
               <h2 className="font-display text-3xl font-bold sm:text-4xl">
                 {t("ctaTitle")}

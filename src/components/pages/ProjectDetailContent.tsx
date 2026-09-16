@@ -45,7 +45,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
           {t("backToProjects")}
         </Link>
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
           <div className="space-y-8">
             <div className="space-y-5">
               <div className="flex flex-wrap items-center gap-3">
@@ -72,7 +72,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
               emptyHint=""
             />
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="modern-panel p-6">
                 <h2 className="font-display text-xl font-bold">{t("overview")}</h2>
                 <p className="mt-4 text-sm leading-relaxed text-muted">
@@ -158,7 +158,7 @@ export async function ProjectDetailContent({ slug }: ProjectDetailContentProps) 
             eyebrow={t("relatedEyebrow")}
             title={t("relatedProjects")}
           />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {related.map((item) => (
               <ProjectCard
                 key={item.slug}

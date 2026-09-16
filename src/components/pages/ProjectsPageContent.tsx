@@ -18,7 +18,7 @@ export async function ProjectsPageContent() {
           subtitle={t("subtitle")}
           as="h1"
         />
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.slug}

@@ -34,7 +34,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
           </a>
         </div>
 
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {repos.map((repo) => (
             <li key={repo.name}>
               <a
@@ -96,7 +96,7 @@ export async function ProofShowcase({ repos }: ProofShowcaseProps) {
           </a>
         </div>
 
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {proof.dribbbleShots.map((shot) => {
             const title = tContent(shot.title, locale);
             const href = `https://dribbble.com/shots/${shot.id}`;

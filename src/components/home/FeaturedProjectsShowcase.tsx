@@ -98,7 +98,7 @@ export async function FeaturedProjectsShowcase({
 
   return (
     <div className="space-y-4 md:space-y-5">
-      <div className="grid gap-4 md:gap-5 lg:grid-cols-3 lg:grid-rows-2">
+      <div className="grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-3 lg:grid-rows-2">
         <div className="lg:col-span-2 lg:row-span-2">
           <ShowcaseCard
             project={hero}

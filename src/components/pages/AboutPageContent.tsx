@@ -21,7 +21,7 @@ export async function AboutPageContent() {
   return (
     <PageShell>
       <Section className="pt-10 sm:pt-16">
-        <div className="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative mx-auto w-full max-w-sm lg:sticky lg:top-24">
             <div className="overflow-hidden border border-border">
               <Image
@@ -82,7 +82,7 @@ export async function AboutPageContent() {
             return (
             <article
               key={`${company}-${period}`}
-              className="relative grid gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
+              className="relative grid grid-cols-1 gap-4 pb-10 sm:grid-cols-[120px_1fr] sm:gap-8"
             >
               <div className="hidden sm:block" />
               <div className="absolute start-4 top-1 z-10 hidden h-3 w-3 -translate-x-1/2 border-4 border-background bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--accent)_25%,transparent)] rtl:translate-x-1/2 sm:block" />
@@ -155,7 +155,7 @@ export async function AboutPageContent() {
       <div className="pb-24 pt-8 sm:pt-12">
         <div className="mx-auto w-full max-w-7xl px-6">
           <div className="border border-border p-8 sm:p-12">
-            <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="space-y-3 text-center lg:text-start">
                 <h2 className="font-display text-3xl font-bold sm:text-4xl">
                   {home("ctaTitle")}

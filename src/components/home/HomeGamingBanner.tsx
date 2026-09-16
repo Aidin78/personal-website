@@ -22,7 +22,7 @@ export function HomeGamingBanner() {
           <div aria-hidden className="gaming-banner-glow" />
           <div aria-hidden className="gaming-banner-scan" />
 
-          <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="space-y-3 text-center lg:text-start">
               <span className="inline-flex items-center justify-center gap-2 text-[13px] font-semibold tracking-wide text-[#39ff14] lg:justify-start">
                 <span className="h-1.5 w-1.5 shrink-0 bg-[#39ff14]" />
