@@ -16,6 +16,7 @@ import {
 import { profile } from "@/content/profile";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { themeScript } from "@/components/providers/theme";
+import { InlineScript } from "@/components/InlineScript";
 import { GamingModeProvider } from "@/components/gaming/GamingModeProvider";
 import { GamingLayerGate } from "@/components/gaming/GamingLayerGate";
 import { Header } from "@/components/layout/Header";
@@ -125,7 +126,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <InlineScript html={themeScript} />
         <JsonLd data={[websiteJsonLd(locale), personJsonLd(locale)]} />
       </head>
       <body className={`${fontClass} relative min-h-full antialiased`}>
