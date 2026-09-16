@@ -79,7 +79,7 @@ export async function HomeStats() {
     <Section>
       <div className="grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
         {stats.map((stat) => (
-          <div key={stat.labelKey} className="bg-background p-6 text-center sm:text-start">
+          <div key={stat.labelKey} className="bg-background p-6 text-center lg:text-start">
             <p className="font-display text-3xl font-bold signal-text sm:text-4xl">
               {stat.value}
             </p>
