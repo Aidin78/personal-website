@@ -89,15 +89,20 @@ export async function AboutPageContent() {
               <div className="glass-card p-6">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                      {localizedIndex(index + 1, locale)}
-                    </p>
+                    <div className="flex items-center justify-between gap-3 sm:block">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                        {localizedIndex(index + 1, locale)}
+                      </p>
+                      <p className="border border-border bg-surface px-2 py-0.5 text-xs text-muted sm:hidden">
+                        {period.replace("Present", experienceT("present"))}
+                      </p>
+                    </div>
                     <h3 className="mt-2 font-display text-2xl font-bold">
                       {company}
                     </h3>
                     <p className="mt-1 text-muted">{role}</p>
                   </div>
-                  <p className="border border-border bg-surface px-3 py-1 text-sm text-muted">
+                  <p className="hidden border border-border bg-surface px-3 py-1 text-sm text-muted sm:block">
                     {period.replace("Present", experienceT("present"))}
                   </p>
                 </div>
