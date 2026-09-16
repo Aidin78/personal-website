@@ -57,7 +57,6 @@ export async function AboutPageContent() {
       </Section>
 
       <Section>
-        <span className="field-label mb-6">{about("statsEyebrow")}</span>
         <div className="grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.labelKey} className="bg-background p-6">
