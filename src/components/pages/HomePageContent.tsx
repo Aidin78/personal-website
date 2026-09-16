@@ -45,10 +45,10 @@ export async function HomeHero() {
               >
                 {displayName}
               </h1>
-              <p className="max-w-xl text-xl font-medium leading-relaxed text-foreground sm:text-2xl">
+              <p className="max-w-xl mx-auto text-xl font-medium leading-relaxed text-foreground sm:text-2xl">
                 {t("title")}
               </p>
-              <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              <p className="max-w-xl mx-auto text-base leading-relaxed text-muted sm:text-lg">
                 {t("pitch")}
               </p>
             </div>
